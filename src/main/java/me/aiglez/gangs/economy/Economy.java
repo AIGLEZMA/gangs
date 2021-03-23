@@ -33,19 +33,6 @@ public interface Economy {
         return isNegative ? "-" + result : result;
     }
 
-    @Deprecated
-    static String oldFormat(double number) {
-        if (number < 1000) {
-            return String.valueOf(number);
-        } else if (number < 999999) {
-            return String.format("%.2fK%n", number / 1000);
-        } else if (number < 999999999) {
-            return String.format("%.2fM%n", number / 1000000);
-        } else if (number > 99999999) {
-            return String.format("%.2fB%n", number / 1000000000);
-        } else return String.format("%.2fT%n", number / 1000000000 * 100);
-    }
-
     void add(final User user, final double amount);
 
     void remove(final User user, final double amount);
