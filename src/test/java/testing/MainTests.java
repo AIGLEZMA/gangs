@@ -2,8 +2,8 @@ package testing;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
-import junit.framework.Assert;
 import junit.framework.TestCase;
+import org.junit.Assert;
 
 import java.util.Comparator;
 import java.util.Set;
