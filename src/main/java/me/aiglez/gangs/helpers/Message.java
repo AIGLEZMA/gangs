@@ -35,6 +35,10 @@ public enum Message {
     MINE_RESET_ANNOUNCEMENT("mine.reset.announcement", "&cThe mine has been reset"),
     MINE_TELEPORT("mine.teleport", "&aYou have been teleported to your gang's mine"),
 
+    MINE_ADMINUPGRADE_LEVELNOTFOUND("mine.admin-level-not-found", "&cLevel {0} was not found in cache"),
+    MINE_ADMINUPGRADE_UPGRADED("mine.admin-upgrade", "&aYou have upgraded {0}'s mine to level {1}"),
+    MINE_ADMINUPGRADE_ANNOUNCEMENT("mine.admin-upgrade-announcement", "&eYour mine has been upgraded by an administrator"),
+
     DEPOSIT_INSUFFICIENT_FUNDS("deposit.insufficient-funds", "&cYou don't have that amount"),
     DEPOSIT_DEPOSIT("deposit.success", "&eYou have deposed ${0} into your gang's bank"),
 

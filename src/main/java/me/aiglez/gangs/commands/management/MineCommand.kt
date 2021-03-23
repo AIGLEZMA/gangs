@@ -8,6 +8,7 @@ import me.aiglez.gangs.helpers.Message
 import me.aiglez.gangs.managers.MineManager
 import me.aiglez.gangs.menus.MineMenu
 import me.aiglez.gangs.users.User
+import me.aiglez.gangs.utils.Placeholders
 import me.lucko.helper.Services
 import org.bukkit.command.CommandSender
 
@@ -43,9 +44,12 @@ class MineCommand : BaseCommand() {
 
         if(nextLevel != null) {
             gang.mine.upgrade(nextLevel)
-            gang.message("§eYour mine has been upgraded by an administrator")
+            gang.message(Message.MINE_ADMINUPGRADE_ANNOUNCEMENT)
+            sender.sendMessage(Placeholders.replaceIn(Message.MINE_ADMINUPGRADE_UPGRADED.value, gang.name, nextLevel.ordinal))
+
         } else {
-            sender.sendMessage("§cLevel not found")
+            sender.sendMessage(Placeholders.replaceIn(Message.MINE_ADMINUPGRADE_LEVELNOTFOUND.value, gang.mine.level.ordinal + 1))
+
         }
     }
 }
