@@ -7,7 +7,6 @@ import me.aiglez.gangs.commands.admin.ToggleMinePlaceCommand
 import me.aiglez.gangs.managers.MineManager
 import me.aiglez.gangs.managers.UserManager
 import me.lucko.helper.Services
-import me.lucko.helper.metadata.Metadata
 import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -23,7 +22,7 @@ class MineListeners : Listener {
         val block = e.block
 
         if (!isMineWorld(block)) return
-        if (!Metadata.provideForPlayer(player).has(ToggleMinePlaceCommand.MINE_PLACE_METADATA)) {
+        if (!ToggleMinePlaceCommand.canPlace(player)) {
             e.isCancelled = true
         }
     }
@@ -38,7 +37,7 @@ class MineListeners : Listener {
         if(mine.level.blocks.contains(block.type) && mine.minableRegion.contains(BukkitUtil.toVector(block))) {
             mine.handle()
         } else {
-            user.message("&cYou can't break that block")
+            user.message("&c(Debug) You can't break that block")
             e.isCancelled = true
         }
     }

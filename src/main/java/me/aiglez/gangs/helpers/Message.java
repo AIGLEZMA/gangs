@@ -18,6 +18,10 @@ public enum Message {
     CHAT_ENABLED("chat.enabled", "&aYou have enabled gang chat"),
     CHAT_DISABLED("chat.disabled","&cYou have disabled gang chat"),
 
+    MINE_TOGGLEPLACE_DISABLED("mine.toggleplace.disabled", "&cYou have disabled mine toggle place, you can no longer place blocks at mines"),
+    MINE_TOGGLEPLACE_ENABLED("mine.toggleplace.enabled", "&aYou can now place blocks at mines"),
+
+
     CREATE_ALREADY_CREATING("create.already-creating", "&ePlease wait, until the creation of your gang is done"),
     CREATE_ALREADY_MEMBER("create.already-member", "&cYou are already member of a gang. Type /gang leave, to leave your current gang"),
     CREATE_INVALID_NAME("create.invalid-name", "{0} is not a valid name, (it should not contain any special characters or spaces)"),
