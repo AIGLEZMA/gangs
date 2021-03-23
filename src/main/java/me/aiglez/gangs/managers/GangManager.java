@@ -39,6 +39,17 @@ public class GangManager {
         Log.debug("Unregistered gang with name : " + gang.getName());
     }
 
+    public Optional<Gang> getGang(final String name) {
+        Preconditions.checkNotNull(name, "name may not be null");
+        for (final Gang cached : this.gangs) {
+            if(cached.getName().equals(name)) {
+                return Optional.of(cached);
+            }
+        }
+        // load maybe ?
+        return loadGang(name);
+    }
+
     public Set<Gang> getGangs() {
         return Collections.unmodifiableSet(this.gangs);
     }

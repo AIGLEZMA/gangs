@@ -17,7 +17,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 public class UserImpl implements User {
 
@@ -48,7 +47,6 @@ public class UserImpl implements User {
                 Log.debug("Setting " + this.offlinePlayer.getName() + "'s gang to " + this.gang.getName());
                 lastKnownGang = null;
             } else {
-                Log.debug("Loading " + lastKnownGang.toString());
                 final Optional<Gang> gang = Services.load(GangManager.class).loadGang(lastKnownGang);
                 gang.ifPresent(found -> {
                     setGang(found);
