@@ -37,7 +37,7 @@ public interface User extends GsonSerializable, Sender {
             final String lastKnownGang = object.get("gang").getAsString();
 
             // see UserImpl serialize method
-            return new UserImpl(offlinePlayer, lastKnownGang.equalsIgnoreCase("none") ? null : UUID.fromString(lastKnownGang));
+            return new UserImpl(offlinePlayer, lastKnownGang.equalsIgnoreCase("none") ? null : lastKnownGang);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
