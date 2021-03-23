@@ -14,7 +14,12 @@ class PlayerListeners : Listener {
     fun onChatEvent(e: AsyncPlayerChatEvent) {
         val user = User.get(e.player)
         if (user.chatEnabled() && user.hasGang()) {
-            val message = Placeholders.replaceIn(Configuration.getString("chat-format"), user.gang.name, user.player.name, e.message)
+            val message = Placeholders.replaceIn(
+                Configuration.getString("chat-format"),
+                user.gang.name,
+                user.player.name,
+                e.message
+            )
             user.gang.message(message)
             Helper.console().sendMessage("[Gangs - CHAT LOG] $message")
             e.isCancelled = true

@@ -33,15 +33,17 @@ public class UserImpl implements User {
     }
 
     @Override
-    public OfflinePlayer getOfflinePlayer() { return this.offlinePlayer; }
+    public OfflinePlayer getOfflinePlayer() {
+        return this.offlinePlayer;
+    }
 
     @Override
     public Gang getGang() {
-        if(this.lastKnownGang != null && this.gang == null) {
+        if (this.lastKnownGang != null && this.gang == null) {
             // in case it's already loaded by the balance top
             final Optional<Gang> inCache = Services.load(GangManager.class).getGangs()
                     .stream().filter(filter -> filter.getUniqueId().equals(lastKnownGang)).findAny();
-            if(inCache.isPresent()) {
+            if (inCache.isPresent()) {
                 setGang(inCache.get());
                 Log.debug("Setting " + this.offlinePlayer.getName() + "'s gang to " + this.gang.getName());
                 lastKnownGang = null;
@@ -60,33 +62,47 @@ public class UserImpl implements User {
     }
 
     @Override
-    public boolean hasGang() { return this.getGang() != null; }
-
-    @Override
     public void setGang(@Nullable final Gang gang) {
-        if(gang == null) {
+        if (gang == null) {
             Log.debug("Setting " + getOfflinePlayer().getName() + " gang to null");
         }
         this.gang = gang;
     }
 
     @Override
-    public boolean chatEnabled() { return this.chat; }
+    public boolean hasGang() {
+        return this.getGang() != null;
+    }
 
     @Override
-    public void setChatEnabled(final boolean status) { this.chat = status; }
+    public boolean chatEnabled() {
+        return this.chat;
+    }
 
     @Override
-    public boolean isCreating() { return this.creating; }
+    public void setChatEnabled(final boolean status) {
+        this.chat = status;
+    }
 
     @Override
-    public void setCreating(final boolean status) {this.creating = status; }
+    public boolean isCreating() {
+        return this.creating;
+    }
 
     @Override
-    public boolean hasQueuedBooster() { return this.queuedBooster != 0D; }
+    public void setCreating(final boolean status) {
+        this.creating = status;
+    }
 
     @Override
-    public double getQueuedBooster() { return this.queuedBooster; }
+    public boolean hasQueuedBooster() {
+        return this.queuedBooster != 0D;
+    }
+
+    @Override
+    public double getQueuedBooster() {
+        return this.queuedBooster;
+    }
 
     @Override
     public void addQueuedBooster(double booster) {
@@ -95,15 +111,19 @@ public class UserImpl implements User {
     }
 
     @Override
-    public void resetQueuedBooster() { this.queuedBooster = 0D; }
+    public void resetQueuedBooster() {
+        this.queuedBooster = 0D;
+    }
 
     @Override
     public void message(String message, Object... replacements) {
         Preconditions.checkNotNull(message, "message may not be null");
-        if(this.offlinePlayer.isOnline()) this.offlinePlayer.getPlayer().sendMessage(Text.colorize(Placeholders.replaceIn(message, replacements)));
+        if (this.offlinePlayer.isOnline())
+            this.offlinePlayer.getPlayer().sendMessage(Text.colorize(Placeholders.replaceIn(message, replacements)));
     }
 
-    @Deprecated @Override
+    @Deprecated
+    @Override
     public void messagec(final String string, Object... replacement) {
 
     }
@@ -116,11 +136,13 @@ public class UserImpl implements User {
 
     @Deprecated
     @Override
-    public void message(String message, Set<User> exemptions, Object... replacements) { }
+    public void message(String message, Set<User> exemptions, Object... replacements) {
+    }
 
     @Deprecated
     @Override
-    public void message(Message message, Set<User> exemptions, Object... replacements) { }
+    public void message(Message message, Set<User> exemptions, Object... replacements) {
+    }
 
     @Nonnull
     @Override

@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("UnstableApiUsage")
 public class UserManager {
 
     private final Set<User> users = Sets.newHashSet();
@@ -27,7 +28,8 @@ public class UserManager {
 
     public UserManager() {
         File folder = new File(Helper.hostPlugin().getDataFolder() + File.separator + "/data");
-        storage = new GsonStorageHandler<>("users", ".json", folder, new TypeToken<Set<User>>() {});
+        storage = new GsonStorageHandler<>("users", ".json", folder, new TypeToken<Set<User>>() {
+        });
     }
 
 
@@ -38,7 +40,7 @@ public class UserManager {
         Preconditions.checkNotNull(uniqueId, "unique-id may not be null");
         final OfflinePlayer offlinePlayer = Players.getOffline(uniqueId).orElseThrow(() -> new OfflinePlayerNotFoundException(uniqueId));
         for (final User user : this.users) {
-            if(user.getUniqueId().equals(uniqueId)) {
+            if (user.getUniqueId().equals(uniqueId)) {
                 return user;
             }
         }
@@ -48,16 +50,18 @@ public class UserManager {
         return user;
     }
 
-    public Set<User> getUsers() { return Collections.unmodifiableSet(this.users); }
+    public Set<User> getUsers() {
+        return Collections.unmodifiableSet(this.users);
+    }
 
 
     public void saveUsers() {
-        if(this.users.isEmpty()) {
+        if (this.users.isEmpty()) {
             Log.warn("No user found (in cache) to save");
             return;
         }
 
-        if(Configuration.getBoolean("backup")) {
+        if (Configuration.getBoolean("backup")) {
             this.storage.saveAndBackup(this.users);
             Log.info("Saved " + this.users.size() + " user(s) (with backup)");
             return;
@@ -69,7 +73,7 @@ public class UserManager {
 
     public void loadUsers() {
         final Optional<Set<User>> loaded = this.storage.load();
-        if(loaded.isPresent()) {
+        if (loaded.isPresent()) {
             this.users.addAll(loaded.get());
             Log.info("Loaded " + this.users.size() + " user(s)");
             return;

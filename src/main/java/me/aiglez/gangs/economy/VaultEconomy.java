@@ -13,7 +13,7 @@ public class VaultEconomy implements Economy {
     private final net.milkbowl.vault.economy.Economy vault;
 
     public VaultEconomy() {
-        if(Helper.server().getPluginManager().isPluginEnabled("Vault")) {
+        if (Helper.server().getPluginManager().isPluginEnabled("Vault")) {
             final Optional<net.milkbowl.vault.economy.Economy> optional = Services.get(net.milkbowl.vault.economy.Economy.class);
             this.vault = optional.orElseThrow(() -> new DependencyNotFoundException("Vault"));
 

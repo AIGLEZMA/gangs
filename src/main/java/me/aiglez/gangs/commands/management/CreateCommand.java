@@ -26,24 +26,25 @@ public class CreateCommand extends BaseCommand {
 
     private static final Pattern NAME_PATTERN = Pattern.compile("[^A-Za-z0-9]");
 
-    @Subcommand("create") @Syntax("<name>")
+    @Subcommand("create")
+    @Syntax("<name>")
     public void create(final User user, final String name) {
-        if(user.isCreating()) {
+        if (user.isCreating()) {
             user.message(Message.CREATE_ALREADY_CREATING);
             return;
         }
 
-        if(user.hasGang()) {
+        if (user.hasGang()) {
             user.message(Message.CREATE_ALREADY_MEMBER);
             return;
         }
 
-        if(!validateName(name)) {
+        if (!validateName(name)) {
             user.message(Message.CREATE_INVALID_NAME, name);
             return;
         }
 
-        if(Services.load(GangManager.class).isNameTaken(name)) {
+        if (Services.load(GangManager.class).isNameTaken(name)) {
             user.message(Message.CREATE_NAME_TAKEN, name);
             return;
         }
@@ -57,7 +58,7 @@ public class CreateCommand extends BaseCommand {
         user.message(Message.CREATE_IN_PROGRESS);
 
         final Optional<Mine> newMine = Services.load(MineManager.class).createNewMine(user);
-        if(!newMine.isPresent()) {
+        if (!newMine.isPresent()) {
             user.message(Message.CREATE_MINE_ERROR);
             user.setGang(null);
             user.setCreating(false);
@@ -77,7 +78,7 @@ public class CreateCommand extends BaseCommand {
 
     private boolean validateName(final String name) {
         Preconditions.checkNotNull(name, "name may not be null");
-        if(name.length() < 3 || name.length() > 12) return false;
+        if (name.length() < 3 || name.length() > 12) return false;
         final Matcher matcher = NAME_PATTERN.matcher(name);
         return !matcher.find();
     }

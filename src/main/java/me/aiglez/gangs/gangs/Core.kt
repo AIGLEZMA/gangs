@@ -12,7 +12,10 @@ import me.lucko.helper.gson.JsonBuilder
 class Core(val gang: Gang, var level: Int, var booster: Double) {
 
     fun upgrade() {
-        Preconditions.checkArgument(level + 1 <= Configuration.getInteger("core-settings", "max-level"), "max level reached")
+        Preconditions.checkArgument(
+            level + 1 <= Configuration.getInteger("core-settings", "max-level"),
+            "max level reached"
+        )
         level++
 
         val increment = Configuration.getDouble("core-settings", "increment")
@@ -27,7 +30,7 @@ class Core(val gang: Gang, var level: Int, var booster: Double) {
     private fun addBooster(member: User, amount: Double) {
         Log.debug("Incrementing booster by $amount")
         val multiplier: Multiplier? = Multipliers.getMultiplierByUuid(member.uniqueId.toString())
-        if(multiplier != null) {
+        if (multiplier != null) {
             Log.debug("Player already has a multiplier ${multiplier.multiplier}")
 
             multiplier.isPermanent = true
@@ -45,13 +48,13 @@ class Core(val gang: Gang, var level: Int, var booster: Double) {
     fun removeBooster(member: User) {
         Log.debug("Removing booster from " + member.player.uniqueId)
         val multiplier: Multiplier? = Multipliers.getMultiplierByUuid(member.uniqueId.toString())
-        if(multiplier != null) {
+        if (multiplier != null) {
             Log.debug("Found booster: ${multiplier.multiplier} and removing ${this.booster}")
             multiplier.multiplier -= this.booster
         }
     }
 
-    fun serialize() : JsonObject {
+    fun serialize(): JsonObject {
         return JsonBuilder.`object`()
             .add("level", this.level)
             .add("booster", this.booster)
@@ -61,12 +64,12 @@ class Core(val gang: Gang, var level: Int, var booster: Double) {
     companion object {
 
         @JvmStatic
-        fun newCore(gang: Gang) : Core {
+        fun newCore(gang: Gang): Core {
             return Core(gang, 1, 0.0)
         }
 
         @JvmStatic
-        fun deserialize(json: JsonObject, gang: Gang) : Core? {
+        fun deserialize(json: JsonObject, gang: Gang): Core? {
             return try {
                 val level = json["level"].asInt
                 val booster = json["booster"].asDouble

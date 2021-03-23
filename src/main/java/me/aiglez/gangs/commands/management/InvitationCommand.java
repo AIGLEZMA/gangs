@@ -13,9 +13,11 @@ import java.util.Objects;
 @CommandAlias("gang")
 public class InvitationCommand extends BaseCommand {
 
-    @Subcommand("decline|reject") @Syntax("<gang>") @CommandCompletion("@gangs_invited")
+    @Subcommand("decline|reject")
+    @Syntax("<gang>")
+    @CommandCompletion("@gangs_invited")
     public void decline(final User user, final Gang gang) {
-        if(!gang.isInvited(user)) {
+        if (!gang.isInvited(user)) {
             user.message(Message.DECLINE_NOT_INVITED, gang.getName());
             return;
         }
@@ -24,24 +26,26 @@ public class InvitationCommand extends BaseCommand {
         user.message(Message.DECLINE_DECLINED, gang.getName());
     }
 
-    @Subcommand("invite") @Syntax("<player>") @CommandCompletion("@players")
+    @Subcommand("invite")
+    @Syntax("<player>")
+    @CommandCompletion("@players")
     public void invite(@Conditions("has_gang") final User user, @Flags("other") final User target) {
         final Gang gang = user.getGang();
-        if(!user.test(Permissible.Permission.INVITE)) {
+        if (!user.test(Permissible.Permission.INVITE)) {
             user.message(Message.NO_PERMISSION);
             return;
         }
-        if(Objects.equals(user.getUniqueId(), target.getUniqueId())) {
+        if (Objects.equals(user.getUniqueId(), target.getUniqueId())) {
             user.message(Message.INVITE_SELF);
             return;
         }
-        if(gang.isInvited(target)) {
+        if (gang.isInvited(target)) {
             user.message(Message.INVITE_ALREADY, target.getPlayer().getName());
             return;
         }
 
-        if(target.hasGang()) {
-            if(Objects.equals(target.getGang().getUniqueId(), gang.getUniqueId())) {
+        if (target.hasGang()) {
+            if (Objects.equals(target.getGang().getUniqueId(), gang.getUniqueId())) {
                 user.message(Message.INVITE_ALREADY_MEMBER, target.getPlayer().getName());
             } else {
                 user.message(Message.INVITE_ALREADY_MEMBER_OTHER, target.getPlayer().getName(), target.getGang().getName());
@@ -49,7 +53,7 @@ public class InvitationCommand extends BaseCommand {
             return;
         }
 
-        if(gang.addInvite(target)) {
+        if (gang.addInvite(target)) {
             user.message(Message.INVITE_INVITED_SENDER, target.getPlayer().getName());
             target.message(Message.INVITE_INVITED_SENDER, gang.getName());
         }

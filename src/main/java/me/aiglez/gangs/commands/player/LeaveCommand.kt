@@ -14,14 +14,14 @@ class LeaveCommand : BaseCommand() {
     @Subcommand("leave")
     fun leave(@Conditions("has_gang") user: User) {
         val gang = user.gang
-        if(gang.getRank(user) == Rank.LEADER) {
+        if (gang.getRank(user) == Rank.LEADER) {
             user.message(Message.LEAVE_LEADER)
             return
         }
 
         gang.core.removeBooster(user)
 
-        if(gang.removeMember(user)) {
+        if (gang.removeMember(user)) {
             user.gang = null
             user.message(Message.LEAVE_LEFT)
             gang.message(Message.LEAVE_ANNOUNCEMENT, setOf(user), user.player.name)

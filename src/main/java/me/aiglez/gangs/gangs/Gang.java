@@ -21,55 +21,6 @@ import java.util.UUID;
 
 public interface Gang extends GsonSerializable, Sender {
 
-    UUID getUniqueId();
-
-    String getName();
-
-    Mine getMine();
-
-    Core getCore();
-
-    void setCore(final Core core);
-
-    void setMine(final Mine mine);
-
-    Permissible getPermissible();
-
-    Set<User> getMembers();
-
-    void addMember(final User member);
-
-    boolean removeMember(final User member);
-
-    Rank getRank(final User member);
-
-    void setRank(final User member, final Rank rank);
-
-    User getLeader();
-
-    void depositBalance(final long amount);
-
-    void withdrawBalance(final long amount);
-
-    long getBalance();
-
-    Set<Invite> getUnsafeInvites();
-
-    default Set<Invite> getInvites() {
-        final Set<Invite> invites = Sets.newHashSet();
-        for (final Invite invite : getUnsafeInvites()) {
-            if(invite.expired()) removeInvite(invite.getHolder());
-        }
-        return invites;
-    }
-
-    boolean addInvite(final User user);
-
-    void removeInvite(final User user);
-
-    boolean isInvited(final User user);
-
-
     static Gang newGang(final String name) {
         Preconditions.checkNotNull(name, "name may not be null");
         return new GangImpl(UUID.randomUUID(), name, Maps.newHashMap(), Permissible.newPermissible(), Sets.newHashSet(), 0L);
@@ -105,4 +56,52 @@ public interface Gang extends GsonSerializable, Sender {
             return null;
         }
     }
+
+    UUID getUniqueId();
+
+    String getName();
+
+    Mine getMine();
+
+    void setMine(final Mine mine);
+
+    Core getCore();
+
+    void setCore(final Core core);
+
+    Permissible getPermissible();
+
+    Set<User> getMembers();
+
+    void addMember(final User member);
+
+    boolean removeMember(final User member);
+
+    Rank getRank(final User member);
+
+    void setRank(final User member, final Rank rank);
+
+    User getLeader();
+
+    void depositBalance(final long amount);
+
+    void withdrawBalance(final long amount);
+
+    long getBalance();
+
+    Set<Invite> getUnsafeInvites();
+
+    default Set<Invite> getInvites() {
+        final Set<Invite> invites = Sets.newHashSet();
+        for (final Invite invite : getUnsafeInvites()) {
+            if (invite.expired()) removeInvite(invite.getHolder());
+        }
+        return invites;
+    }
+
+    boolean addInvite(final User user);
+
+    void removeInvite(final User user);
+
+    boolean isInvited(final User user);
 }

@@ -12,34 +12,36 @@ import java.util.Objects;
 @CommandAlias("gang")
 public class KickCommand extends BaseCommand {
 
-    @Subcommand("kick") @Syntax("<player>") @CommandCompletion("@members_without_context")
+    @Subcommand("kick")
+    @Syntax("<player>")
+    @CommandCompletion("@members_without_context")
     public void kick(final User user, @Flags("other") final User target) {
-        if(!user.hasGang()) {
+        if (!user.hasGang()) {
             user.messagec("kick.not-member");
             return;
         }
-        if(Objects.equals(user.getUniqueId(), target.getUniqueId())) {
+        if (Objects.equals(user.getUniqueId(), target.getUniqueId())) {
             user.messagec("kick.self");
             return;
         }
-        if(!target.hasGang()) {
+        if (!target.hasGang()) {
             user.messagec("kick.target-not-member", target.getPlayer().getName());
             return;
         }
 
         final Gang gang = user.getGang();
-        if(!Objects.equals(target.getGang().getUniqueId(), gang.getUniqueId())) {
+        if (!Objects.equals(target.getGang().getUniqueId(), gang.getUniqueId())) {
             user.messagec("kick.target-not-member", target.getPlayer().getName());
             return;
         }
 
-        if(!user.test(Permissible.Permission.KICK)) {
+        if (!user.test(Permissible.Permission.KICK)) {
             user.messagec("kick.no-permission");
             return;
         }
 
         final Rank superior = Rank.superior(gang.getRank(user), gang.getRank(target));
-        if(superior == gang.getRank(target)) {
+        if (superior == gang.getRank(target)) {
             user.messagec("kick.kick-superior");
             return;
         }
@@ -52,24 +54,26 @@ public class KickCommand extends BaseCommand {
         target.messagec("kick.kicked-from", gang.getName());
     }
 
-    @Subcommand("forcekick") @Syntax("<player>") @CommandCompletion("@members_without_context")
+    @Subcommand("forcekick")
+    @Syntax("<player>")
+    @CommandCompletion("@members_without_context")
     @CommandPermission("gang.admin.forcekick")
     public void forceKick(final User user, @Flags("other") final User target) {
-        if(!user.hasGang()) {
+        if (!user.hasGang()) {
             user.messagec("kick.not-member");
             return;
         }
-        if(Objects.equals(user.getUniqueId(), target.getUniqueId())) {
+        if (Objects.equals(user.getUniqueId(), target.getUniqueId())) {
             user.messagec("kick.self");
             return;
         }
-        if(!target.hasGang()) {
+        if (!target.hasGang()) {
             user.messagec("kick.target-not-member", target.getPlayer().getName());
             return;
         }
 
         final Gang gang = user.getGang();
-        if(!Objects.equals(target.getGang().getUniqueId(), gang.getUniqueId())) {
+        if (!Objects.equals(target.getGang().getUniqueId(), gang.getUniqueId())) {
             user.messagec("kick.target-not-member", target.getPlayer().getName());
             return;
         }

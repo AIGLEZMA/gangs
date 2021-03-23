@@ -16,7 +16,7 @@ public enum Message {
     BALANCE("balance", "&eYour gang has ${0}"),
 
     CHAT_ENABLED("chat.enabled", "&aYou have enabled gang chat"),
-    CHAT_DISABLED("chat.disabled","&cYou have disabled gang chat"),
+    CHAT_DISABLED("chat.disabled", "&cYou have disabled gang chat"),
 
     MINE_TOGGLEPLACE_DISABLED("mine.toggleplace.disabled", "&cYou have disabled mine toggle place, you can no longer place blocks at mines"),
     MINE_TOGGLEPLACE_ENABLED("mine.toggleplace.enabled", "&aYou can now place blocks at mines"),
@@ -84,7 +84,9 @@ public enum Message {
     }
 
 
-    public String getValue() { return NODE.getNode(toPath()).getString(this.defaultValue); }
+    public String getValue() {
+        return NODE.getNode(toPath()).getString(this.defaultValue);
+    }
 
     public String getDefaultValue() {
         return this.defaultValue;

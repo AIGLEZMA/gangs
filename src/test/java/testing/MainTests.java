@@ -43,17 +43,7 @@ public class MainTests extends TestCase {
         });
         org.junit.Assert.assertTrue(sorted.size() == 2);
     }
-    public class MyObject {
-        private final long balance;
 
-        public MyObject(final long balance) {
-            this.balance = balance;
-        }
-
-        public long getBalance() {
-            return balance;
-        }
-    }
     //-----------------------------------------------------------------------//
     //                                                                       //
     //                          JOHAN'S TESTS                                //
@@ -64,23 +54,37 @@ public class MainTests extends TestCase {
         Thread.sleep(10000);
         System.out.println(((System.currentTimeMillis() - a) / 1000));
     }
-    String format(double number){
-        Preconditions.checkNotNull(number,"Number may not be null");
-        if (number < 1000){
+
+    String format(double number) {
+        Preconditions.checkNotNull(number, "Number may not be null");
+        if (number < 1000) {
             return String.valueOf(number);
-        }else if (number < 999999) {
-            return String.format("%.2fK%n",number / 1000);
+        } else if (number < 999999) {
+            return String.format("%.2fK%n", number / 1000);
         } else if (number < 999999999) {
-            return String.format("%.2fM%n",number / 1000000);
-        }else if (number > 99999999){
-            return String.format("%.2fB%n",number / 1000000000);
-        }else return String.format("%.2fT%n",number / 1000000000 * 100);
+            return String.format("%.2fM%n", number / 1000000);
+        } else if (number > 99999999) {
+            return String.format("%.2fB%n", number / 1000000000);
+        } else return String.format("%.2fT%n", number / 1000000000 * 100);
     }
-    public void test4(){
+
+    public void test4() {
         double i = 100;
         System.out.println(format(i));
         System.out.println(format(1000000000 * 100));
 
 
+    }
+
+    public class MyObject {
+        private final long balance;
+
+        public MyObject(final long balance) {
+            this.balance = balance;
+        }
+
+        public long getBalance() {
+            return balance;
+        }
     }
 }

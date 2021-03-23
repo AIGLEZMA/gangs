@@ -9,6 +9,7 @@ public interface Sender {
     void message(final String message, final Object... replacements);
 
     void message(final String message, final Set<User> exemptions, final Object... replacements);
+
     /*
      * This one will fetch the message from the config
      */

@@ -34,7 +34,7 @@ class MineListeners : Listener {
         if (!user.hasGang() || !isMineWorld(block)) return
         val mine = user.gang.mine
 
-        if(mine.level.blocks.contains(block.type) && mine.minableRegion.contains(BukkitUtil.toVector(block))) {
+        if (mine.level.blocks.contains(block.type) && mine.minableRegion.contains(BukkitUtil.toVector(block))) {
             mine.handle()
         } else {
             user.message("&c(Debug) You can't break that block")
@@ -50,7 +50,7 @@ class MineListeners : Listener {
         val mine = user.gang.mine
 
         for (exploded in e.blockList()) {
-            if(mine.level.blocks.contains(block.type) && mine.minableRegion.contains(BukkitUtil.toVector(block))) {
+            if (mine.level.blocks.contains(block.type) && mine.minableRegion.contains(BukkitUtil.toVector(block))) {
                 mine.handle()
             } else {
                 user.message("&cYou can't break that block")
