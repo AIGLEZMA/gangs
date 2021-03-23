@@ -38,7 +38,7 @@ public class TransferCommand extends BaseCommand {
             return;
         }
 
-        if (!Objects.equals(target.getGang().getUniqueId(), gang.getUniqueId())) {
+        if (!Objects.equals(target.getGang().getName(), gang.getName())) {
             user.messagec("transfer.target-not-member", target.getPlayer().getName());
             return;
         }
