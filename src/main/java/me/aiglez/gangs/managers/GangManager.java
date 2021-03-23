@@ -13,6 +13,7 @@ import me.lucko.helper.serialize.GsonStorageHandler;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("UnstableApiUsage")
 public class GangManager {
@@ -23,8 +24,8 @@ public class GangManager {
     private final Set<Gang> gangs = Sets.newHashSet();
     private final Set<String> takenNames = Sets.newHashSet();
 
-    private GsonStorageHandler<Set<Gang>> balanceTopSorageHandler =
-            new GsonStorageHandler<>("balancetop", ".json", GANGS_DATA_FOLDER, new TypeToken<Set<Gang>>() {
+    private GsonStorageHandler<Set<String>> balanceTopSorageHandler =
+            new GsonStorageHandler<>("balancetop", ".json", GANGS_DATA_FOLDER, new TypeToken<Set<String>>() {
             });
 
     public GangManager() {
@@ -107,16 +108,17 @@ public class GangManager {
             return;
         }
         if(Configuration.getBoolean("backup")) {
-            balanceTopSorageHandler.saveAndBackup(ranking.cache());
+            balanceTopSorageHandler.saveAndBackup(ranking.cache().stream().map(Gang::getName).collect(Collectors.toSet()));
         } else {
-            balanceTopSorageHandler.save(ranking.cache());
+            balanceTopSorageHandler.save(ranking.cache().stream().map(Gang::getName).collect(Collectors.toSet()));
         }
         Log.info("Saved " + ranking.cache().size() + "(/14) gang found on the balance top");
     }
 
     public void loadBalanceTop() {
-        final Optional<Set<Gang>> loaded = balanceTopSorageHandler.load();
-        loaded.ifPresent(loadedGang -> loadedGang.forEach(this::registerGang));
+        final Optional<Set<String>> loaded = balanceTopSorageHandler.load();
+        // Set<String> -->  String(name)  ->  Optional<Gang>  -> if found --> register
+        loaded.ifPresent(loadedGang -> loadedGang.forEach(name -> loadGang(name).ifPresent(this::registerGang)));
     }
 
 }
