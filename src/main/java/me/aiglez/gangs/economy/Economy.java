@@ -12,8 +12,6 @@ public interface Economy {
 
     Pattern TRAILING_DECIMAL_POINT = Pattern.compile("[0-9]+\\.[kMGT]");
 
-    Pattern METRIC_PREFIXED_NUMBER = Pattern.compile("\\-?[0-9]+(\\.[0-9])?[kMGT]");
-
     static String format(final long value) {
         double number = value;
         // if the number is negative, convert it to a positive number and add the minus sign to the output at the end
