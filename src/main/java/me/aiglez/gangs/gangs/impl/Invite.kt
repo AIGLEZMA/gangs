@@ -14,7 +14,7 @@ data class Invite(val holder: User, val instant: Instant) {
         return Time.diffToNow(this.instant).toMillis() >= TimeUnit.MINUTES.toMillis(EXPIRE_AFTER)
     }
 
-    fun format() : String? {
+    fun format(): String? {
         val duration = Time.diffToNow(instant)
         return DurationFormatter.CONCISE_LOW_ACCURACY.format(duration)
     }

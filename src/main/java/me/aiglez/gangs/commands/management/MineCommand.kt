@@ -42,13 +42,24 @@ class MineCommand : BaseCommand() {
     fun forceMineUpgrade(sender: CommandSender, gang: Gang) {
         val nextLevel: MineLevel? = Services.load(MineManager::class.java).getLevel(gang.mine.level.ordinal + 1)
 
-        if(nextLevel != null) {
+        if (nextLevel != null) {
             gang.mine.upgrade(nextLevel)
             gang.message(Message.MINE_ADMINUPGRADE_ANNOUNCEMENT)
-            sender.sendMessage(Placeholders.replaceIn(Message.MINE_ADMINUPGRADE_UPGRADED.value, gang.name, nextLevel.ordinal))
+            sender.sendMessage(
+                Placeholders.replaceIn(
+                    Message.MINE_ADMINUPGRADE_UPGRADED.value,
+                    gang.name,
+                    nextLevel.ordinal
+                )
+            )
 
         } else {
-            sender.sendMessage(Placeholders.replaceIn(Message.MINE_ADMINUPGRADE_LEVELNOTFOUND.value, gang.mine.level.ordinal + 1))
+            sender.sendMessage(
+                Placeholders.replaceIn(
+                    Message.MINE_ADMINUPGRADE_LEVELNOTFOUND.value,
+                    gang.mine.level.ordinal + 1
+                )
+            )
 
         }
     }

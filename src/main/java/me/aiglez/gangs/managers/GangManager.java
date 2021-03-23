@@ -28,8 +28,10 @@ public class GangManager {
     private final GsonStorageHandler<Set<UUID>> balanceTopStorage;
 
     public GangManager() {
-        this.takenNamesStorage = new GsonStorageHandler<>("taken_names", ".json", DATA_FOLDER, new TypeToken<Set<String>>() {});
-        this.balanceTopStorage = new GsonStorageHandler<>("balance_top", ".json", DATA_FOLDER, new TypeToken<Set<UUID>>() {});
+        this.takenNamesStorage = new GsonStorageHandler<>("taken_names", ".json", DATA_FOLDER, new TypeToken<Set<String>>() {
+        });
+        this.balanceTopStorage = new GsonStorageHandler<>("balance_top", ".json", DATA_FOLDER, new TypeToken<Set<UUID>>() {
+        });
     }
 
 
@@ -48,10 +50,12 @@ public class GangManager {
         Log.debug("Unregistered gang with name : " + gang.getName());
     }
 
-    public Set<Gang> getGangs() { return Collections.unmodifiableSet(this.gangs); }
+    public Set<Gang> getGangs() {
+        return Collections.unmodifiableSet(this.gangs);
+    }
 
     public void saveGangs() {
-        if(this.gangs.isEmpty()) {
+        if (this.gangs.isEmpty()) {
             Log.warn("No gang found (in cache) to save");
             return;
         }
@@ -59,7 +63,8 @@ public class GangManager {
 
         for (final Gang gang : this.gangs) {
             final GsonStorageHandler<Gang> storageHandler =
-                    new GsonStorageHandler<>(gang.getUniqueId().toString(), ".json", file, new TypeToken<Gang>() {});
+                    new GsonStorageHandler<>(gang.getUniqueId().toString(), ".json", file, new TypeToken<Gang>() {
+                    });
 
             storageHandler.save(gang);
         }
@@ -70,7 +75,8 @@ public class GangManager {
         Preconditions.checkNotNull(uniqueId, "unique id may not be null");
         final File file = new File(DATA_FOLDER + File.separator + "/gangs");
 
-        final Optional<Gang> optional = new GsonStorageHandler<>(uniqueId.toString(), ".json", file, new TypeToken<Gang>() {}).load();
+        final Optional<Gang> optional = new GsonStorageHandler<>(uniqueId.toString(), ".json", file, new TypeToken<Gang>() {
+        }).load();
 
         optional.ifPresent(this.gangs::add);
 
@@ -78,12 +84,12 @@ public class GangManager {
     }
 
     public void saveTakenNames() {
-        if(this.takenNames.isEmpty()) {
+        if (this.takenNames.isEmpty()) {
             Log.warn("No saved taken name was found. Skipping...");
             return;
         }
 
-        if(Configuration.getBoolean("backup")) {
+        if (Configuration.getBoolean("backup")) {
             this.takenNamesStorage.saveAndBackup(this.takenNames);
         } else {
             this.takenNamesStorage.save(this.takenNames);
@@ -93,7 +99,7 @@ public class GangManager {
 
     public void loadTakenNames() {
         final Optional<Set<String>> loaded = this.takenNamesStorage.load();
-        if(loaded.isPresent()) {
+        if (loaded.isPresent()) {
             this.takenNames.addAll(loaded.get());
             Log.info("Loaded " + this.takenNames.size() + " taken name(s)");
             return;
@@ -105,7 +111,7 @@ public class GangManager {
     public boolean isNameTaken(final String name) {
         Preconditions.checkNotNull(name, "name");
         for (final String takenName : this.takenNames) {
-            if(takenName.equalsIgnoreCase(name)) return true;
+            if (takenName.equalsIgnoreCase(name)) return true;
         }
         return false;
     }

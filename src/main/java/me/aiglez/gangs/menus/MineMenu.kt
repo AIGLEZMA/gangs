@@ -26,12 +26,12 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
 
         for ((slot, level) in Services.load(MineManager::class.java).levels.withIndex()) {
             // < level
-            if(level.ordinal < currentLevel.ordinal) {
+            if (level.ordinal < currentLevel.ordinal) {
                 setItem(slot, alreadyBought(level))
-            } else if(level.ordinal == currentLevel.ordinal) {
+            } else if (level.ordinal == currentLevel.ordinal) {
                 setItem(slot, currentLevel(currentLevel))
-            } else if(level.ordinal > currentLevel.ordinal) {
-                if(level.ordinal <= unlocked) {
+            } else if (level.ordinal > currentLevel.ordinal) {
+                if (level.ordinal <= unlocked) {
                     setItem(slot, unlocked(level))
                 } else {
                     setItem(slot, locked(level, currentLevel))
@@ -44,12 +44,14 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
      * A lot of boilerplate code, must fix this later
      */
 
-    private fun alreadyBought(level: MineLevel) : Item {
+    private fun alreadyBought(level: MineLevel): Item {
         val builder = ItemStackBuilder.of(Material.STAINED_GLASS_PANE)
         builder.data(5)
-        builder.name(Placeholders.replaceIn(
-            Configuration.getString("menu-settings", "mine", "items", "bought", "name"), level.ordinal
-        ))
+        builder.name(
+            Placeholders.replaceIn(
+                Configuration.getString("menu-settings", "mine", "items", "bought", "name"), level.ordinal
+            )
+        )
         builder.lore("&7Blocks:")
         builder.lore(level.lore)
         builder.lore("&7")
@@ -57,11 +59,13 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
         return builder.buildConsumer { e -> e.isCancelled = true }
     }
 
-    private fun currentLevel(level: MineLevel) : Item {
+    private fun currentLevel(level: MineLevel): Item {
         val builder = ItemStackBuilder.of(Material.NETHER_STAR)
-        builder.name(Placeholders.replaceIn(
-            Configuration.getString("menu-settings", "mine", "items", "current", "name"), level.ordinal
-        ))
+        builder.name(
+            Placeholders.replaceIn(
+                Configuration.getString("menu-settings", "mine", "items", "current", "name"), level.ordinal
+            )
+        )
         builder.lore("&7Blocks:")
         builder.lore(level.lore)
         builder.lore("&7")
@@ -69,12 +73,14 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
         return builder.buildConsumer { e -> e.isCancelled = true }
     }
 
-    private fun unlocked(level: MineLevel) : Item {
+    private fun unlocked(level: MineLevel): Item {
         val builder = ItemStackBuilder.of(Material.STAINED_GLASS_PANE)
         builder.data(1)
-        builder.name(Placeholders.replaceIn(
-            Configuration.getString("menu-settings", "mine", "items", "unlocked", "name"), level.ordinal
-        ))
+        builder.name(
+            Placeholders.replaceIn(
+                Configuration.getString("menu-settings", "mine", "items", "unlocked", "name"), level.ordinal
+            )
+        )
         builder.lore("&7Blocks:")
         builder.lore(level.lore)
         builder.lore("&7")
@@ -101,12 +107,14 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
         }
     }
 
-    private fun locked(level: MineLevel, current: MineLevel) : Item {
+    private fun locked(level: MineLevel, current: MineLevel): Item {
         val builder = ItemStackBuilder.of(Material.STAINED_GLASS_PANE)
         builder.data(14)
-        builder.name(Placeholders.replaceIn(
-            Configuration.getString("menu-settings", "mine", "items", "locked", "name"), level.ordinal
-        ))
+        builder.name(
+            Placeholders.replaceIn(
+                Configuration.getString("menu-settings", "mine", "items", "locked", "name"), level.ordinal
+            )
+        )
         builder.lore("&7Blocks:")
         builder.lore(level.lore)
         builder.lore("&7")
@@ -121,7 +129,12 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
             Preconditions.checkArgument(user.hasGang(), "user must have a gang")
             val lines = max((Services.load(MineManager::class.java).levels.size / 8), 1)
             Log.debug("Levels: ${Services.load(MineManager::class.java).levels.size} and lines $lines")
-            MineMenu(user.gang, user, Text.colorize(Configuration.getString("menu-settings", "mine", "name")), lines).open()
+            MineMenu(
+                user.gang,
+                user,
+                Text.colorize(Configuration.getString("menu-settings", "mine", "name")),
+                lines
+            ).open()
         }
 
     }

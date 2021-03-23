@@ -11,7 +11,7 @@ public class TokenEnchantEconomy implements Economy {
     private final TokenEnchantAPI tokenEnchant;
 
     public TokenEnchantEconomy() {
-        if(Helper.server().getPluginManager().isPluginEnabled("TokenEnchant")) {
+        if (Helper.server().getPluginManager().isPluginEnabled("TokenEnchant")) {
             this.tokenEnchant = TokenEnchantAPI.getInstance();
             if (tokenEnchant == null) throw new DependencyNotFoundException("TokenEnchant");
         } else {

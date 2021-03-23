@@ -15,7 +15,7 @@ import java.util.function.Consumer
 class BalanceTopMenu(val user: User, title: String) : Gui(user.player, 4, title) {
 
     override fun redraw() {
-        if(isFirstDraw) {
+        if (isFirstDraw) {
             val populator = PANES.newPopulator(this)
             for (i in populator.slots) {
                 populator.accept(

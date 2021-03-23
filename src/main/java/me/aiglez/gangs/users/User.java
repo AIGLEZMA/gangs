@@ -19,46 +19,6 @@ import java.util.UUID;
 
 public interface User extends GsonSerializable, Sender {
 
-    default UUID getUniqueId() { return this.getOfflinePlayer().getUniqueId(); }
-
-    OfflinePlayer getOfflinePlayer();
-
-    default Player getPlayer() {
-        if(getOfflinePlayer().isOnline()) {
-            return getOfflinePlayer().getPlayer();
-        }
-        throw new PlayerNotConnectedException(this);
-    }
-
-    Gang getGang();
-
-    boolean hasGang();
-
-    void setGang(final Gang gang);
-
-    default boolean test(final Permissible.Permission permission) {
-        Preconditions.checkNotNull(permission, "permission may not be null");
-        if(!hasGang()) return false;
-        final Gang gang = getGang();
-        return gang.getPermissible().hasPermission(gang.getRank(this), permission);
-    }
-
-    boolean chatEnabled();
-
-    void setChatEnabled(final boolean status);
-
-    boolean isCreating();
-
-    void setCreating(final boolean status);
-
-    boolean hasQueuedBooster();
-
-    double getQueuedBooster();
-
-    void addQueuedBooster(final double booster);
-
-    void resetQueuedBooster();
-
     static User get(final Player player) {
         Preconditions.checkNotNull(player, "player may not be null");
         return Services.load(UserManager.class).getUser(player.getUniqueId());
@@ -83,4 +43,46 @@ public interface User extends GsonSerializable, Sender {
             return null;
         }
     }
+
+    default UUID getUniqueId() {
+        return this.getOfflinePlayer().getUniqueId();
+    }
+
+    OfflinePlayer getOfflinePlayer();
+
+    default Player getPlayer() {
+        if (getOfflinePlayer().isOnline()) {
+            return getOfflinePlayer().getPlayer();
+        }
+        throw new PlayerNotConnectedException(this);
+    }
+
+    Gang getGang();
+
+    void setGang(final Gang gang);
+
+    boolean hasGang();
+
+    default boolean test(final Permissible.Permission permission) {
+        Preconditions.checkNotNull(permission, "permission may not be null");
+        if (!hasGang()) return false;
+        final Gang gang = getGang();
+        return gang.getPermissible().hasPermission(gang.getRank(this), permission);
+    }
+
+    boolean chatEnabled();
+
+    void setChatEnabled(final boolean status);
+
+    boolean isCreating();
+
+    void setCreating(final boolean status);
+
+    boolean hasQueuedBooster();
+
+    double getQueuedBooster();
+
+    void addQueuedBooster(final double booster);
+
+    void resetQueuedBooster();
 }

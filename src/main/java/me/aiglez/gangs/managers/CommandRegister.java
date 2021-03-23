@@ -70,10 +70,10 @@ public class CommandRegister {
             final CommandSender sender = c.getSender();
             final boolean isPlayer = sender instanceof Player;
 
-            if(c.hasFlag("other")) {
+            if (c.hasFlag("other")) {
                 final String name = c.popFirstArg();
-                if(name == null) {
-                    if(optional) {
+                if (name == null) {
+                    if (optional) {
                         return null;
                     } else {
                         throw new InvalidCommandArgument();
@@ -91,19 +91,19 @@ public class CommandRegister {
 
             } else {
                 final Player player = isPlayer ? (Player) sender : null;
-                if(player == null && !optional) {
+                if (player == null && !optional) {
                     throw new InvalidCommandArgument("§cThis command is player only", false);
                 }
 
                 return User.get(player);
             }
         });
-        
+
         contexts.registerContext(Gang.class, c -> {
             final String name = c.popFirstArg();
             final boolean optional = c.isOptional();
-            if(name == null) {
-                if(optional) {
+            if (name == null) {
+                if (optional) {
                     return null;
                 } else {
                     throw new InvalidCommandArgument();
@@ -115,7 +115,7 @@ public class CommandRegister {
                     .filter(filter -> filter.getName().equalsIgnoreCase(name))
                     .findAny();
 
-            if(!gang.isPresent() && !optional) {
+            if (!gang.isPresent() && !optional) {
                 throw new InvalidCommandArgument(Text.colorize(Message.GANG_NOT_FOUND.getValue()), false);
             }
 
@@ -133,7 +133,7 @@ public class CommandRegister {
 
         completions.registerAsyncCompletion("invites", c -> {
             final User user = c.getContextValue(User.class);
-            if(user == null) return null;
+            if (user == null) return null;
 
             return Services.load(GangManager.class)
                     .getGangs()
@@ -143,7 +143,7 @@ public class CommandRegister {
         });
         completions.registerAsyncCompletion("members", c -> {
             final User user = c.getContextValue(User.class);
-            if(user == null || !user.hasGang()) return null;
+            if (user == null || !user.hasGang()) return null;
             return user.getGang().getMembers()
                     .stream()
                     .filter(member -> member.getOfflinePlayer().isOnline())
@@ -157,7 +157,7 @@ public class CommandRegister {
             if (value == null) {
                 return;
             }
-            if(!value.hasGang()) {
+            if (!value.hasGang()) {
                 throw new ConditionFailedException(Text.colorize(Message.NOT_MEMBER.getValue()));
             }
         });
@@ -167,7 +167,7 @@ public class CommandRegister {
             }
             final Permissible.Permission permission = Permissible.Permission.valueOf(c.getConfigValue("name", "").toUpperCase());
 
-            if(!value.test(permission)) {
+            if (!value.test(permission)) {
                 throw new ConditionFailedException(Text.colorize(Message.NO_PERMISSION.getValue()));
             }
         });

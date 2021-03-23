@@ -37,7 +37,7 @@ public class EditPermissionsMenu extends Gui {
 
     @Override
     public void redraw() {
-        if(!user.hasGang()) {
+        if (!user.hasGang()) {
             return;
         }
         final Gang gang = user.getGang();
@@ -67,7 +67,7 @@ public class EditPermissionsMenu extends Gui {
                     .lore(CONFIG.getNode("items", path, "lore").getList(String::valueOf))
                     .buildConsumer(e -> {
                         gang.getPermissible().setPermission(rank, permission, !state);
-                        if(!state) {
+                        if (!state) {
                             user.messagec("permission.granted", permission.getCoolName(), rank.getCoolName());
                         } else {
                             user.messagec("permission.denied", permission.getCoolName(), rank.getCoolName());

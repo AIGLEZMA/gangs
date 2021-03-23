@@ -14,20 +14,6 @@ public interface Economy {
 
     Pattern METRIC_PREFIXED_NUMBER = Pattern.compile("\\-?[0-9]+(\\.[0-9])?[kMGT]");
 
-
-
-    void add(final User user, final double amount);
-
-    void remove(final User user, final double amount);
-
-    double balance(final User user);
-
-    default boolean has(final User user, final double amount) {
-        Preconditions.checkNotNull(user, "user may not be null");
-        Preconditions.checkArgument(amount >= 0, "amount may not be negative");
-        return balance(user) >= amount;
-    }
-
     static String format(final long value) {
         double number = value;
         // if the number is negative, convert it to a positive number and add the minus sign to the output at the end
@@ -36,7 +22,7 @@ public interface Economy {
 
         String result = new DecimalFormat("##0E0").format(number);
 
-        Integer index = Character.getNumericValue(result.charAt(result.length() - 1)) / 3;
+        int index = Character.getNumericValue(result.charAt(result.length() - 1)) / 3;
         result = result.replaceAll("E[0-9]", METRIC_PREFIXES[index]);
 
         while (result.length() > 4 || TRAILING_DECIMAL_POINT.matcher(result).matches()) {
@@ -48,15 +34,27 @@ public interface Economy {
     }
 
     @Deprecated
-    static String oldFormat(double number){
+    static String oldFormat(double number) {
         if (number < 1000) {
             return String.valueOf(number);
         } else if (number < 999999) {
-            return String.format("%.2fK%n",number / 1000);
+            return String.format("%.2fK%n", number / 1000);
         } else if (number < 999999999) {
-            return String.format("%.2fM%n",number / 1000000);
+            return String.format("%.2fM%n", number / 1000000);
         } else if (number > 99999999) {
-            return String.format("%.2fB%n",number / 1000000000);
-        } else return String.format("%.2fT%n",number / 1000000000 * 100);
+            return String.format("%.2fB%n", number / 1000000000);
+        } else return String.format("%.2fT%n", number / 1000000000 * 100);
+    }
+
+    void add(final User user, final double amount);
+
+    void remove(final User user, final double amount);
+
+    double balance(final User user);
+
+    default boolean has(final User user, final double amount) {
+        Preconditions.checkNotNull(user, "user may not be null");
+        Preconditions.checkArgument(amount >= 0, "amount may not be negative");
+        return balance(user) >= amount;
     }
 }

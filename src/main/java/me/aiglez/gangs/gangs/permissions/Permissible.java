@@ -31,11 +31,38 @@ public class Permissible implements GsonSerializable {
         return new Permissible();
     }
 
+    public static Permissible deserialize(final JsonElement element) {
+        final JsonArray array = element.getAsJsonArray();
+        try {
+            final Permissible permissible = Permissible.newPermissible();
+
+            for (final JsonElement element1 : array) {
+                final JsonObject object = element1.getAsJsonObject();
+                final Rank rank = Rank.byOrdinal(object.get("rank").getAsInt());
+
+                final JsonArray array2 = object.get("permissions").getAsJsonArray();
+                for (final JsonElement jsonElement2 : array2) {
+                    final JsonObject object1 = jsonElement2.getAsJsonObject();
+
+                    final Permission permission = Permission.valueOf(object1.get("permission").getAsString().toUpperCase());
+                    final boolean state = object1.get("state").getAsBoolean();
+
+                    permissible.setPermission(rank, permission, state);
+                }
+            }
+
+            return permissible;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return newPermissible();
+        }
+    }
+
     public void setPermission(final Rank rank, final Permission permission, final boolean flag) {
         Preconditions.checkNotNull(rank, "rank may not be null");
         Preconditions.checkNotNull(permission, "permission may not be null");
 
-        if(rank == Rank.LEADER) return;
+        if (rank == Rank.LEADER) return;
         permissions.get(rank).put(permission, flag);
     }
 
@@ -45,7 +72,6 @@ public class Permissible implements GsonSerializable {
 
         return this.permissions.get(rank).get(permission);
     }
-
 
     @Nonnull
     @Override
@@ -70,33 +96,6 @@ public class Permissible implements GsonSerializable {
         return array;
     }
 
-    public static Permissible deserialize(final JsonElement element) {
-        final JsonArray array = element.getAsJsonArray();
-        try {
-            final Permissible permissible = Permissible.newPermissible();
-
-            for (final JsonElement element1 : array) {
-                final JsonObject object = element1.getAsJsonObject();
-                final Rank rank = Rank.byOrdinal(object.get("rank").getAsInt());
-
-                final JsonArray array2 = object.get("permissions").getAsJsonArray();
-                for (final JsonElement jsonElement2 : array2) {
-                    final JsonObject object1 = jsonElement2.getAsJsonObject();
-
-                    final Permission permission = Permission.valueOf(object1.get("permission").getAsString().toUpperCase());
-                    final boolean state = object1.get("state").getAsBoolean();
-
-                    permissible.setPermission(rank, permission, state);
-                }
-            }
-
-            return permissible;
-        } catch (Exception e) {
-            e.printStackTrace();;
-            return newPermissible();
-        }
-    }
-
     /**
      * Enum for permissions
      */
@@ -109,10 +108,13 @@ public class Permissible implements GsonSerializable {
         UPGRADE_MINE("upgrade mine");
 
         private final String coolName;
+
         Permission(final String coolName) {
             this.coolName = coolName;
         }
 
-        public String getCoolName() { return this.coolName; }
+        public String getCoolName() {
+            return this.coolName;
+        }
     }
 }

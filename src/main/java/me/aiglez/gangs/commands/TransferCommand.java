@@ -11,9 +11,11 @@ import java.util.Objects;
 @CommandAlias("gang")
 public class TransferCommand extends BaseCommand {
 
-    @Subcommand("transfer") @Syntax("<player>") @CommandCompletion("@members_without_context")
+    @Subcommand("transfer")
+    @Syntax("<player>")
+    @CommandCompletion("@members_without_context")
     public void transfer(final User user, @Flags("other") final User target) {
-        if(!user.hasGang()) {
+        if (!user.hasGang()) {
             user.messagec("transfer.not-member");
             return;
         }
@@ -21,22 +23,22 @@ public class TransferCommand extends BaseCommand {
         final Gang gang = user.getGang();
         final Rank rank = gang.getRank(user);
 
-        if(rank != Rank.LEADER) {
+        if (rank != Rank.LEADER) {
             user.messagec("transfer.not-leader");
             return;
         }
 
-        if(Objects.equals(user.getUniqueId(), target.getUniqueId())) {
+        if (Objects.equals(user.getUniqueId(), target.getUniqueId())) {
             user.messagec("transfer.self");
             return;
         }
 
-        if(!target.hasGang()) {
+        if (!target.hasGang()) {
             user.messagec("transfer.target-not-member", target.getPlayer().getName());
             return;
         }
 
-        if(!Objects.equals(target.getGang().getUniqueId(), gang.getUniqueId())) {
+        if (!Objects.equals(target.getGang().getUniqueId(), gang.getUniqueId())) {
             user.messagec("transfer.target-not-member", target.getPlayer().getName());
             return;
         }
@@ -51,7 +53,9 @@ public class TransferCommand extends BaseCommand {
                 target.getPlayer().getName());
     }
 
-    @Subcommand("forcetransfer") @Syntax("<gang> <player>") @CommandCompletion("@members_without_context")
+    @Subcommand("forcetransfer")
+    @Syntax("<gang> <player>")
+    @CommandCompletion("@members_without_context")
     @CommandPermission("gang.admin.forcetransfer")
     public void forceTransfer(final User user, final Gang gang, final User target) {
         user.message("&cNot implemented yet");

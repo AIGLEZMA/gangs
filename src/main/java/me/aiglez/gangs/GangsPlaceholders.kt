@@ -10,7 +10,7 @@ import org.bukkit.entity.Player
 class GangsPlaceholders : PlaceholderExpansion() {
 
     override fun onPlaceholderRequest(player: Player?, identifier: String): String {
-        if(player == null) return ""
+        if (player == null) return ""
         val gang: Gang = User.get(player).gang ?: return ""
 
         return when (identifier) {
@@ -33,9 +33,15 @@ class GangsPlaceholders : PlaceholderExpansion() {
         }
     }
 
-    override fun getIdentifier(): String { return "gangs" }
+    override fun getIdentifier(): String {
+        return "gangs"
+    }
 
-    override fun getAuthor(): String { return Helper.hostPlugin().description.authors[0] }
+    override fun getAuthor(): String {
+        return Helper.hostPlugin().description.authors[0]
+    }
 
-    override fun getVersion(): String { return Helper.hostPlugin().description.version }
+    override fun getVersion(): String {
+        return Helper.hostPlugin().description.version
+    }
 }

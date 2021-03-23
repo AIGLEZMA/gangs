@@ -35,7 +35,7 @@ public final class Gangs extends ExtendedJavaPlugin {
         manager.loadLanguage();
 
         Log.info("Setting-up economy");
-        if(!setupEconomy()) {
+        if (!setupEconomy()) {
             Helper.plugins().disablePlugin(this);
             return;
         }
@@ -70,7 +70,7 @@ public final class Gangs extends ExtendedJavaPlugin {
 
     @Override
     protected void disable() {
-        if(!loaded) {
+        if (!loaded) {
             Log.severe("An error occurred, disabling the plugin.");
             return;
         }
@@ -94,21 +94,21 @@ public final class Gangs extends ExtendedJavaPlugin {
 
     private boolean setupEconomy() {
         final String choice = Configuration.getString("economy");
-        if(choice.isEmpty()) {
+        if (choice.isEmpty()) {
             return false;
         }
         Economy economy = null;
         try {
-            if(choice.equalsIgnoreCase("vault")) {
+            if (choice.equalsIgnoreCase("vault")) {
                 economy = new VaultEconomy();
-            } else if(choice.equalsIgnoreCase("tokenenchant")) {
+            } else if (choice.equalsIgnoreCase("tokenenchant")) {
                 economy = new TokenEnchantEconomy();
             }
         } catch (DependencyNotFoundException e) {
             e.printStackTrace();
             return false;
         }
-        if(economy != null) provideService(Economy.class, economy);
+        if (economy != null) provideService(Economy.class, economy);
         return economy != null;
     }
 }

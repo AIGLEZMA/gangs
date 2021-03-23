@@ -46,7 +46,7 @@ public class DisbandCommand extends BaseCommand {
             return;
         }
 
-        if(Metadata.provide(user.getPlayer()).has(DISBAND_METADATA_KEY)) {
+        if (Metadata.provide(user.getPlayer()).has(DISBAND_METADATA_KEY)) {
             user.message(Message.DISBAND_DISBANDED);
             gang.message(Message.DISBAND_ANNOUNCEMENT, Sets.newHashSet(user), user.getPlayer().getName());
 
@@ -64,9 +64,12 @@ public class DisbandCommand extends BaseCommand {
         }
     }
 
-    @Subcommand("forcedisband") @Syntax("<gang>") @CommandCompletion("@gangs") @CommandPermission("gang.admin.forcedisband")
+    @Subcommand("forcedisband")
+    @Syntax("<gang>")
+    @CommandCompletion("@gangs")
+    @CommandPermission("gang.admin.forcedisband")
     public void forceDisband(final CommandSender sender, final Gang gang) {
-        final String name = sender instanceof Player ? ((Player) sender).getName() : "CONSOLE";
+        final String name = sender instanceof Player ? sender.getName() : "CONSOLE";
 
         sender.sendMessage(Placeholders.replaceIn(Message.DISBAND_FORCEDISBANDED.getValue(), gang.getName()));
 

@@ -11,7 +11,7 @@ public class ListCommand extends BaseCommand {
 
     @Subcommand("list")
     public void list(final User user) {
-        if(!user.hasGang()) {
+        if (!user.hasGang()) {
             user.messagec("list.not-member");
             return;
         }

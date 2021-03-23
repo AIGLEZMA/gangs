@@ -21,50 +21,64 @@ private val SCHEME = MenuScheme()
         "111101111",
         "111111111"
     )
+
 class CoreMenu(private val gang: Gang, val user: User, title: String) : Gui(user.player, 3, title) {
 
     override fun redraw() {
-        if(isFirstDraw) {
+        if (isFirstDraw) {
             val populator = SCHEME.newPopulator(this)
             for (i in populator.slots) {
-                populator.accept(ItemStackBuilder.of(Material.STAINED_GLASS_PANE).data(7).name("&7").buildConsumer { e -> e.isCancelled = true })
+                populator.accept(
+                    ItemStackBuilder.of(Material.STAINED_GLASS_PANE).data(7).name("&7")
+                        .buildConsumer { e -> e.isCancelled = true })
             }
         }
 
         val lore: MutableList<String> = ArrayList()
         for (line in Configuration.getList("menu-settings", "core", "items", "upgrade", "lore")) {
             lore.add(
-                Placeholders.replaceIn(line, retrieveUpgradeCost(gang.core.level + 1), gang.core.level, gang.core.booster)
+                Placeholders.replaceIn(
+                    line,
+                    retrieveUpgradeCost(gang.core.level + 1),
+                    gang.core.level,
+                    gang.core.booster
+                )
             )
         }
-        setItem(13, ItemStackBuilder.of(Material.NETHER_STAR)
-            .name(Configuration.getString("menu-settings", "core", "items", "upgrade", "name"))
-            .lore(lore)
-            .build(Runnable {
-                if(!user.test(Permissible.Permission.UPGRADE_CORE)) {
-                    user.message(Message.MENU_CORE_NO_ACCESS)
-                    return@Runnable
-                }
-                val nextLevel = gang.core.level + 1
-                if(nextLevel == Configuration.getInteger("core-settings", "max-level")) {
-                    user.message(Message.MENU_CORE_MAXLEVEL)
-                    return@Runnable
-                }
+        setItem(
+            13, ItemStackBuilder.of(Material.NETHER_STAR)
+                .name(Configuration.getString("menu-settings", "core", "items", "upgrade", "name"))
+                .lore(lore)
+                .build(Runnable {
+                    if (!user.test(Permissible.Permission.UPGRADE_CORE)) {
+                        user.message(Message.MENU_CORE_NO_ACCESS)
+                        return@Runnable
+                    }
+                    val nextLevel = gang.core.level + 1
+                    if (nextLevel == Configuration.getInteger("core-settings", "max-level")) {
+                        user.message(Message.MENU_CORE_MAXLEVEL)
+                        return@Runnable
+                    }
 
-                val upgradeCost = retrieveUpgradeCost(nextLevel)
-                if(upgradeCost > gang.balance) {
-                    user.message(Message.INSUFFICIENT_FUNDS)
-                    return@Runnable
-                }
+                    val upgradeCost = retrieveUpgradeCost(nextLevel)
+                    if (upgradeCost > gang.balance) {
+                        user.message(Message.INSUFFICIENT_FUNDS)
+                        return@Runnable
+                    }
 
-                gang.withdrawBalance(upgradeCost)
-                gang.core.upgrade()
+                    gang.withdrawBalance(upgradeCost)
+                    gang.core.upgrade()
 
-                user.message(Message.MENU_CORE_UPGRADED, gang.core.level - 1, gang.core.level, Economy.format(upgradeCost))
-                gang.message(Message.MENU_CORE_ANNOUNCEMENT, setOf(user), user.player.name, gang.core.level)
+                    user.message(
+                        Message.MENU_CORE_UPGRADED,
+                        gang.core.level - 1,
+                        gang.core.level,
+                        Economy.format(upgradeCost)
+                    )
+                    gang.message(Message.MENU_CORE_ANNOUNCEMENT, setOf(user), user.player.name, gang.core.level)
 
-                redraw()
-            })
+                    redraw()
+                })
         )
     }
 
@@ -76,7 +90,7 @@ class CoreMenu(private val gang: Gang, val user: User, title: String) : Gui(user
             CoreMenu(user.gang, user, Text.colorize(Configuration.getString("menu-settings", "core", "name"))).open()
         }
 
-        fun retrieveUpgradeCost(level: Int) : Long {
+        fun retrieveUpgradeCost(level: Int): Long {
             return Configuration.getLong("core-settings", "levels", level, "upgrade-cost")
         }
     }

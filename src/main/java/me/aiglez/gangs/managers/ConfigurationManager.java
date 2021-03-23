@@ -19,12 +19,12 @@ public class ConfigurationManager {
 
     public ConfigurationManager() {
         final File configFile = Helper.hostPlugin().getBundledFile("config.yml");
-        if(!configFile.exists()) {
+        if (!configFile.exists()) {
             throw new ConfigurationException("Couldn't find the config file in the jar");
         }
 
         final File langFile = Helper.hostPlugin().getBundledFile("lang.yml");
-        if(!langFile.exists()) {
+        if (!langFile.exists()) {
             throw new ConfigurationException("Couldn't find the language file in the jar");
         }
 
@@ -48,13 +48,13 @@ public class ConfigurationManager {
             this.language = this.langLoader.load();
             for (final Message message : Message.values()) {
                 final ConfigurationNode node = this.language.getNode(message.toPath());
-                if(node.getValueType() == ValueType.NULL) {
+                if (node.getValueType() == ValueType.NULL) {
                     node.setValue(message.getDefaultValue());
                     save = true;
                 }
             }
 
-            if(save) {
+            if (save) {
                 this.langLoader.save(this.language);
             }
 
