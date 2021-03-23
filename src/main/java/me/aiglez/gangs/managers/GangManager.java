@@ -3,9 +3,12 @@ package me.aiglez.gangs.managers;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.google.common.reflect.TypeToken;
+import me.aiglez.gangs.GangsRanking;
 import me.aiglez.gangs.gangs.Gang;
+import me.aiglez.gangs.helpers.Configuration;
 import me.aiglez.gangs.utils.Log;
 import me.lucko.helper.Helper;
+import me.lucko.helper.Services;
 import me.lucko.helper.serialize.GsonStorageHandler;
 
 import java.io.File;
@@ -19,6 +22,10 @@ public class GangManager {
 
     private final Set<Gang> gangs = Sets.newHashSet();
     private final Set<String> takenNames = Sets.newHashSet();
+
+    private GsonStorageHandler<Set<Gang>> balanceTopSorageHandler =
+            new GsonStorageHandler<>("balancetop", ".json", GANGS_DATA_FOLDER, new TypeToken<Set<Gang>>() {
+            });
 
     public GangManager() {
     }
@@ -92,4 +99,24 @@ public class GangManager {
         }
         return false;
     }
+
+    public void saveBalanceTop() {
+        final GangsRanking ranking = Services.load(GangsRanking.class);
+        if(ranking.lastUpdated() == null) {
+            Log.warn("No gang found in balance top to load");
+            return;
+        }
+        if(Configuration.getBoolean("backup")) {
+            balanceTopSorageHandler.saveAndBackup(ranking.cache());
+        } else {
+            balanceTopSorageHandler.save(ranking.cache());
+        }
+        Log.info("Saved " + ranking.cache().size() + "(/14) gang found on the balance top");
+    }
+
+    public void loadBalanceTop() {
+        final Optional<Set<Gang>> loaded = balanceTopSorageHandler.load();
+        loaded.ifPresent(loadedGang -> loadedGang.forEach(this::registerGang));
+    }
+
 }

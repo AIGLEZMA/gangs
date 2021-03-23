@@ -49,6 +49,7 @@ public final class Gangs extends ExtendedJavaPlugin {
         getService(MineManager.class).loadLevels();
         provideService(GangManager.class, new GangManager());
         getService(GangManager.class).loadTakenNames();
+        getService(GangManager.class).loadBalanceTop();
 
         provideService(GangsRanking.class, new GangsRanking());
 
@@ -78,6 +79,7 @@ public final class Gangs extends ExtendedJavaPlugin {
 
         Log.info("Saving gangs...");
         getService(GangManager.class).saveGangs();
+        getService(GangManager.class).saveBalanceTop();
     }
 
     private void registerListeners() {
