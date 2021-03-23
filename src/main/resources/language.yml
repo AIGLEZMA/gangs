@@ -1,0 +1,92 @@
+players-only: "&cError: This command is players only"
+player-not-found: "&cCouldn't find player with name {0}"
+decline:
+  not-invited: "&cYou are not invited to that gang"
+  declined: "&eYou have declined invitation to {0}"
+join:
+  not-invited: "&cYou are not invited to that gang"
+  limit-reached: "&c{0} has reached the members limit"
+  already-member: "&cYou must leave your current gang"
+  joined: "&aYou have joined the gang {0}"
+invite:
+  not-member: "&cYou're not member of any gang"
+  no-permission: "&cYou don't have access to this command"
+  already-invited: "&c{0} is already invited to your gang"
+  already-member: "&c{0} is already a member of your gang"
+  already-member-other: "&c{0} is already a member of a gang"
+  invite-self: "&cYou can't invite yourself"
+  invited: "&aYou have invited {0} to your gang"
+  invited-to: "&eYou have been invited to join {0}. Type /gang join {0}"
+toggle-mine-place:
+  toggled-on: "&aYou have toggled on the ability to place blocks on a mine"
+  toggled-off: "&cYou have toggled off the ability to place blocks on a mine"
+permission:
+  not-member: "&cYou're not member of any gang"
+  not-leader: "&cYou must be the leader of the gang"
+  granted: "&aYou have granted {0} permission to {1}s"
+  denied: "&cYou have denied {0} permission to {1}s"
+mine:
+  not-member: "&cYou're not member of any gang"
+  teleported: "&aYou have been teleported to your gang's mine"
+  teleporting: "&eThe mine is resetting teleporting your to the spawn location"
+deposit:
+  not-member: "&cYou're not member of any gang"
+  insufficient-funds: "&cYou don't have enough funds"
+  deposed: "&aYou have deposed ${0} on your gang's bank"
+balance:
+  not-member: "&cYou're not member of any gang"
+  balance: "&aYour gang's balance is {0}"
+create:
+  already-creating: "&cYou are already creating a new gang"
+  already-member: "&cYou are already member of a gang"
+  invalid-name: "&cThat name is invalid"
+  name-taken: "&cThat name is already taken"
+  error: "&cAn error occurred while creating your gang. Please try later." # related to mines
+  creating: "&eYour gang will be created in a few seconds..." # related to mines
+  created: "&aYou have created a new gang with name {0}"
+disband:
+  not-member: "&cYou're not member of any gang"
+  not-leader: "&cYou must be the leader of the gang to disband it"
+  confirm: "&eYou must run /gang disband to confirm"
+  disbanded: "&eYou have disbanded your gang"
+  announcement: "&e{0} disbanded your gang"
+chat:
+  enabled: "&aYou will now receive gang messages"
+  disabled: "&cYou will no longer receive gang messages"
+kick:
+  not-member: "&cYou're not member of any gang"
+  target-not-member: "&c{0} is not member of your gang"
+  self: "&cYou can't kick yourself"
+  no-permission: "&cYou don't have access to this command"
+  kick-superior: "&cYou can't kick an OFFICER or above"
+  kicked-from: "&cYou have been kicked from {0}"
+  kicked: "&eYou have kicked {0}"
+list:
+  not-member: "&cYou're not member of any gang"
+promote:
+  not-member: "&cYou're not member of any gang"
+  no-permission: "&cYou don't have access to this command"
+  target-not-member: "&c{0} is not member of your gang"
+  promote-superior: "&cYou can't promote a CO-LEADER or above"
+  promote-leader: "&cYou can't promote someone to leader, use /gang transfer <player>"
+  highest-rank: "&c{0} is already the leader"
+  promoted-to: "&aYou have been promoted to {0}"
+  promoted: "&eYou have promoted {0} to {1} rank"
+demote:
+  not-member: "&cYou're not member of any gang"
+  no-permission: "&cYou don't have access to this command"
+  target-not-member: "&c{0} is not member of your gang"
+  demote-superior: "&cYou can't demote a superior"
+  lowest-rank: "&c{0} is already a recruit"
+  demoted-to: "&eYou have been demoted to {0}"
+  demoted: "&eYou have demoted {0} to {1} rank"
+transfer:
+  not-member: "&cYou're not member of any gang"
+  not-leader: "&cYou must be the leader of the gang to run this command"
+  target-not-member: "&c{0} is not member of your gang"
+  self: "&cYou can't transfer the gang's ownership to yourself"
+  become-leader: "&aYou become leader of the gang"
+  transferred: "&eYou have transferred the ownership of your gang to {0}"
+  announcement: "&a{0} transferred {1}'s ownership to {2}"
+acf-core:
+  permission_denied: "Perm denied message here"

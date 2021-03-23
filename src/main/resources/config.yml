@@ -1,0 +1,110 @@
+backup: true
+economy: "vault"
+# {0} -> gang name
+# {1} -> player's name
+# {2} -> message
+chat-format: "&8[&a{0}&8] &7{1}: &r{2}"
+core-settings:
+  max-level: 18
+  increment: 1
+  levels:
+    1:
+      upgrade-cost: 0
+    2:
+      upgrade-cost: 1000
+    3:
+      upgrade-cost: 2000
+mine-settings:
+  max-level: 54
+  level-unlocked-per-core: 3
+  world-name: "gangmines"
+  levels:
+    1:
+      upgrade-cost: 0
+      blocks:
+        "STONE": 50
+        "DIRT": 50
+      lore:
+        - "&7Dirt $1"
+        - "&7Stone $2"
+    2:
+      upgrade-cost: 2000
+      blocks:
+        "STONE": 50
+        "DIRT": 30
+        "COBBLESTONE": 20
+      lore:
+        - "&7Dirt $1"
+        - "&7Stone $2"
+        - "&7CobbleStone $3"
+    3:
+      upgrade-cost: 3000
+      blocks:
+        "STONE": 50
+        "DIRT": 30
+        "EMERALD_BLOCK": 20
+      lore:
+        - "&7Dirt $1"
+        - "&7Stone $2"
+        - "&7Emerald Block $4"
+    4:
+      upgrade-cost: 4000
+      blocks:
+        "STONE": 50
+        "DIRT": 30
+        "DIAMOND_BLOCK": 20
+      lore:
+        - "&7Dirt $1"
+        - "&7Stone $2"
+        - "&7Diamond Block $4"
+    5:
+      upgrade-cost: 5000
+      blocks:
+        "STONE": 50
+        "DIRT": 30
+        "DIAMOND_BLOCK": 20
+      lore:
+        - "&7Dirt $1"
+        - "&7StoneS $2"
+        - "&7Diamond Block $4"
+  random:
+    max-x: 100000
+    min-x: 1
+    max-z: 100000
+    min-z: 1
+menu-settings:
+  mine:
+    name: "&7Mine"
+    items:
+      bought:
+        name: "&7Level: &a{0}"
+      current:
+        name: "&7Current Level: &a{0}"
+      unlocked:
+        name: "&7Unlocked Level: &e{0}"
+      locked:
+        name: "&7Locked Level: &c{0}"
+  core:
+    name: "&7Core"
+    items:
+      upgrade:
+        name: "&7Gang Core &8(left click to upgrade)"
+        lore:
+          - "&7Upgrade your gang and provide"
+          - "&7an extra boost for your entire gang."
+          - "&7"
+          - "&7Cost: &e${0}"
+          - "&7Current Level: &e{1}"
+          - "&7Current Booster: &dx{2}"
+  balance-top:
+    name: "&7Balance Top"
+    items:
+      gang:
+        name: "&7#{0} &e- {1}"
+        lore:
+          - "&7Leader: &e{0}"
+          - "&7Balance: &e{1}"
+          - "&7Core Level: &e{2}"
+          - "&7Mine Level: &e{3}"
+          - "&7Total Members: &e{4}"
+          - "&7Members:"
