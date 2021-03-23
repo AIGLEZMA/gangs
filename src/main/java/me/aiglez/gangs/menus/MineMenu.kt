@@ -91,9 +91,7 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
 
                 gang.withdrawBalance(cost)
                 Log.debug("Current level: ${current.ordinal}, upgrading to ${level.ordinal}, cost: ${Economy.format(cost)}")
-                for (i in current.ordinal + 1.. level.ordinal) {
-                    gang.core.upgrade()
-                }
+                gang.mine.upgrade(level)
 
                 user.message(Message.MENU_CORE_UPGRADED, current.ordinal, level.ordinal, Economy.format(cost))
                 gang.message(Message.MENU_CORE_ANNOUNCEMENT, setOf(user), user.player.name, level.ordinal)

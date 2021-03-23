@@ -3,9 +3,12 @@ package me.aiglez.gangs.commands.management
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
 import me.aiglez.gangs.gangs.Gang
-import me.aiglez.gangs.menus.MineMenu
+import me.aiglez.gangs.gangs.MineLevel
 import me.aiglez.gangs.helpers.Message
+import me.aiglez.gangs.managers.MineManager
+import me.aiglez.gangs.menus.MineMenu
 import me.aiglez.gangs.users.User
+import me.lucko.helper.Services
 import org.bukkit.command.CommandSender
 
 @CommandAlias("gang")
@@ -19,6 +22,7 @@ class MineCommand : BaseCommand() {
         user.message(Message.MINE_TELEPORT)
     }
 
+    // TODO: remove this later
     @Subcommand("mined")
     fun mined(@Conditions("has_gang") user: User) {
         val gang = user.gang
@@ -34,7 +38,14 @@ class MineCommand : BaseCommand() {
     @Syntax("<gang>")
     @CommandCompletion("@gangs")
     @CommandPermission("gang.admin.forcemineupgrade")
-    fun forceMineUpgrade(sender: CommandSender, gang: Gang?) {
-        sender.sendMessage("§cNot implemented yet")
+    fun forceMineUpgrade(sender: CommandSender, gang: Gang) {
+        val nextLevel: MineLevel? = Services.load(MineManager::class.java).getLevel(gang.mine.level.ordinal + 1)
+
+        if(nextLevel != null) {
+            gang.mine.upgrade(nextLevel)
+            gang.message("§eYour mine has been upgraded by an administrator")
+        } else {
+            sender.sendMessage("§cLevel not found")
+        }
     }
 }
