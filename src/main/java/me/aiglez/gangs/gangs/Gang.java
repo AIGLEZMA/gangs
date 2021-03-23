@@ -23,13 +23,12 @@ public interface Gang extends GsonSerializable, Sender {
 
     static Gang newGang(final String name) {
         Preconditions.checkNotNull(name, "name may not be null");
-        return new GangImpl(UUID.randomUUID(), name, Maps.newHashMap(), Permissible.newPermissible(), Sets.newHashSet(), 0L);
+        return new GangImpl(name, Maps.newHashMap(), Permissible.newPermissible(), Sets.newHashSet(), 0L);
     }
 
     static Gang deserialize(final JsonElement element) {
         final JsonObject object = element.getAsJsonObject();
         try {
-            final UUID uniqueId = UUID.fromString(object.get("unique-id").getAsString());
             final String name = object.get("name").getAsString();
             final long balance = object.get("balance").getAsLong();
 
@@ -46,7 +45,7 @@ public interface Gang extends GsonSerializable, Sender {
 
             final Permissible permissible = Permissible.deserialize(object.get("permissible"));
 
-            final Gang gang = new GangImpl(uniqueId, name, members, permissible, Sets.newHashSet(), balance);
+            final Gang gang = new GangImpl(name, members, permissible, Sets.newHashSet(), balance);
             gang.setMine(Mine.deserialize(object.get("mine").getAsJsonObject(), gang));
             gang.setCore(Core.deserialize(object.get("core").getAsJsonObject(), gang));
 
@@ -56,9 +55,6 @@ public interface Gang extends GsonSerializable, Sender {
             return null;
         }
     }
-
-    UUID getUniqueId();
-
     String getName();
 
     Mine getMine();
