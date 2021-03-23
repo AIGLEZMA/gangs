@@ -49,6 +49,9 @@ public enum Message {
     INVITE_INVITED_SENDER("invite.invited-sender", "&aYou have invited {0} to your gang"),
     INVITE_INVITED_TARGET("invite.invited-target", "&aYou have been invited to {0}"),
 
+    DECLINE_DECLINED("decline.declined", "&aYou have declined the invitation to {0}"),
+    DECLINE_NOT_INVITED("decline.not-invited", "&cYou are not invited to {0}"),
+
     CORE_ADMINUPGRADE_MAX_LEVEL("core.admin-upgrade-max-level", "&c{0} reached the max level"),
     CORE_ADMINUPGRADE_UPGRADED("core.admin-upgrade", "&aYou have upgraded {0}'s core to level {1}"),
     CORE_ADMINUPGRADE_ANNOUNCEMENT("core.admin-upgrade-announcement", "&eYour core has been upgraded by an administrator"),

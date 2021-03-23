@@ -16,12 +16,12 @@ public class InvitationCommand extends BaseCommand {
     @Subcommand("decline|reject") @Syntax("<gang>") @CommandCompletion("@gangs_invited")
     public void decline(final User user, final Gang gang) {
         if(!gang.isInvited(user)) {
-            user.messagec("decline.not-invited", gang.getName());
+            user.message(Message.DECLINE_NOT_INVITED, gang.getName());
             return;
         }
 
         gang.removeInvite(user);
-        user.messagec("decline.declined", gang.getName());
+        user.message(Message.DECLINE_DECLINED, gang.getName());
     }
 
     @Subcommand("invite") @Syntax("<player>") @CommandCompletion("@players")
