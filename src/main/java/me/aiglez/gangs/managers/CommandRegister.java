@@ -1,8 +1,8 @@
 package me.aiglez.gangs.managers;
 
 import co.aikar.commands.*;
-import me.aiglez.gangs.commands.*;
 import me.aiglez.gangs.commands.admin.ReloadCommand;
+import me.aiglez.gangs.commands.admin.ToggleMinePlaceCommand;
 import me.aiglez.gangs.commands.economy.BalanceCommand;
 import me.aiglez.gangs.commands.economy.DepositCommand;
 import me.aiglez.gangs.commands.economy.TopCommand;
@@ -45,30 +45,22 @@ public class CommandRegister {
     }
 
     private void registerSubCommands() {
-        this.manager.registerCommand(new ChatCommand());
-        this.manager.registerCommand(new LeaveCommand());
+        this.manager.registerCommand(new ToggleMinePlaceCommand());
+        this.manager.registerCommand(new ReloadCommand());
+
+        this.manager.registerCommand(new BalanceCommand());
+        this.manager.registerCommand(new DepositCommand());
+        this.manager.registerCommand(new TopCommand());
+
 
         this.manager.registerCommand(new CoreCommand());
-
         this.manager.registerCommand(new CreateCommand());
         this.manager.registerCommand(new DisbandCommand());
         this.manager.registerCommand(new InvitationCommand());
         this.manager.registerCommand(new MineCommand());
 
-        this.manager.registerCommand(new RoleCommand());
-        this.manager.registerCommand(new DepositCommand());
-        this.manager.registerCommand(new TopCommand());
-        this.manager.registerCommand(new KickCommand());
-        this.manager.registerCommand(new TopCommand());
-        this.manager.registerCommand(new TransferCommand());
-        this.manager.registerCommand(new BalanceCommand());
-        this.manager.registerCommand(new PermissionsCommand());
-        this.manager.registerCommand(new ListCommand());
-
-        this.manager.registerCommand(new JoinCommand());
-
-
-        this.manager.registerCommand(new ReloadCommand());
+        this.manager.registerCommand(new ChatCommand());
+        this.manager.registerCommand(new LeaveCommand());
     }
 
     private void registerContexts() {
