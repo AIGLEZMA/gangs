@@ -24,7 +24,6 @@ public class UserImpl implements User {
     private String lastKnownGang;
     private Gang gang;
     private boolean chat, creating;
-    private double queuedBooster;
 
     public UserImpl(final OfflinePlayer offlinePlayer, final String lastKnownGang) {
         this.offlinePlayer = offlinePlayer;
@@ -90,27 +89,6 @@ public class UserImpl implements User {
     @Override
     public void setCreating(final boolean status) {
         this.creating = status;
-    }
-
-    @Override
-    public boolean hasQueuedBooster() {
-        return this.queuedBooster != 0D;
-    }
-
-    @Override
-    public double getQueuedBooster() {
-        return this.queuedBooster;
-    }
-
-    @Override
-    public void addQueuedBooster(double booster) {
-        Preconditions.checkArgument(booster > 0, "booster must be positive");
-        this.queuedBooster += booster;
-    }
-
-    @Override
-    public void resetQueuedBooster() {
-        this.queuedBooster = 0D;
     }
 
     @Override

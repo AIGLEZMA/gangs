@@ -62,7 +62,7 @@ public class UserManager {
         }
 
         if (Configuration.getBoolean("backup")) {
-            this.storage.saveAndBackup(this.users);
+            this.storage.saveAndBackup(this.users.stream().filter(user -> user.hasGang()).collect(Collectors.toSet()));
             Log.info("Saved " + this.users.size() + " user(s) (with backup)");
             return;
         }

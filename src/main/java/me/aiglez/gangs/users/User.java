@@ -77,12 +77,4 @@ public interface User extends GsonSerializable, Sender {
     boolean isCreating();
 
     void setCreating(final boolean status);
-
-    boolean hasQueuedBooster();
-
-    double getQueuedBooster();
-
-    void addQueuedBooster(final double booster);
-
-    void resetQueuedBooster();
 }
