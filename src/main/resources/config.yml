@@ -79,19 +79,19 @@ menu-settings:
       recruit:
         material: "IRON_BLOCK"
         name: "&7Recruit"
-        lore: []
+        lore: [ ]
       member:
         material: "GOLD_BLOCK"
         name: "&8Member"
-        lore: []
+        lore: [ ]
       officer:
         material: "DIAMOND_BLOCK"
         name: "&eOfficer"
-        lore: []
+        lore: [ ]
       co-leader:
         material: "EMERALD_BLOCK"
         name: "&cCO-Leader"
-        lore: []
+        lore: [ ]
   mine:
     name: "&7Mine"
     items:

@@ -7,5 +7,4 @@ public class PlayerNotConnectedException extends RuntimeException {
     public PlayerNotConnectedException(final User user) {
         super("Couldn't get Player instance from user " + user.getOfflinePlayer().getName());
     }
-
 }

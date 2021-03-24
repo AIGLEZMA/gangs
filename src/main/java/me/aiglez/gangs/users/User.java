@@ -33,11 +33,14 @@ public interface User extends GsonSerializable, Sender {
         final JsonObject object = element.getAsJsonObject();
         try {
             final UUID uniqueId = UUID.fromString(object.get("unique-id").getAsString());
-            final OfflinePlayer offlinePlayer = Players.getOffline(uniqueId).orElseThrow(() -> new OfflinePlayerNotFoundException(uniqueId));
+            final OfflinePlayer offlinePlayer =
+                    Players.getOffline(uniqueId)
+                            .orElseThrow(() -> new OfflinePlayerNotFoundException(uniqueId));
             final String lastKnownGang = object.get("gang").getAsString();
 
             // see UserImpl serialize method
-            return new UserImpl(offlinePlayer, lastKnownGang.equalsIgnoreCase("none") ? null : lastKnownGang);
+            return new UserImpl(
+                    offlinePlayer, lastKnownGang.equalsIgnoreCase("none") ? null : lastKnownGang);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

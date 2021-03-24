@@ -15,13 +15,16 @@ import me.lucko.helper.plugin.ap.Plugin;
 import me.lucko.helper.plugin.ap.PluginDependency;
 
 @Plugin(
-        name = "Gangs", version = "1.0",
+        name = "Gangs",
+        version = "1.0",
         authors = {"AigleZ", "JohanLiebert"},
-        depends = {@PluginDependency(value = "Vault", soft = true), @PluginDependency(value = "AutoSell", soft = true),
-                @PluginDependency(value = "WorldEdit", soft = true), @PluginDependency(value = "TokenEnchant", soft = true),
+        depends = {
+                @PluginDependency(value = "Vault", soft = true),
+                @PluginDependency(value = "AutoSell", soft = true),
+                @PluginDependency(value = "WorldEdit", soft = true),
+                @PluginDependency(value = "TokenEnchant", soft = true),
                 @PluginDependency(value = "PlaceholderAPI", soft = true)
-        }
-)
+        })
 public final class Gangs extends ExtendedJavaPlugin {
 
     private boolean loaded;
@@ -89,9 +92,7 @@ public final class Gangs extends ExtendedJavaPlugin {
         registerListener(new PlayerListeners());
     }
 
-    private void launchTasks() {
-
-    }
+    private void launchTasks() {}
 
     private boolean setupEconomy() {
         final String choice = Configuration.getString("economy");

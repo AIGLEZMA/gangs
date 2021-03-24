@@ -28,13 +28,15 @@ import java.util.concurrent.TimeUnit;
 @CommandAlias("gang")
 public class DisbandCommand extends BaseCommand {
 
-    private final static long EXPIRE_AFTER = 10;
-    private final static Component CONFIRM_MESSAGE = TextComponent.builder()
-            .content(Text.colorize(Message.DISBAND_CONFIRM.getValue()))
-            .clickEvent(ClickEvent.runCommand("/gang disband"))
-            .hoverEvent(HoverEvent.showText(TextComponent.of("Click to confirm disband")
-                    .color(TextColor.AQUA)))
-            .build();
+    private static final long EXPIRE_AFTER = 10;
+    private static final Component CONFIRM_MESSAGE =
+            TextComponent.builder()
+                    .content(Text.colorize(Message.DISBAND_CONFIRM.getValue()))
+                    .clickEvent(ClickEvent.runCommand("/gang disband"))
+                    .hoverEvent(
+                            HoverEvent.showText(
+                                    TextComponent.of("Click to confirm disband").color(TextColor.AQUA)))
+                    .build();
 
     private final MetadataKey<Boolean> DISBAND_METADATA_KEY = MetadataKey.createBooleanKey("disband");
 
@@ -51,15 +53,20 @@ public class DisbandCommand extends BaseCommand {
             gang.message(Message.DISBAND_ANNOUNCEMENT, Sets.newHashSet(user), user.getPlayer().getName());
 
             gang.getMine().delete();
-            gang.getMembers().forEach(member -> {
-                gang.getCore().removeBooster(member);
-                member.setGang(null);
-            });
+            gang.getMembers()
+                    .forEach(
+                            member -> {
+                                gang.getCore().removeBooster(member);
+                                member.setGang(null);
+                            });
             Services.load(GangManager.class).unregisterGang(gang);
 
             Metadata.provideForPlayer(user.getPlayer()).remove(DISBAND_METADATA_KEY);
         } else {
-            Metadata.provideForPlayer(user.getPlayer()).put(DISBAND_METADATA_KEY, ExpireAfterAccessValue.of(true, EXPIRE_AFTER, TimeUnit.SECONDS));
+            Metadata.provideForPlayer(user.getPlayer())
+                    .put(
+                            DISBAND_METADATA_KEY,
+                            ExpireAfterAccessValue.of(true, EXPIRE_AFTER, TimeUnit.SECONDS));
             TextAdapter.sendMessage(user.getPlayer(), CONFIRM_MESSAGE);
         }
     }
@@ -71,14 +78,17 @@ public class DisbandCommand extends BaseCommand {
     public void forceDisband(final CommandSender sender, final Gang gang) {
         final String name = sender instanceof Player ? sender.getName() : "CONSOLE";
 
-        sender.sendMessage(Placeholders.replaceIn(Message.DISBAND_FORCEDISBANDED.getValue(), gang.getName()));
+        sender.sendMessage(
+                Placeholders.replaceIn(Message.DISBAND_FORCEDISBANDED.getValue(), gang.getName()));
 
         gang.message(Message.DISBAND_ANNOUNCEMENT, name);
         gang.getMine().delete();
-        gang.getMembers().forEach(member -> {
-            gang.getCore().removeBooster(member);
-            member.setGang(null);
-        });
+        gang.getMembers()
+                .forEach(
+                        member -> {
+                            gang.getCore().removeBooster(member);
+                            member.setGang(null);
+                        });
         Services.load(GangManager.class).unregisterGang(gang);
     }
 }

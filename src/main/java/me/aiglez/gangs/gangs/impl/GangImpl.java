@@ -15,8 +15,11 @@ import me.lucko.helper.gson.JsonBuilder;
 
 import javax.annotation.Nonnull;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.Set;
 
 public class GangImpl implements Gang {
 
@@ -28,7 +31,12 @@ public class GangImpl implements Gang {
     private long balance;
     private Mine mine; // lateinit
 
-    public GangImpl(final String name, final Map<User, Rank> members, final Permissible permissible, final Set<Invite> invites, final long balance) {
+    public GangImpl(
+            final String name,
+            final Map<User, Rank> members,
+            final Permissible permissible,
+            final Set<Invite> invites,
+            final long balance) {
         this.name = name;
         this.permissible = permissible;
         this.members = members;
@@ -141,8 +149,8 @@ public class GangImpl implements Gang {
 
     @Override
     public User getLeader() {
-        final Optional<User> optional = this.members.keySet().stream()
-                .filter(member -> getRank(member) == Rank.LEADER).findAny();
+        final Optional<User> optional =
+                this.members.keySet().stream().filter(member -> getRank(member) == Rank.LEADER).findAny();
         return optional.orElseThrow(() -> new LeaderNotFoundException(this.name));
     }
 
@@ -161,7 +169,6 @@ public class GangImpl implements Gang {
         return this.balance;
     }
 
-
     @Override
     public void message(String message, Object... replacements) {
         Preconditions.checkNotNull(message, "message may not be null");
@@ -171,7 +178,9 @@ public class GangImpl implements Gang {
     @Override
     public void message(String message, Set<User> exemptions, Object... replacements) {
         Preconditions.checkNotNull(message, "message may not be null");
-        this.members.keySet().stream().filter(user -> !exemptions.contains(user)).forEach(m -> m.message(message, replacements));
+        this.members.keySet().stream()
+                .filter(user -> !exemptions.contains(user))
+                .forEach(m -> m.message(message, replacements));
     }
 
     @Override
@@ -181,9 +190,7 @@ public class GangImpl implements Gang {
     }
 
     @Override
-    public void messagec(String string, Object... replacement) {
-
-    }
+    public void messagec(String string, Object... replacement) {}
 
     @Override
     public void message(Message message, Object... replacements) {
@@ -196,11 +203,11 @@ public class GangImpl implements Gang {
     public JsonElement serialize() {
         final JsonArray members = new JsonArray();
         for (final Entry<User, Rank> entry : this.members.entrySet()) {
-            members.add(JsonBuilder.object()
-                    .add("unique-id", entry.getKey().getUniqueId().toString())
-                    .add("rank", entry.getValue().getOrdinal())
-                    .build()
-            );
+            members.add(
+                    JsonBuilder.object()
+                            .add("unique-id", entry.getKey().getUniqueId().toString())
+                            .add("rank", entry.getValue().getOrdinal())
+                            .build());
         }
 
         return JsonBuilder.object()

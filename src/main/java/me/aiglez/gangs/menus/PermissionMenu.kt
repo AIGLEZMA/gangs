@@ -17,9 +17,9 @@ class PermissionMenu(val user: User, title: String) : Gui(user.player, 3, title)
     override fun redraw() {
         val populator = MenuPopulator(this, SCHEME)
         if (isFirstDraw) {
-            for (i in populator.slots) populator.accept(Services.load(GangsMenu::class.java).GRAY_STAINED_GLASS_PANE)
+            for (i in populator.slots) populator.accept(Services.load(GangsMenu::class.java))
         }
-        if(!user.hasGang()) return // just in case
+        if (!user.hasGang()) return // just in case
 
         for (permission in listOf("recruit", "member", "officer", "co-leader", "leader")) {
             val material = Material.matchMaterial(
@@ -32,9 +32,9 @@ class PermissionMenu(val user: User, title: String) : Gui(user.player, 3, title)
                 .buildConsumer(ClickType.LEFT) { e ->
                     run {
                         val player = e.whoClicked
-                        if(player is Player) {
+                        if (player is Player) {
                             val user = User.get(player)
-                            if(!user.hasGang()) {
+                            if (!user.hasGang()) {
                                 close()
                                 return@run
                             }

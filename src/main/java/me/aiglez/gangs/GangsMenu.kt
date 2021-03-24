@@ -16,7 +16,8 @@ class GangsMenu {
 
         @JvmStatic
         fun permission(user: User) {
-            if (user.offlinePlayer.isOnline) PermissionMenu(user,
+            if (user.offlinePlayer.isOnline) PermissionMenu(
+                user,
                 Configuration.getString("menu-settings", "permission", "title")
             )
         }

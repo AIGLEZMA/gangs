@@ -6,7 +6,6 @@ import me.lucko.helper.config.ConfigurationNode;
 
 @SuppressWarnings("unused")
 public enum Message {
-
     NOT_MEMBER("not-member", "&cYou're not member of any gang"),
     NO_PERMISSION("no-permission", "&cYou don't have permission to perform this action"),
     GANG_NOT_FOUND("gang-not-found", "&cCouldn't find any gang matching that name"),
@@ -18,19 +17,27 @@ public enum Message {
     CHAT_ENABLED("chat.enabled", "&aYou have enabled gang chat"),
     CHAT_DISABLED("chat.disabled", "&cYou have disabled gang chat"),
 
-    MINE_TOGGLEPLACE_DISABLED("mine.toggleplace.disabled", "&cYou have disabled mine toggle place, you can no longer place blocks at mines"),
+    MINE_TOGGLEPLACE_DISABLED(
+            "mine.toggleplace.disabled",
+            "&cYou have disabled mine toggle place, you can no longer place blocks at mines"),
     MINE_TOGGLEPLACE_ENABLED("mine.toggleplace.enabled", "&aYou can now place blocks at mines"),
 
-
-    CREATE_ALREADY_CREATING("create.already-creating", "&ePlease wait, until the creation of your gang is done"),
-    CREATE_ALREADY_MEMBER("create.already-member", "&cYou are already member of a gang. Type /gang leave, to leave your current gang"),
-    CREATE_INVALID_NAME("create.invalid-name", "{0} is not a valid name, (it should not contain any special characters or spaces)"),
+    CREATE_ALREADY_CREATING(
+            "create.already-creating", "&ePlease wait, until the creation of your gang is done"),
+    CREATE_ALREADY_MEMBER(
+            "create.already-member",
+            "&cYou are already member of a gang. Type /gang leave, to leave your current gang"),
+    CREATE_INVALID_NAME(
+            "create.invalid-name",
+            "{0} is not a valid name, (it should not contain any special characters or spaces)"),
     CREATE_NAME_TAKEN("create.name-taken", "{0} is already taken"),
-    CREATE_MINE_ERROR("create.mine-creation-error", "&cAn error occurred while creating your gang's mine"),
+    CREATE_MINE_ERROR(
+            "create.mine-creation-error", "&cAn error occurred while creating your gang's mine"),
     CREATE_IN_PROGRESS("create.in-progress", "&eYour gang will be created in a few seconds..."),
     CREATE_CREATED("create.created", "&aYou have successfully create a new gang"),
 
-    DISBAND_MUST_BE_LEADER("disband.must-be-leader", "&cYou must be the leader to perform this command"),
+    DISBAND_MUST_BE_LEADER(
+            "disband.must-be-leader", "&cYou must be the leader to perform this command"),
     DISBAND_DISBANDED("disband.disbanded", "&eYou have successfully disbanded your gang"),
     DISBAND_ANNOUNCEMENT("disband.announcement", "&e{0} disbanded your gang"),
     DISBAND_CONFIRM("disband.confirm", "&eClick here to confirm."),
@@ -39,9 +46,11 @@ public enum Message {
     MINE_RESET_ANNOUNCEMENT("mine.reset.announcement", "&cThe mine has been reset"),
     MINE_TELEPORT("mine.teleport", "&aYou have been teleported to your gang's mine"),
 
-    MINE_ADMINUPGRADE_LEVELNOTFOUND("mine.admin-level-not-found", "&cLevel {0} was not found in cache"),
+    MINE_ADMINUPGRADE_LEVELNOTFOUND(
+            "mine.admin-level-not-found", "&cLevel {0} was not found in cache"),
     MINE_ADMINUPGRADE_UPGRADED("mine.admin-upgrade", "&aYou have upgraded {0}'s mine to level {1}"),
-    MINE_ADMINUPGRADE_ANNOUNCEMENT("mine.admin-upgrade-announcement", "&eYour mine has been upgraded by an administrator"),
+    MINE_ADMINUPGRADE_ANNOUNCEMENT(
+            "mine.admin-upgrade-announcement", "&eYour mine has been upgraded by an administrator"),
 
     DEPOSIT_INSUFFICIENT_FUNDS("deposit.insufficient-funds", "&cYou don't have that amount"),
     DEPOSIT_DEPOSIT("deposit.success", "&eYou have deposed ${0} into your gang's bank"),
@@ -62,19 +71,24 @@ public enum Message {
 
     CORE_ADMINUPGRADE_MAX_LEVEL("core.admin-upgrade-max-level", "&c{0} reached the max level"),
     CORE_ADMINUPGRADE_UPGRADED("core.admin-upgrade", "&aYou have upgraded {0}'s core to level {1}"),
-    CORE_ADMINUPGRADE_ANNOUNCEMENT("core.admin-upgrade-announcement", "&eYour core has been upgraded by an administrator"),
+    CORE_ADMINUPGRADE_ANNOUNCEMENT(
+            "core.admin-upgrade-announcement", "&eYour core has been upgraded by an administrator"),
 
-    MENU_CORE_NO_ACCESS("menu.core.no-access", "&cYou don't have permission to upgrade your gang's core"),
+    MENU_CORE_NO_ACCESS(
+            "menu.core.no-access", "&cYou don't have permission to upgrade your gang's core"),
     MENU_CORE_MAXLEVEL("menu.core.max-level", "&cYour core has reached the max level"),
-    MENU_CORE_UPGRADED("menu.core.upgraded", "&eYou have upgraded your gang's core from level {0} to {1} for ${2}"),
+    MENU_CORE_UPGRADED(
+            "menu.core.upgraded", "&eYou have upgraded your gang's core from level {0} to {1} for ${2}"),
     MENU_CORE_ANNOUNCEMENT("menu.core.announcement", "&a{0} upgraded your gang's core to level {1}"),
 
-    MENU_MINE_UPGRADED("menu.mine.upgraded", "&6You have upgraded your gang's mine from level {0} to {1} for ${2}"),
+    MENU_MINE_UPGRADED(
+            "menu.mine.upgraded", "&6You have upgraded your gang's mine from level {0} to {1} for ${2}"),
     MENU_MINE_ANNOUNCEMENT("menu.mine.announcement", "&a{0} upgraded your gang's mine to level {1}"),
 
     HEY("hey", "&cHey");
 
-    private final static ConfigurationNode NODE = Services.load(ConfigurationManager.class).getLanguageNode();
+    private static final ConfigurationNode NODE =
+            Services.load(ConfigurationManager.class).getLanguageNode();
 
     private final String defaultValue, path;
 
@@ -82,7 +96,6 @@ public enum Message {
         this.defaultValue = defaultValue;
         this.path = path;
     }
-
 
     public String getValue() {
         return NODE.getNode(toPath()).getString(this.defaultValue);
@@ -95,5 +108,4 @@ public enum Message {
     public Object[] toPath() {
         return this.path.toLowerCase().split("\\.");
     }
-
 }

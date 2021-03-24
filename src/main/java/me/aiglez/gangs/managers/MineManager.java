@@ -50,7 +50,12 @@ public class MineManager {
         }
 
         final String worldName = Configuration.getString("mine-settings", "world-name");
-        this.mineWorld = Helper.world(worldName).orElseThrow(() -> new IllegalArgumentException("Couldn't find the world where the mines will be pasted"));
+        this.mineWorld =
+                Helper.world(worldName)
+                        .orElseThrow(
+                                () ->
+                                        new IllegalArgumentException(
+                                                "Couldn't find the world where the mines will be pasted"));
         this.worldEditWorld = FaweAPI.getWorld(worldName);
 
         final File schematic = new File(Helper.hostPlugin().getDataFolder(), "mine.schematic");
@@ -65,7 +70,6 @@ public class MineManager {
         }
     }
 
-
     public void loadLevels() {
         final ConfigurationNode node = Configuration.getNode("mine-settings", "levels");
         for (Map.Entry<Object, ? extends ConfigurationNode> entry : node.getChildrenMap().entrySet()) {
@@ -77,8 +81,8 @@ public class MineManager {
             final long upgradeCost = entry.getValue().getNode("upgrade-cost").getLong();
             Map<Material, Double> blocks = null;
             try {
-                blocks = entry.getValue().getNode("blocks").getValue(new TypeToken<Map<Material, Double>>() {
-                });
+                blocks =
+                        entry.getValue().getNode("blocks").getValue(new TypeToken<Map<Material, Double>>() {});
             } catch (ObjectMappingException e) {
                 e.printStackTrace();
             }
@@ -103,7 +107,8 @@ public class MineManager {
 
         final FastIterator vectors = new FastIterator(at.getFirst(), at.getSecond());
         for (Vector vector : vectors) {
-            final Block blockAt = this.mineWorld.getBlockAt(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ());
+            final Block blockAt =
+                    this.mineWorld.getBlockAt(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ());
             if (blockAt.getType() == Material.SPONGE) {
                 if (min == null) {
                     min = new Vector(vector.getX(), vector.getY(), vector.getZ());
@@ -122,13 +127,16 @@ public class MineManager {
             return Optional.empty();
         }
 
-        final Mine mine = new Mine(user.getGang(), this.levels.get(1), 0, location.clone().add(0.5D, ZERO_TO_SPAWN, 0.5D));
+        final Mine mine =
+                new Mine(
+                        user.getGang(), this.levels.get(1), 0, location.clone().add(0.5D, ZERO_TO_SPAWN, 0.5D));
         final Region minable = new CuboidRegion(this.worldEditWorld, min, max);
 
         mine.setMinableRegion(minable);
         mine.setRegion(at.getFirst());
 
-        Log.info("Minable: " + mine.getMinableRegion().getArea() + "  All: " + mine.getRegion().getArea());
+        Log.info(
+                "Minable: " + mine.getMinableRegion().getArea() + "  All: " + mine.getRegion().getArea());
 
         return Optional.of(mine);
     }
@@ -144,8 +152,12 @@ public class MineManager {
         clone.setY(clipboard.getOrigin().getBlockY());
         final Vector vector = BukkitUtil.toVector(clone);
 
-        final EditSession editSession = new EditSessionBuilder(this.worldEditWorld)
-                .allowedRegionsEverywhere().limitUnlimited().fastmode(true).build();
+        final EditSession editSession =
+                new EditSessionBuilder(this.worldEditWorld)
+                        .allowedRegionsEverywhere()
+                        .limitUnlimited()
+                        .fastmode(true)
+                        .build();
         schematic.paste((com.sk89q.worldedit.world.World) editSession, vector, false, true, null);
         final Region region = clipboard.getRegion();
         region.setWorld(this.worldEditWorld);
@@ -158,7 +170,6 @@ public class MineManager {
 
         return Pair.of(region, editSession);
     }
-
 
     public MineLevel getLevel(final int ordinal) {
         return this.levels.getOrDefault(ordinal, null);

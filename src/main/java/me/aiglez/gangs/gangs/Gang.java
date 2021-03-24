@@ -23,7 +23,8 @@ public interface Gang extends GsonSerializable, Sender {
 
     static Gang newGang(final String name) {
         Preconditions.checkNotNull(name, "name may not be null");
-        return new GangImpl(name, Maps.newHashMap(), Permissible.newPermissible(), Sets.newHashSet(), 0L);
+        return new GangImpl(
+                name, Maps.newHashMap(), Permissible.newPermissible(), Sets.newHashSet(), 0L);
     }
 
     static Gang deserialize(final JsonElement element) {

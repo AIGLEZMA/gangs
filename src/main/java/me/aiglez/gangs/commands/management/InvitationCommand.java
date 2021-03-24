@@ -48,7 +48,10 @@ public class InvitationCommand extends BaseCommand {
             if (Objects.equals(target.getGang().getName(), gang.getName())) {
                 user.message(Message.INVITE_ALREADY_MEMBER, target.getPlayer().getName());
             } else {
-                user.message(Message.INVITE_ALREADY_MEMBER_OTHER, target.getPlayer().getName(), target.getGang().getName());
+                user.message(
+                        Message.INVITE_ALREADY_MEMBER_OTHER,
+                        target.getPlayer().getName(),
+                        target.getGang().getName());
             }
             return;
         }
@@ -63,9 +66,9 @@ public class InvitationCommand extends BaseCommand {
     public void invitesCommand(@Conditions("has_gang") final User user) {
         final Gang gang = user.getGang();
         for (final Invite invite : gang.getInvites()) {
-            user.message("&7 - {0} (passed: &e{1})", invite.getHolder().getOfflinePlayer().getName(), invite.format());
+            user.message(
+                    "&7 - {0} (passed: &e{1})",
+                    invite.getHolder().getOfflinePlayer().getName(), invite.format());
         }
     }
 }
-
-

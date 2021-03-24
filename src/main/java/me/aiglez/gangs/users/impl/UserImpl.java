@@ -39,19 +39,23 @@ public class UserImpl implements User {
     public Gang getGang() {
         if (this.lastKnownGang != null && this.gang == null) {
             // in case it's already loaded by the balance top
-            final Optional<Gang> inCache = Services.load(GangManager.class).getGangs()
-                    .stream().filter(filter -> filter.getName().equals(lastKnownGang)).findAny();
+            final Optional<Gang> inCache =
+                    Services.load(GangManager.class).getGangs().stream()
+                            .filter(filter -> filter.getName().equals(lastKnownGang))
+                            .findAny();
             if (inCache.isPresent()) {
                 setGang(inCache.get());
                 Log.debug("Setting " + this.offlinePlayer.getName() + "'s gang to " + this.gang.getName());
                 lastKnownGang = null;
             } else {
                 final Optional<Gang> gang = Services.load(GangManager.class).loadGang(lastKnownGang);
-                gang.ifPresent(found -> {
-                    setGang(found);
-                    Log.debug("Setting " + this.offlinePlayer.getName() + "'s gang to " + this.gang.getName());
-                    lastKnownGang = null; // the gang been loaded
-                });
+                gang.ifPresent(
+                        found -> {
+                            setGang(found);
+                            Log.debug(
+                                    "Setting " + this.offlinePlayer.getName() + "'s gang to " + this.gang.getName());
+                            lastKnownGang = null; // the gang been loaded
+                        });
             }
         }
 
@@ -95,14 +99,14 @@ public class UserImpl implements User {
     public void message(String message, Object... replacements) {
         Preconditions.checkNotNull(message, "message may not be null");
         if (this.offlinePlayer.isOnline())
-            this.offlinePlayer.getPlayer().sendMessage(Text.colorize(Placeholders.replaceIn(message, replacements)));
+            this.offlinePlayer
+                    .getPlayer()
+                    .sendMessage(Text.colorize(Placeholders.replaceIn(message, replacements)));
     }
 
     @Deprecated
     @Override
-    public void messagec(final String string, Object... replacement) {
-
-    }
+    public void messagec(final String string, Object... replacement) {}
 
     @Override
     public void message(Message message, Object... replacements) {
@@ -112,13 +116,11 @@ public class UserImpl implements User {
 
     @Deprecated
     @Override
-    public void message(String message, Set<User> exemptions, Object... replacements) {
-    }
+    public void message(String message, Set<User> exemptions, Object... replacements) {}
 
     @Deprecated
     @Override
-    public void message(Message message, Set<User> exemptions, Object... replacements) {
-    }
+    public void message(Message message, Set<User> exemptions, Object... replacements) {}
 
     @Nonnull
     @Override

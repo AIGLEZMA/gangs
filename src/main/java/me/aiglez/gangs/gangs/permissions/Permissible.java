@@ -19,12 +19,13 @@ public class Permissible implements GsonSerializable {
     private final EnumMap<Rank, Map<Permission, Boolean>> permissions = Maps.newEnumMap(Rank.class);
 
     public Permissible() {
-        this.permissions.put(Rank.RECRUIT, Maps.newEnumMap(DefaultPermissions.RECRUIT)); // we must use enummap cause it's immutable
+        this.permissions.put(
+                Rank.RECRUIT,
+                Maps.newEnumMap(DefaultPermissions.RECRUIT)); // we must use enummap cause it's immutable
         this.permissions.put(Rank.MEMBER, Maps.newEnumMap(DefaultPermissions.MEMBER));
         this.permissions.put(Rank.OFFICER, Maps.newEnumMap(DefaultPermissions.OFFICER));
         this.permissions.put(Rank.CO_LEADER, Maps.newEnumMap(DefaultPermissions.CO_LEADER));
         this.permissions.put(Rank.LEADER, Maps.newEnumMap(DefaultPermissions.LEADER));
-
     }
 
     public static Permissible newPermissible() {
@@ -44,7 +45,8 @@ public class Permissible implements GsonSerializable {
                 for (final JsonElement jsonElement2 : array2) {
                     final JsonObject object1 = jsonElement2.getAsJsonObject();
 
-                    final Permission permission = Permission.valueOf(object1.get("permission").getAsString().toUpperCase());
+                    final Permission permission =
+                            Permission.valueOf(object1.get("permission").getAsString().toUpperCase());
                     final boolean state = object1.get("state").getAsBoolean();
 
                     permissible.setPermission(rank, permission, state);
@@ -83,11 +85,11 @@ public class Permissible implements GsonSerializable {
 
             final JsonArray array2 = new JsonArray();
             for (final Permission permission : entry.getValue().keySet()) {
-                array2.add(JsonBuilder.object()
-                        .add("permission", permission.toString())
-                        .add("state", entry.getValue().get(permission))
-                        .build()
-                );
+                array2.add(
+                        JsonBuilder.object()
+                                .add("permission", permission.toString())
+                                .add("state", entry.getValue().get(permission))
+                                .build());
             }
 
             object.add("permissions", array2);
@@ -96,11 +98,8 @@ public class Permissible implements GsonSerializable {
         return array;
     }
 
-    /**
-     * Enum for permissions
-     */
+    /** Enum for permissions */
     public enum Permission {
-
         INVITE("invite"),
         KICK("kick"),
         PROMOTE("promote"),

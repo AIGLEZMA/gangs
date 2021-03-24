@@ -49,7 +49,10 @@ public class TransferCommand extends BaseCommand {
         target.messagec("transfer.become-leader");
         user.messagec("transfer.transferred", target.getPlayer().getName());
 
-        gang.messagec("transfer.announcement", user.getPlayer().getName(), gang.getName(),
+        gang.messagec(
+                "transfer.announcement",
+                user.getPlayer().getName(),
+                gang.getName(),
                 target.getPlayer().getName());
     }
 
@@ -60,5 +63,4 @@ public class TransferCommand extends BaseCommand {
     public void forceTransfer(final User user, final Gang gang, final User target) {
         user.message("&cNot implemented yet");
     }
-
 }

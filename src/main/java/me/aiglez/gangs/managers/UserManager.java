@@ -28,17 +28,17 @@ public class UserManager {
 
     public UserManager() {
         File folder = new File(Helper.hostPlugin().getDataFolder() + File.separator + "/data");
-        storage = new GsonStorageHandler<>("users", ".json", folder, new TypeToken<Set<User>>() {
-        });
+        storage = new GsonStorageHandler<>("users", ".json", folder, new TypeToken<Set<User>>() {});
     }
-
 
     /*
      * Remember gangs depend on user instance but users don't depend on gangs !
      */
     public User getUser(final UUID uniqueId) {
         Preconditions.checkNotNull(uniqueId, "unique-id may not be null");
-        final OfflinePlayer offlinePlayer = Players.getOffline(uniqueId).orElseThrow(() -> new OfflinePlayerNotFoundException(uniqueId));
+        final OfflinePlayer offlinePlayer =
+                Players.getOffline(uniqueId)
+                        .orElseThrow(() -> new OfflinePlayerNotFoundException(uniqueId));
         for (final User user : this.users) {
             if (user.getUniqueId().equals(uniqueId)) {
                 return user;
@@ -54,7 +54,6 @@ public class UserManager {
         return Collections.unmodifiableSet(this.users);
     }
 
-
     public void saveUsers() {
         if (this.users.isEmpty()) {
             Log.warn("No user found (in cache) to save");
@@ -62,7 +61,8 @@ public class UserManager {
         }
 
         if (Configuration.getBoolean("backup")) {
-            this.storage.saveAndBackup(this.users.stream().filter(user -> user.hasGang()).collect(Collectors.toSet()));
+            this.storage.saveAndBackup(
+                    this.users.stream().filter(User::hasGang).collect(Collectors.toSet()));
             Log.info("Saved " + this.users.size() + " user(s) (with backup)");
             return;
         }

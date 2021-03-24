@@ -20,5 +20,4 @@ public class ListCommand extends BaseCommand {
             user.message("&7 - {0} &e{1}", member.getOfflinePlayer().getName(), gang.getRank(member));
         }
     }
-
 }

@@ -3,7 +3,6 @@ package me.aiglez.gangs.gangs.permissions;
 import com.google.common.base.Preconditions;
 
 public enum Rank {
-
     LEADER("leader", 4),
     CO_LEADER("co-leader", 3),
     OFFICER("officer", 2),
@@ -50,5 +49,4 @@ public enum Rank {
     public int getOrdinal() {
         return this.ordinal;
     }
-
 }

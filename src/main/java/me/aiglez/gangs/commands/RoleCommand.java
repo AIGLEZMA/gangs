@@ -95,7 +95,6 @@ public class RoleCommand extends BaseCommand {
         user.messagec("promote.promoted", target.getPlayer().getName(), nextRank.getCoolName());
     }
 
-
     @Subcommand("demote")
     @Syntax("<player>")
     @CommandCompletion("@members_without_context")
