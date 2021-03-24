@@ -3,6 +3,7 @@ package me.aiglez.gangs.managers;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.google.common.reflect.TypeToken;
+import me.aiglez.gangs.GangsRanking;
 import me.aiglez.gangs.gangs.Gang;
 import me.aiglez.gangs.helpers.Configuration;
 import me.aiglez.gangs.utils.Log;
@@ -13,27 +14,24 @@ import java.io.File;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
+import me.lucko.helper.Services;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("UnstableApiUsage")
 public class GangManager {
 
     private static final File DATA_FOLDER = new File(Helper.hostPlugin().getDataFolder() + File.separator + "data");
+    private static final File GANGS_DATA_FOLDER = new File(DATA_FOLDER + File.separator + "gangs");
 
     private final Set<Gang> gangs = Sets.newHashSet();
     private final Set<String> takenNames = Sets.newHashSet();
-
-    private final GsonStorageHandler<Set<String>> takenNamesStorage;
-    private final GsonStorageHandler<Set<UUID>> balanceTopStorage;
+    private GsonStorageHandler<Set<String>> balanceTopSorageHandler =
+            new GsonStorageHandler<>("balancetop", ".json", GANGS_DATA_FOLDER, new TypeToken<Set<String>>() {
+            });
 
     public GangManager() {
-        this.takenNamesStorage = new GsonStorageHandler<>("taken_names", ".json", DATA_FOLDER, new TypeToken<Set<String>>() {
-        });
-        this.balanceTopStorage = new GsonStorageHandler<>("balance_top", ".json", DATA_FOLDER, new TypeToken<Set<UUID>>() {
-        });
     }
-
 
     public void registerGang(final Gang gang) {
         Preconditions.checkNotNull(gang, "gang may not be null");
@@ -50,6 +48,17 @@ public class GangManager {
         Log.debug("Unregistered gang with name : " + gang.getName());
     }
 
+    public Optional<Gang> getGang(final String name) {
+        Preconditions.checkNotNull(name, "name may not be null");
+        for (final Gang cached : this.gangs) {
+            if(cached.getName().equals(name)) {
+                return Optional.of(cached);
+            }
+        }
+        // load maybe ?
+        return loadGang(name);
+    }
+
     public Set<Gang> getGangs() {
         return Collections.unmodifiableSet(this.gangs);
     }
@@ -59,11 +68,10 @@ public class GangManager {
             Log.warn("No gang found (in cache) to save");
             return;
         }
-        final File file = new File(DATA_FOLDER + File.separator + "/gangs");
 
         for (final Gang gang : this.gangs) {
             final GsonStorageHandler<Gang> storageHandler =
-                    new GsonStorageHandler<>(gang.getUniqueId().toString(), ".json", file, new TypeToken<Gang>() {
+                    new GsonStorageHandler<>(gang.getName(), ".json", GANGS_DATA_FOLDER, new TypeToken<Gang>() {
                     });
 
             storageHandler.save(gang);
@@ -71,11 +79,10 @@ public class GangManager {
         Log.info("Successfully saved " + this.gangs.size() + " gang(s)");
     }
 
-    public Optional<Gang> loadGang(final UUID uniqueId) {
-        Preconditions.checkNotNull(uniqueId, "unique id may not be null");
-        final File file = new File(DATA_FOLDER + File.separator + "/gangs");
 
-        final Optional<Gang> optional = new GsonStorageHandler<>(uniqueId.toString(), ".json", file, new TypeToken<Gang>() {
+    public Optional<Gang> loadGang(final String name) {
+        Preconditions.checkNotNull(name, "name may not be null");
+        final Optional<Gang> optional = new GsonStorageHandler<>(name, ".json", GANGS_DATA_FOLDER, new TypeToken<Gang>() {
         }).load();
 
         optional.ifPresent(this.gangs::add);
@@ -83,29 +90,16 @@ public class GangManager {
         return optional;
     }
 
-    public void saveTakenNames() {
-        if (this.takenNames.isEmpty()) {
-            Log.warn("No saved taken name was found. Skipping...");
-            return;
-        }
-
-        if (Configuration.getBoolean("backup")) {
-            this.takenNamesStorage.saveAndBackup(this.takenNames);
-        } else {
-            this.takenNamesStorage.save(this.takenNames);
-        }
-        Log.info("Saved " + this.takenNames.size() + " taken names");
-    }
-
     public void loadTakenNames() {
-        final Optional<Set<String>> loaded = this.takenNamesStorage.load();
-        if (loaded.isPresent()) {
-            this.takenNames.addAll(loaded.get());
-            Log.info("Loaded " + this.takenNames.size() + " taken name(s)");
-            return;
+        try {
+           final String[] list = GANGS_DATA_FOLDER.list();
+           if(list != null) {
+               this.takenNames.addAll(Arrays.asList(list));
+               Log.info("Loaded " + this.takenNames.size() + " taken name(s)");
+           }
+        } catch (SecurityException e) {
+            Log.severe("Couldn't load taken name, because of security issues");
         }
-
-        Log.warn("No taken name found to load");
     }
 
     public boolean isNameTaken(final String name) {
@@ -116,20 +110,24 @@ public class GangManager {
         return false;
     }
 
-    public void loadBalanceTop() {
-        final Optional<Set<UUID>> loaded = this.balanceTopStorage.load();
-        final AtomicInteger count = new AtomicInteger();
-        loaded.ifPresent(uuids -> {
-            for (final UUID uuid : uuids) {
-                loadGang(uuid).ifPresent(gang -> {
-                    registerGang(gang);
-                    count.incrementAndGet();
-                });
-            }
-        });
-        Log.info("Loaded " + count.get() + "/14 balance top gangs");
+    public void saveBalanceTop() {
+        final GangsRanking ranking = Services.load(GangsRanking.class);
+        if(ranking.lastUpdated() == null) {
+            Log.warn("No gang found in balance top to load");
+            return;
+        }
+        if(Configuration.getBoolean("backup")) {
+            balanceTopSorageHandler.saveAndBackup(ranking.cache().stream().map(Gang::getName).collect(Collectors.toSet()));
+        } else {
+            balanceTopSorageHandler.save(ranking.cache().stream().map(Gang::getName).collect(Collectors.toSet()));
+        }
+        Log.info("Saved " + ranking.cache().size() + "(/14) gang found on the balance top");
     }
 
-    public void saveBalanceTop() {
+    public void loadBalanceTop() {
+        final Optional<Set<String>> loaded = balanceTopSorageHandler.load();
+        // Set<String> -->  String(name)  ->  Optional<Gang>  -> if found --> register
+        loaded.ifPresent(loadedGang -> loadedGang.forEach(name -> loadGang(name).ifPresent(this::registerGang)));
     }
+
 }

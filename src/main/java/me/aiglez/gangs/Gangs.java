@@ -26,6 +26,7 @@ public final class Gangs extends ExtendedJavaPlugin {
 
     private boolean loaded;
 
+    @SuppressWarnings("InstantiationOfUtilityClass")
     @Override
     protected void enable() {
         Log.info("Loading configurations...");
@@ -81,7 +82,6 @@ public final class Gangs extends ExtendedJavaPlugin {
         Log.info("Saving gangs...");
         getService(GangManager.class).saveBalanceTop();
         getService(GangManager.class).saveGangs();
-        getService(GangManager.class).saveTakenNames();
     }
 
     private void registerListeners() {
