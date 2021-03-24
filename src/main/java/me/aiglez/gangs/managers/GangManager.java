@@ -89,8 +89,15 @@ public class GangManager {
     }
 
     public void loadTakenNames() {
-        this.takenNames.addAll(Arrays.asList(Objects.requireNonNull(GANGS_DATA_FOLDER.list())));
-        Log.info("Loaded " + this.takenNames.size() + " taken name(s)");
+        try {
+           final String[] list = GANGS_DATA_FOLDER.list();
+           if(list != null) {
+               this.takenNames.addAll(Arrays.asList(list));
+               Log.info("Loaded " + this.takenNames.size() + " taken name(s)");
+           }
+        } catch (SecurityException e) {
+            Log.severe("Couldn't load taken name, because of security issues");
+        }
     }
 
     public boolean isNameTaken(final String name) {
