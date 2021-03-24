@@ -57,6 +57,7 @@ public class CommandRegister {
     this.manager.registerCommand(new DisbandCommand());
     this.manager.registerCommand(new InvitationCommand());
     this.manager.registerCommand(new MineCommand());
+    this.manager.registerCommand(new PermissionsCommand());
 
     this.manager.registerCommand(new ChatCommand());
     this.manager.registerCommand(new LeaveCommand());

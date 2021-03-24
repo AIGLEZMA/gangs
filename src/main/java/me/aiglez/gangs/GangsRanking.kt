@@ -11,11 +11,10 @@ import java.util.*
 import java.util.stream.Collectors
 
 
-private const val EXPIRE_AFTER = 5
-private const val LIMIT: Long = 14
-
 class GangsRanking {
 
+    private val EXPIRE_AFTER = 5
+    private val LIMIT: Long = 14
     private val cache: SortedSet<Gang> = sortedSetOf(kotlin.Comparator { a, b -> compareValues(a.balance, b.balance) })
     private var lastUpdated: Instant? = null
 

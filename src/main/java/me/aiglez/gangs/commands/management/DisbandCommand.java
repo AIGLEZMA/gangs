@@ -44,7 +44,7 @@ public class DisbandCommand extends BaseCommand {
     public void disband(@Conditions("has_gang") final User user) {
         final Gang gang = user.getGang();
         if (gang.getRank(user) != Rank.LEADER) {
-            user.message(Message.DISBAND_MUST_BE_LEADER);
+            user.message(Message.NOT_LEADER);
             return;
         }
 

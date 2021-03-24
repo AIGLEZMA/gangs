@@ -3,7 +3,6 @@ package me.aiglez.gangs.menus
 import me.aiglez.gangs.GangsMenu
 import me.aiglez.gangs.helpers.Configuration
 import me.aiglez.gangs.users.User
-import me.lucko.helper.Services
 import me.lucko.helper.item.ItemStackBuilder
 import me.lucko.helper.menu.Gui
 import me.lucko.helper.menu.scheme.MenuPopulator
@@ -17,7 +16,7 @@ class PermissionMenu(val user: User, title: String) : Gui(user.player, 3, title)
     override fun redraw() {
         val populator = MenuPopulator(this, SCHEME)
         if (isFirstDraw) {
-            for (i in populator.slots) populator.accept(Services.load(GangsMenu::class.java))
+            for (i in populator.slots) populator.accept(GangsMenu.GRAY_STAINED_GLASS_PANE)
         }
         if (!user.hasGang()) return // just in case
 

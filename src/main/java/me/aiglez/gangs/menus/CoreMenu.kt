@@ -15,13 +15,6 @@ import me.lucko.helper.text3.Text
 import org.bukkit.Material
 import java.util.*
 
-private val SCHEME = MenuScheme()
-    .masks(
-        "111111111",
-        "111101111",
-        "111111111"
-    )
-
 class CoreMenu(private val gang: Gang, val user: User, title: String) : Gui(user.player, 3, title) {
 
     override fun redraw() {
@@ -83,6 +76,13 @@ class CoreMenu(private val gang: Gang, val user: User, title: String) : Gui(user
     }
 
     companion object {
+
+        private val SCHEME = MenuScheme()
+            .masks(
+                "111111111",
+                "111101111",
+                "111111111"
+            )
 
         @JvmStatic
         fun create(user: User) {

@@ -8,6 +8,7 @@ import me.lucko.helper.config.ConfigurationNode;
 public enum Message {
     NOT_MEMBER("not-member", "&cYou're not member of any gang"),
     NO_PERMISSION("no-permission", "&cYou don't have permission to perform this action"),
+    NOT_LEADER("not-leader", "&cYou must be the leader of your gang to perform this action"),
     GANG_NOT_FOUND("gang-not-found", "&cCouldn't find any gang matching that name"),
     INVALID_AMOUNT("invalid-amount", "&cAmount must be positive"),
     INSUFFICIENT_FUNDS("insufficient-funds", "&cYour gang doesn't have that amount"),
@@ -36,8 +37,6 @@ public enum Message {
     CREATE_IN_PROGRESS("create.in-progress", "&eYour gang will be created in a few seconds..."),
     CREATE_CREATED("create.created", "&aYou have successfully create a new gang"),
 
-    DISBAND_MUST_BE_LEADER(
-            "disband.must-be-leader", "&cYou must be the leader to perform this command"),
     DISBAND_DISBANDED("disband.disbanded", "&eYou have successfully disbanded your gang"),
     DISBAND_ANNOUNCEMENT("disband.announcement", "&e{0} disbanded your gang"),
     DISBAND_CONFIRM("disband.confirm", "&eClick here to confirm."),
