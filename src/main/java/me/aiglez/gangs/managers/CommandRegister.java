@@ -110,10 +110,7 @@ public class CommandRegister {
                 }
             }
 
-            final Optional<Gang> gang = Services.load(GangManager.class).getGangs()
-                    .stream()
-                    .filter(filter -> filter.getName().equalsIgnoreCase(name))
-                    .findAny();
+            final Optional<Gang> gang = Services.load(GangManager.class).getGang(name);
 
             if (!gang.isPresent() && !optional) {
                 throw new InvalidCommandArgument(Text.colorize(Message.GANG_NOT_FOUND.getValue()), false);

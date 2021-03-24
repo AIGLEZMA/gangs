@@ -45,7 +45,7 @@ public class InvitationCommand extends BaseCommand {
         }
 
         if (target.hasGang()) {
-            if (Objects.equals(target.getGang().getUniqueId(), gang.getUniqueId())) {
+            if (Objects.equals(target.getGang().getName(), gang.getName())) {
                 user.message(Message.INVITE_ALREADY_MEMBER, target.getPlayer().getName());
             } else {
                 user.message(Message.INVITE_ALREADY_MEMBER_OTHER, target.getPlayer().getName(), target.getGang().getName());

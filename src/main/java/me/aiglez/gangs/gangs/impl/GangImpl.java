@@ -20,7 +20,6 @@ import java.util.Map.Entry;
 
 public class GangImpl implements Gang {
 
-    private final UUID uniqueId;
     private final String name;
     private final Permissible permissible;
     private final Map<User, Rank> members;
@@ -29,19 +28,12 @@ public class GangImpl implements Gang {
     private long balance;
     private Mine mine; // lateinit
 
-    public GangImpl(final UUID uniqueId, final String name, final Map<User, Rank> members, final Permissible permissible, final Set<Invite> invites, final long balance) {
-        this.uniqueId = uniqueId;
+    public GangImpl(final String name, final Map<User, Rank> members, final Permissible permissible, final Set<Invite> invites, final long balance) {
         this.name = name;
         this.permissible = permissible;
         this.members = members;
         this.invites = invites;
         this.balance = balance;
-    }
-
-
-    @Override
-    public UUID getUniqueId() {
-        return this.uniqueId;
     }
 
     @Override
@@ -212,7 +204,6 @@ public class GangImpl implements Gang {
         }
 
         return JsonBuilder.object()
-                .add("unique-id", this.uniqueId.toString())
                 .add("name", this.name)
                 .add("balance", this.balance)
                 .add("members", members)

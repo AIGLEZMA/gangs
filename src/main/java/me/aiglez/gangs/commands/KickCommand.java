@@ -30,7 +30,7 @@ public class KickCommand extends BaseCommand {
         }
 
         final Gang gang = user.getGang();
-        if (!Objects.equals(target.getGang().getUniqueId(), gang.getUniqueId())) {
+        if (!Objects.equals(target.getGang().getName(), gang.getName())) {
             user.messagec("kick.target-not-member", target.getPlayer().getName());
             return;
         }
@@ -73,7 +73,7 @@ public class KickCommand extends BaseCommand {
         }
 
         final Gang gang = user.getGang();
-        if (!Objects.equals(target.getGang().getUniqueId(), gang.getUniqueId())) {
+        if (!Objects.equals(target.getGang().getName(), gang.getName())) {
             user.messagec("kick.target-not-member", target.getPlayer().getName());
             return;
         }

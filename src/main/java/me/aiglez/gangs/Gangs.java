@@ -78,9 +78,8 @@ public final class Gangs extends ExtendedJavaPlugin {
         getService(UserManager.class).saveUsers();
 
         Log.info("Saving gangs...");
-        getService(GangManager.class).saveBalanceTop();
         getService(GangManager.class).saveGangs();
-        getService(GangManager.class).saveTakenNames();
+        getService(GangManager.class).saveBalanceTop();
     }
 
     private void registerListeners() {

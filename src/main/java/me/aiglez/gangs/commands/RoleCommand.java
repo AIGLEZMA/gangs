@@ -29,7 +29,7 @@ public class RoleCommand extends BaseCommand {
             user.messagec("promote.target-not-member", target.getOfflinePlayer().getName());
             return;
         } else {
-            if (!Objects.equals(target.getGang().getUniqueId(), gang.getUniqueId())) {
+            if (!Objects.equals(target.getGang().getName(), gang.getName())) {
                 user.messagec("promote.target-not-member", target.getOfflinePlayer().getName());
                 return;
             }
@@ -72,7 +72,7 @@ public class RoleCommand extends BaseCommand {
             user.messagec("promote.target-not-member", target.getOfflinePlayer().getName());
             return;
         } else {
-            if (!Objects.equals(target.getGang().getUniqueId(), gang.getUniqueId())) {
+            if (!Objects.equals(target.getGang().getName(), gang.getName())) {
                 user.messagec("promote.target-not-member", target.getOfflinePlayer().getName());
                 return;
             }
@@ -113,7 +113,7 @@ public class RoleCommand extends BaseCommand {
             user.messagec("demote.target-not-member", target.getOfflinePlayer().getName());
             return;
         } else {
-            if (!Objects.equals(target.getGang().getUniqueId(), gang.getUniqueId())) {
+            if (!Objects.equals(target.getGang().getName(), gang.getName())) {
                 user.messagec("demote.target-not-member", target.getOfflinePlayer().getName());
                 return;
             }
@@ -151,7 +151,7 @@ public class RoleCommand extends BaseCommand {
             user.messagec("demote.target-not-member", target.getOfflinePlayer().getName());
             return;
         } else {
-            if (!Objects.equals(target.getGang().getUniqueId(), gang.getUniqueId())) {
+            if (!Objects.equals(target.getGang().getName(), gang.getName())) {
                 user.messagec("demote.target-not-member", target.getOfflinePlayer().getName());
                 return;
             }
