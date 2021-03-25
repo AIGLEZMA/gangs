@@ -84,7 +84,9 @@ public enum Message {
             "menu.mine.upgraded", "&6You have upgraded your gang's mine from level {0} to {1} for ${2}"),
     MENU_MINE_ANNOUNCEMENT("menu.mine.announcement", "&a{0} upgraded your gang's mine to level {1}"),
 
-    MENU_EDIT_PERMISSION_REVOKED("menu.edit-permission.revoked", "&cYou have revoked permission {0} to {1} rank"),
+    MENU_EDIT_PERMISSION_REVOKED("menu.edit-permission.revoked", "&cYou have revoked the permission {0} to {1} rank"),
+    MENU_EDIT_PERMISSION_GRANTED("menu.edit-permission.granted", "&aYou have granted the permission {0} to {1} rank"),
+
 
     HEY("hey", "&cHey");
 

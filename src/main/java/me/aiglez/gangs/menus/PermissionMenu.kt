@@ -28,22 +28,24 @@ class PermissionMenu(val user: User, title: String) : Gui(user.player, 3, title)
 
             setItem(
                 SLOTS[index], ItemStackBuilder.of(material)
-                .name(Configuration.getString("menu-settings", "permission", "items", rank, "name"))
-                .lore(Configuration.getList("menu-settings", "permission", "items", rank, "lore"))
-                .buildConsumer(ClickType.LEFT) { e ->
-                    run {
-                        val clicker = e.whoClicked
-                        if (clicker is Player) {
-                            val user = User.get(clicker)
-                            if (!user.hasGang()) {
-                                close()
-                                return@run
+                    .name(Configuration.getString("menu-settings", "permission", "items", rank, "name"))
+                    .lore(Configuration.getList("menu-settings", "permission", "items", rank, "lore"))
+                    .buildConsumer(ClickType.LEFT) { e ->
+                        run {
+                            val clicker = e.whoClicked
+                            if (clicker is Player) {
+                                val user = User.get(clicker)
+                                if (!user.hasGang()) {
+                                    close()
+                                    return@run
+                                }
+                                EditPermissionMenu(
+                                    user, Rank.byOrdinal(index),
+                                    Configuration.getString("menu-settings", "edit-permission", "title")
+                                ).open()
                             }
-                            EditPermissionMenu(user, Rank.byOrdinal(index), Configuration.getString("menu-settings",
-                            "edit-permission", "title"))
                         }
                     }
-                }
             )
         }
     }
