@@ -20,7 +20,7 @@ class PermissionMenu(val user: User, title: String) : Gui(user.player, 3, title)
         }
         if (!user.hasGang()) return // just in case
 
-        for ((index, permission) in listOf("recruit", "member", "officer", "co-leader", "leader").withIndex()) {
+        for ((index, permission) in listOf("recruit", "member", "officer", "co-leader").withIndex()) {
             val material = Material.matchMaterial(
                 Configuration.getString("menu-settings", "permission", "items", permission, "material")
             ) ?: Material.STONE
