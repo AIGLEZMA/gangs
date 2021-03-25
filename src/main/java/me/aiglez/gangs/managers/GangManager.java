@@ -119,7 +119,7 @@ public class GangManager {
     public void saveBalanceTop() {
         final GangsRanking ranking = Services.load(GangsRanking.class);
         if (ranking.lastUpdated() == null) {
-            Log.warn("No gang found in balance top to load");
+            Log.warn("No gang found in balance top to save");
             return;
         }
         if (Configuration.getBoolean("backup")) {
