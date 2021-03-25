@@ -73,6 +73,20 @@ mine-settings:
     max-z: 100000
     min-z: 1
 menu-settings:
+  edit-permission:
+    title: "Edit Permisions"
+    items:
+      back:
+        name: "&cBack"
+        lore: [ ]
+      granted:
+        name: "&a{0}"
+        lore:
+          - "&7This permission is &aGRANTED"
+      revoked:
+        name: "&c{0}"
+        lore:
+          - "&7This permission is &cREVOKED"
   permission:
     title: "Permissions"
     items:
