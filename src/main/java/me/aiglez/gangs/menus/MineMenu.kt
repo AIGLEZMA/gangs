@@ -1,6 +1,5 @@
 package me.aiglez.gangs.menus
 
-import com.google.common.base.Preconditions
 import me.aiglez.gangs.economy.Economy
 import me.aiglez.gangs.gangs.Gang
 import me.aiglez.gangs.gangs.MineLevel
@@ -14,9 +13,7 @@ import me.lucko.helper.Services
 import me.lucko.helper.item.ItemStackBuilder
 import me.lucko.helper.menu.Gui
 import me.lucko.helper.menu.Item
-import me.lucko.helper.text3.Text
 import org.bukkit.Material
-import kotlin.math.max
 
 class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int) : Gui(user.player, lines, title) {
 
@@ -120,22 +117,5 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
         builder.lore("&7")
         builder.lore("&7Cost to upgrade: &e${Economy.format(MineLevel.calculateCost(current, level))}")
         return builder.buildConsumer { e -> e.isCancelled = true }
-    }
-
-    companion object {
-
-        @JvmStatic
-        fun create(user: User) {
-            Preconditions.checkArgument(user.hasGang(), "user must have a gang")
-            val lines = max((Services.load(MineManager::class.java).levels.size / 8), 1)
-            Log.debug("Levels: ${Services.load(MineManager::class.java).levels.size} and lines $lines")
-            MineMenu(
-                user.gang,
-                user,
-                Text.colorize(Configuration.getString("menu-settings", "mine", "name")),
-                lines
-            ).open()
-        }
-
     }
 }

@@ -23,12 +23,14 @@ import java.util.stream.Collectors;
 @SuppressWarnings("UnstableApiUsage")
 public class UserManager {
 
+
+    private static final File DATA_FOLDER =
+            new File(Helper.hostPlugin().getDataFolder() + File.separator + "data");
     private final Set<User> users = Sets.newHashSet();
     private final GsonStorageHandler<Set<User>> storage;
 
     public UserManager() {
-        File folder = new File(Helper.hostPlugin().getDataFolder() + File.separator + "/data");
-        storage = new GsonStorageHandler<>("users", ".json", folder, new TypeToken<Set<User>>() {});
+        storage = new GsonStorageHandler<>("users", ".json", DATA_FOLDER, new TypeToken<Set<User>>() {});
     }
 
     /*

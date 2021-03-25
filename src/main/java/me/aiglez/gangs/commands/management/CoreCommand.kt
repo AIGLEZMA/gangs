@@ -2,10 +2,10 @@ package me.aiglez.gangs.commands.management
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
+import me.aiglez.gangs.GangsMenu
 import me.aiglez.gangs.gangs.Gang
 import me.aiglez.gangs.helpers.Configuration
 import me.aiglez.gangs.helpers.Message
-import me.aiglez.gangs.menus.CoreMenu
 import me.aiglez.gangs.users.User
 import me.aiglez.gangs.utils.Placeholders
 import org.bukkit.command.CommandSender
@@ -15,7 +15,7 @@ class CoreCommand : BaseCommand() {
 
     @Subcommand("core")
     fun core(@Conditions("has_gang") user: User) {
-        CoreMenu.create(user)
+        GangsMenu.core(user)
     }
 
     @Subcommand("forcecoreupgrade")

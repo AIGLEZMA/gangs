@@ -29,7 +29,7 @@ public class GangManager {
     private final Set<String> takenNames = Sets.newHashSet();
     private GsonStorageHandler<Set<String>> balanceTopSorageHandler =
             new GsonStorageHandler<>(
-                    "balancetop", ".json", GANGS_DATA_FOLDER, new TypeToken<Set<String>>() {});
+                    "balancetop", ".json", DATA_FOLDER, new TypeToken<Set<String>>() {});
 
     public GangManager() {}
 
@@ -42,9 +42,16 @@ public class GangManager {
 
     public void unregisterGang(final Gang gang) {
         Preconditions.checkNotNull(gang, "gang may not be null");
+        final File file = new File(GANGS_DATA_FOLDER, gang.getName() + ".json");
+        if(!file.exists() || !file.delete()) {
+            Log.warn("An error occurred while deleting " + gang.getName() + " data file");
+            return;
+        }
+
         gang.getMembers().forEach(member -> member.setGang(null));
         this.gangs.remove(gang);
         this.takenNames.remove(gang.getName());
+
         Log.debug("Unregistered gang with name : " + gang.getName());
     }
 

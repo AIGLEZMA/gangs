@@ -1,6 +1,5 @@
 package me.aiglez.gangs.menus
 
-import com.google.common.base.Preconditions
 import me.aiglez.gangs.economy.Economy
 import me.aiglez.gangs.gangs.Gang
 import me.aiglez.gangs.gangs.permissions.Permissible
@@ -11,7 +10,6 @@ import me.aiglez.gangs.utils.Placeholders
 import me.lucko.helper.item.ItemStackBuilder
 import me.lucko.helper.menu.Gui
 import me.lucko.helper.menu.scheme.MenuScheme
-import me.lucko.helper.text3.Text
 import org.bukkit.Material
 import java.util.*
 
@@ -83,12 +81,6 @@ class CoreMenu(private val gang: Gang, val user: User, title: String) : Gui(user
                 "111101111",
                 "111111111"
             )
-
-        @JvmStatic
-        fun create(user: User) {
-            Preconditions.checkArgument(user.hasGang(), "user must have a gang")
-            CoreMenu(user.gang, user, Text.colorize(Configuration.getString("menu-settings", "core", "name"))).open()
-        }
 
         fun retrieveUpgradeCost(level: Int): Long {
             return Configuration.getLong("core-settings", "levels", level, "upgrade-cost")

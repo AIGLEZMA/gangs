@@ -2,11 +2,11 @@ package me.aiglez.gangs.commands.management
 
 import co.aikar.commands.BaseCommand
 import co.aikar.commands.annotation.*
+import me.aiglez.gangs.GangsMenu
 import me.aiglez.gangs.gangs.Gang
 import me.aiglez.gangs.gangs.MineLevel
 import me.aiglez.gangs.helpers.Message
 import me.aiglez.gangs.managers.MineManager
-import me.aiglez.gangs.menus.MineMenu
 import me.aiglez.gangs.users.User
 import me.aiglez.gangs.utils.Placeholders
 import me.lucko.helper.Services
@@ -32,7 +32,7 @@ class MineCommand : BaseCommand() {
 
     @Subcommand("upgrade")
     fun upgrade(@Conditions("has_gang") user: User) {
-        MineMenu.create(user)
+        GangsMenu.mine(user)
     }
 
     @Subcommand("forcemineupgrade")

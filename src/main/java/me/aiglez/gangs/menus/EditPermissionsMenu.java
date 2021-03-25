@@ -54,8 +54,6 @@ public class EditPermissionsMenu extends Gui {
             .buildConsumer(
                 e -> {
                   e.setCancelled(true);
-                  close();
-                  PermissionsMenu.make(this.user);
                 }));
 
     int currentSlot = 11;

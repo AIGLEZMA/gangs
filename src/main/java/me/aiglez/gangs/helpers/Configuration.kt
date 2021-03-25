@@ -33,7 +33,7 @@ object Configuration {
 
     @JvmStatic
     fun getList(vararg path: Any): List<String> {
-        return getNode(*path).getList { t -> t.toString() }
+        return getNode(*path).getList { t -> t?.toString() ?: "Null"}.toList()
     }
 
     @JvmStatic

@@ -67,9 +67,5 @@ class BalanceTopMenu(val user: User, title: String) : Gui(user.player, 4, title)
             .mask("100000001")
             .mask("100000001")
             .mask("111111111")
-
-        fun make(user: User) {
-            BalanceTopMenu(user, Configuration.getString("menu-settings", "balance-top", "name")).open()
-        }
     }
 }

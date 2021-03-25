@@ -4,6 +4,7 @@ import me.aiglez.gangs.helpers.Configuration
 import me.aiglez.gangs.users.User
 import me.aiglez.gangs.utils.Placeholders
 import me.lucko.helper.Helper
+import me.lucko.helper.text3.Text
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerChatEvent
@@ -21,7 +22,7 @@ class PlayerListeners : Listener {
                 e.message
             )
             user.gang.message(message)
-            Helper.console().sendMessage("[Gangs - CHAT LOG] $message")
+            Helper.console().sendMessage("[Gangs - CHAT LOG] ${Text.colorize(message)}")
             e.isCancelled = true
         }
     }

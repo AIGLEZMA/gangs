@@ -14,25 +14,26 @@ import org.bukkit.event.inventory.ClickType
 class PermissionMenu(val user: User, title: String) : Gui(user.player, 3, title) {
 
     override fun redraw() {
-        val populator = MenuPopulator(this, SCHEME)
         if (isFirstDraw) {
+            val populator = MenuPopulator(this, SCHEME)
             for (i in populator.slots) populator.accept(GangsMenu.GRAY_STAINED_GLASS_PANE)
         }
         if (!user.hasGang()) return // just in case
 
-        for (permission in listOf("recruit", "member", "officer", "co-leader", "leader")) {
+        for ((index, permission) in listOf("recruit", "member", "officer", "co-leader", "leader").withIndex()) {
             val material = Material.matchMaterial(
                 Configuration.getString("menu-settings", "permission", "items", permission, "material")
             ) ?: Material.STONE
 
-            populator.acceptIfSpace(ItemStackBuilder.of(material)
+            setItem(
+                SLOTS[index], ItemStackBuilder.of(material)
                 .name(Configuration.getString("menu-settings", "permission", "items", permission, "name"))
                 .lore(Configuration.getList("menu-settings", "permission", "items", permission, "lore"))
                 .buildConsumer(ClickType.LEFT) { e ->
                     run {
-                        val player = e.whoClicked
-                        if (player is Player) {
-                            val user = User.get(player)
+                        val clicker = e.whoClicked
+                        if (clicker is Player) {
+                            val user = User.get(clicker)
                             if (!user.hasGang()) {
                                 close()
                                 return@run
@@ -46,6 +47,8 @@ class PermissionMenu(val user: User, title: String) : Gui(user.player, 3, title)
     }
 
     companion object {
+        private val SLOTS = arrayOf(10, 12, 14, 16)
+
         private val SCHEME = MenuScheme()
             .mask("111111111")
             .mask("101010101")
