@@ -36,7 +36,7 @@ public class InvitationCommand extends BaseCommand {
             return;
         }
         if (Objects.equals(user.getUniqueId(), target.getUniqueId())) {
-            user.message(Message.INVITE_SELF);
+            user.message(Message.NOT_SELF);
             return;
         }
         if (gang.isInvited(target)) {
@@ -62,6 +62,7 @@ public class InvitationCommand extends BaseCommand {
         }
     }
 
+    // TODO: remove later
     @Subcommand("invites")
     public void invitesCommand(@Conditions("has_gang") final User user) {
         final Gang gang = user.getGang();

@@ -6,6 +6,7 @@ import me.lucko.helper.config.ConfigurationNode;
 
 @SuppressWarnings("unused")
 public enum Message {
+
     NOT_MEMBER("not-member", "&cYou're not member of any gang"),
     NO_PERMISSION("no-permission", "&cYou don't have permission to perform this action"),
     NOT_LEADER("not-leader", "&cYou must be the leader of your gang to perform this action"),
@@ -14,6 +15,9 @@ public enum Message {
     INSUFFICIENT_FUNDS("insufficient-funds", "&cYour gang doesn't have that amount"),
     NOT_INVITED("not-invited", "&cYou are not invited to {0}"),
     ALREADY_MEMBER("already-member", "&cYou are already member of a gang"),
+    NOT_MEMBER_OTHER("not-member-other", "&c{0} is not member of your gang"),
+    NOT_SELF("not-self", "&cError: Argument must not be yourself"),
+
 
     BALANCE("balance", "&eYour gang has ${0}"),
 
@@ -29,6 +33,10 @@ public enum Message {
     JOIN_FULL_ALERT("join.full-alert", "&c{0} tried to join your gang but the gang is full"),
     JOIN_JOINED("join.joined", "&aYou have successfully joined {0}"),
     JOIN_ANNOUNCEMENT("join.announcement", "&a{0} joined your gang"),
+
+    TRANSFER_TRANSFERRED("transfer.transferred", "&eYou have transferred {0} ownership to {1}"),
+    TRANSFER_TRANSFERRED_BY("transfer.transferred-by", "&a{0} transferred {1} ownership to you"),
+    TRANSFER_ANNOUNCEMENT("transfer.announcement", "&a{0} transferred {1} ownership to {2}"),
 
     CREATE_ALREADY_CREATING(
             "create.already-creating", "&ePlease wait, until the creation of your gang is done"),
@@ -66,7 +74,6 @@ public enum Message {
     LEAVE_SPAWN("leave.spawn", "&7You are in your previous gang mine. Teleporting you to the spawn..."),
     LEAVE_ANNOUNCEMENT("leave.announcement", "&e{0} has left your gang"),
 
-    INVITE_SELF("invite.self", "&cYou can't invite yourself"),
     INVITE_ALREADY("invite.already", "&c{0} is already invited to your gang"),
     INVITE_ALREADY_MEMBER("invite.already-member.your", "&c{0} is already member of your gang"),
     INVITE_ALREADY_MEMBER_OTHER("invite.already-member.other", "&c{0} is already member of {1}"),
@@ -94,6 +101,22 @@ public enum Message {
     MENU_EDIT_PERMISSION_REVOKED("menu.edit-permission.revoked", "&cYou have revoked the permission {0} to {1} rank"),
     MENU_EDIT_PERMISSION_GRANTED("menu.edit-permission.granted", "&aYou have granted the permission {0} to {1} rank"),
 
+    PROMOTE_SUPERIOR_OR_SAME("promote.superior-or-same", "&cYou can't promote your superior or someone with the same rank as yours"),
+    PROMOTE_LEADER("promote.leader", "&cYou can't promote someone to leader. Use /gang transfer <member>"),
+    PROMOTE_PROMOTED("promote.promoted", "&eYou have promoted {0} to {1}"),
+    PROMOTE_PROMOTED_BY("promote.promoted-by", "&aYou have been promoted to {0} by {1}"),
+    PROMOTE_ANNOUNCEMENT("promote.announcement", "&e{0} has promoted {1} to &6{2}"),
+
+    DEMOTE_SUPERIOR_OR_SAME("demote.superior-or-same", "&cYou can't demote your superior or someone with the same rank as yours"),
+    DEMOTE_RECRUIT("demote.recruit", "&cYou can't demote a recruit"),
+    DEMOTE_DEMOTED("demote.demoted", "&eYou have demoted {0} to {1}"),
+    DEMOTE_DEMOTED_BY("demote.demoted-by", "&cYou have been demoted to {0} by {1}"),
+    DEMOTE_ANNOUNCEMENT("demote.announcement", "&e{0} has demoted {1} to &6{2}"),
+
+    KICK_SUPERIOR_OR_SAME("kick.superior-or-same", "&cYou can't kick your superior or someone with the same rank as yours"),
+    KICK_KICK("kick.kick", "&eYou have kicked {0} from your gang"),
+    KICK_KICKED_BY("kick.kicked-by", "&cYou have been kicked from {0} by {1}"),
+    KICK_ANNOUNCEMENT("kick.announcement", "&c{0} has been kicked from your gang by {1}"),
 
     HEY("hey", "&cHey");
 
