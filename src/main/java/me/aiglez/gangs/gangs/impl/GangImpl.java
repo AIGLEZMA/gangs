@@ -194,9 +194,6 @@ public class GangImpl implements Gang {
     }
 
     @Override
-    public void messagec(String string, Object... replacement) {}
-
-    @Override
     public void message(Message message, Object... replacements) {
         Preconditions.checkNotNull(message, "message may not be null");
         message(message.getValue(), replacements);

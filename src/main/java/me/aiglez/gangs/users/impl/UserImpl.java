@@ -104,10 +104,6 @@ public class UserImpl implements User {
                     .sendMessage(Text.colorize(Placeholders.replaceIn(message, replacements)));
     }
 
-    @Deprecated
-    @Override
-    public void messagec(final String string, Object... replacement) {}
-
     @Override
     public void message(Message message, Object... replacements) {
         Preconditions.checkNotNull(message, "message may not be null");
