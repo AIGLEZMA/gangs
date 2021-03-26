@@ -4,6 +4,8 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
+import com.sk89q.worldedit.bukkit.BukkitUtil;
+import com.sk89q.worldedit.regions.Region;
 import me.aiglez.gangs.gangs.Gang;
 import me.aiglez.gangs.gangs.permissions.Rank;
 import me.aiglez.gangs.helpers.Message;
@@ -33,6 +35,12 @@ public class KickCommand extends BaseCommand {
             }
 
             gang.getCore().removeBooster(target);
+            // teleport to spawn
+            final Region region = gang.getMine().getRegion();
+            if (region.contains(BukkitUtil.toVector(user.getPlayer().getLocation()))) {
+                user.message(Message.LEAVE_SPAWN);
+                user.getPlayer().performCommand("/spawn");
+            }
             gang.removeMember(target);
 
             target.setGang(null);
@@ -50,7 +58,29 @@ public class KickCommand extends BaseCommand {
     @CommandCompletion("@members")
     @CommandPermission("gang.admin.forcekick")
     public void forceKick(@Conditions("has_gang") final User user, @Flags("other") final User target) {
+        final Gang gang = user.getGang();
+        if (Objects.equals(user.getUniqueId(), target.getUniqueId())) {
+            user.message(Message.NOT_SELF);
+            return;
+        }
+        if(isMember(target, gang)) {
+            gang.getCore().removeBooster(target);
+            // teleport to spawn
+            final Region region = gang.getMine().getRegion();
+            if (region.contains(BukkitUtil.toVector(user.getPlayer().getLocation()))) {
+                user.message(Message.LEAVE_SPAWN);
+                user.getPlayer().performCommand("/spawn");
+            }
+            gang.removeMember(target);
 
+            target.setGang(null);
+
+            user.message(Message.KICK_KICK, target.getPlayer().getName());
+            target.message(Message.KICK_KICKED_BY, gang.getName(), user.getPlayer().getName());
+
+            gang.message(Message.KICK_ANNOUNCEMENT, Sets.newHashSet(user), target.getPlayer().getName(),
+                    user.getPlayer().getName());
+        }
     }
 
     private boolean isMember(final User user, final Gang gang) {

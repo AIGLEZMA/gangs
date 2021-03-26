@@ -50,6 +50,7 @@ public class TransferCommand extends BaseCommand {
     @CommandPermission("gang.admin.forcetransfer")
     public void forceTransfer(final User user, final Gang gang, @Flags("other") final User target) {
         if(isMember(target, gang)) {
+            gang.setRank(gang.getLeader(), Rank.CO_LEADER);
             gang.setRank(target, Rank.LEADER);
 
             user.message(Message.TRANSFER_TRANSFERRED, gang.getName(), target.getPlayer().getName());

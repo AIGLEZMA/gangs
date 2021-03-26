@@ -58,13 +58,38 @@ public class RoleCommand extends BaseCommand {
     @CommandCompletion("@members")
     @CommandPermission("gang.admin.forcepromote")
     public void forcePromote(@Conditions("has_gang") final User user, @Flags("other") final User target) {
+        final Gang gang = user.getGang();
+        if (Objects.equals(user.getUniqueId(), target.getUniqueId())) {
+            user.message(Message.NOT_SELF);
+            return;
+        }
 
+        if(isMember(target, gang)) {
+            final Rank current = gang.getRank(target);
+            final Rank next = Rank.byOrdinal(current.getOrdinal() + 1);
+
+            // next == leader
+            if(next == Rank.LEADER) {
+                user.message(Message.PROMOTE_LEADER);
+                return;
+            }
+
+            gang.setRank(target, next);
+
+            user.message(Message.PROMOTE_PROMOTED, target.getPlayer().getName(), next.getCoolName()); // executor
+            target.message(Message.PROMOTE_PROMOTED_BY, next.getCoolName(), user.getPlayer().getName()); // target
+
+            gang.message(Message.PROMOTE_ANNOUNCEMENT, Sets.newHashSet(target, user),
+                    user.getPlayer().getName(), target.getPlayer().getName(), next.getCoolName());
+        } else {
+            user.message(Message.NOT_MEMBER_OTHER, target.getPlayer().getName());
+        }
     }
 
     @Subcommand("demote")
     @Syntax("<player>")
     @CommandCompletion("@members")
-    public void demote(final User user, @Flags("other") final User target) {
+    public void demote(@Conditions("has_gang|has_permission:name=promote") final User user, @Flags("other") final User target) {
         final Gang gang = user.getGang();
         if (!user.test(Permissible.Permission.PROMOTE)) {
             user.message(Message.NO_PERMISSION);
@@ -105,8 +130,36 @@ public class RoleCommand extends BaseCommand {
     @Syntax("<player>")
     @CommandCompletion("@members_without_context")
     @CommandPermission("gang.admin.forcedemote")
-    public void forceDemote(final User user, final User target) {
+    public void forceDemote(@Conditions("has_gang") final User user, @Flags("other") final User target) {
+        final Gang gang = user.getGang();
+        if (!user.test(Permissible.Permission.PROMOTE)) {
+            user.message(Message.NO_PERMISSION);
+            return;
+        }
 
+        if (Objects.equals(user.getUniqueId(), target.getUniqueId())) {
+            user.message(Message.NOT_SELF);
+            return;
+        }
+
+        if(isMember(target, gang)) {
+            final Rank current = gang.getRank(target);
+            if (current == Rank.RECRUIT) {
+                user.message(Message.DEMOTE_RECRUIT);
+                return;
+            }
+
+            final Rank previous = Rank.byOrdinal(current.getOrdinal() - 1);
+            gang.setRank(target, previous);
+
+            user.message(Message.DEMOTE_DEMOTED, target.getPlayer().getName(), previous.getCoolName()); // executor
+            target.message(Message.DEMOTE_DEMOTED_BY, previous.getCoolName(), user.getPlayer().getName()); // target
+
+            gang.message(Message.DEMOTE_ANNOUNCEMENT, Sets.newHashSet(target, user),
+                    user.getPlayer().getName(), target.getPlayer().getName(), previous.getCoolName());
+        } else {
+            user.message(Message.NOT_MEMBER_OTHER, target.getPlayer().getName());
+        }
     }
 
     private boolean isMember(final User user, final Gang gang) {
