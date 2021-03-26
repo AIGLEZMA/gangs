@@ -46,6 +46,25 @@ class JoinCommand : BaseCommand() {
     @CommandCompletion("@gangs")
     @CommandPermission("gang.admin.forcejoin")
     fun forceJoin(user: User, gang: Gang) {
+        if(user.hasGang()) {
+            user.message(Message.ALREADY_MEMBER)
+            return
+        }
 
+        if(gang.members.size == Configuration.getInteger("max-members")) {
+            user.message(Message.JOIN_FULL, gang.name)
+            return
+        }
+
+        user.gang = gang
+
+        gang.removeInvite(user)
+        gang.addMember(user)
+
+        // apply AutoSell multiplier
+        gang.core.addBooster(user, gang.core.booster)
+
+        user.message(Message.JOIN_JOINED, gang.name)
+        gang.message(Message.JOIN_ANNOUNCEMENT, setOf(user), user.player.name)
     }
 }
