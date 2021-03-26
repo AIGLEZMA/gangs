@@ -58,9 +58,7 @@ class JoinCommand : BaseCommand() {
 
         user.gang = gang
 
-        gang.removeInvite(user)
         gang.addMember(user)
-
         // apply AutoSell multiplier
         gang.core.addBooster(user, gang.core.booster)
 
