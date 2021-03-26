@@ -128,6 +128,10 @@ public class GangImpl implements Gang {
         // for loop in this case, we could do it with streams x)
         for (final Invite invite : this.invites) {
             if (invite.getHolder().getUniqueId().equals(user.getUniqueId())) {
+                if(invite.expired()) {
+                    removeInvite(invite.getHolder());
+                    return false;
+                }
                 return true;
             }
         }
