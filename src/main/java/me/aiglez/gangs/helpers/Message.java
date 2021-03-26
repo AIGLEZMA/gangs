@@ -63,6 +63,7 @@ public enum Message {
 
     LEAVE_LEADER("leave.leader", "&cYou are the leader, you must first disband the gang"),
     LEAVE_LEFT("leave.left", "&cYou left your gang"),
+    LEAVE_SPAWN("leave.spawn", "&7You are in your previous gang mine. Teleporting you to the spawn..."),
     LEAVE_ANNOUNCEMENT("leave.announcement", "&e{0} has left your gang"),
 
     INVITE_SELF("invite.self", "&cYou can't invite yourself"),

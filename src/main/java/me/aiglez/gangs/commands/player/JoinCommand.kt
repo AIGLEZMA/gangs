@@ -12,7 +12,7 @@ class JoinCommand : BaseCommand() {
 
     @Subcommand("join")
     @Syntax("<gang>")
-    @CommandCompletion("@gangs_invited")
+    @CommandCompletion("@invites")
     fun join(user: User, gang: Gang) {
         if(user.hasGang()) {
             user.message(Message.ALREADY_MEMBER)
