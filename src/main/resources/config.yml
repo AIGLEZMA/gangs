@@ -1,5 +1,6 @@
 backup: true
 economy: "vault"
+max-members: 6
 # {0} -> gang name
 # {1} -> player's name
 # {2} -> message

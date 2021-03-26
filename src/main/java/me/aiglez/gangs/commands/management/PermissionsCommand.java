@@ -16,7 +16,7 @@ import me.lucko.helper.Services;
 public class PermissionsCommand extends BaseCommand {
 
     @Subcommand("permissions")
-    public void permissionsCommand(@Conditions("has_gang") User user) {
+    public void permissions(@Conditions("has_gang") User user) {
         final Gang gang = user.getGang();
         if (gang.getRank(user) != Rank.LEADER) {
             user.message(Message.NOT_LEADER);

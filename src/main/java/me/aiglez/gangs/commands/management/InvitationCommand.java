@@ -18,7 +18,7 @@ public class InvitationCommand extends BaseCommand {
     @CommandCompletion("@gangs_invited")
     public void decline(final User user, final Gang gang) {
         if (!gang.isInvited(user)) {
-            user.message(Message.DECLINE_NOT_INVITED, gang.getName());
+            user.message(Message.NOT_INVITED, gang.getName());
             return;
         }
 

@@ -8,6 +8,7 @@ import me.aiglez.gangs.commands.economy.DepositCommand;
 import me.aiglez.gangs.commands.economy.TopCommand;
 import me.aiglez.gangs.commands.management.*;
 import me.aiglez.gangs.commands.player.ChatCommand;
+import me.aiglez.gangs.commands.player.JoinCommand;
 import me.aiglez.gangs.commands.player.LeaveCommand;
 import me.aiglez.gangs.gangs.Gang;
 import me.aiglez.gangs.gangs.permissions.Permissible;
@@ -60,6 +61,7 @@ public class CommandRegister {
     this.manager.registerCommand(new PermissionsCommand());
 
     this.manager.registerCommand(new ChatCommand());
+    this.manager.registerCommand(new JoinCommand());
     this.manager.registerCommand(new LeaveCommand());
   }
 

@@ -96,7 +96,7 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
                         return@run
                     }
                     // was demoted while on the menu ?
-                    if (user.test(Permissible.Permission.UPGRADE_MINE)) {
+                    if (!user.test(Permissible.Permission.UPGRADE_MINE)) {
                         close()
                         return@run
                     }

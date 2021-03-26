@@ -60,7 +60,6 @@ class MineCommand : BaseCommand() {
                     gang.mine.level.ordinal + 1
                 )
             )
-
         }
     }
 }

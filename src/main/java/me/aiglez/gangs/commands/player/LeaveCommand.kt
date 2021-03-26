@@ -19,9 +19,10 @@ class LeaveCommand : BaseCommand() {
             return
         }
 
-        gang.core.removeBooster(user)
-
         if (gang.removeMember(user)) {
+            // remove AutoSell multiplier
+            gang.core.removeBooster(user)
+
             user.gang = null
             user.message(Message.LEAVE_LEFT)
             gang.message(Message.LEAVE_ANNOUNCEMENT, setOf(user), user.player.name)

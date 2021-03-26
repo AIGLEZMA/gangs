@@ -12,6 +12,8 @@ public enum Message {
     GANG_NOT_FOUND("gang-not-found", "&cCouldn't find any gang matching that name"),
     INVALID_AMOUNT("invalid-amount", "&cAmount must be positive"),
     INSUFFICIENT_FUNDS("insufficient-funds", "&cYour gang doesn't have that amount"),
+    NOT_INVITED("not-invited", "&cYou are not invited to {0}"),
+    ALREADY_MEMBER("already-member", "&cYou are already member of a gang"),
 
     BALANCE("balance", "&eYour gang has ${0}"),
 
@@ -22,6 +24,11 @@ public enum Message {
             "mine.toggleplace.disabled",
             "&cYou have disabled mine toggle place, you can no longer place blocks at mines"),
     MINE_TOGGLEPLACE_ENABLED("mine.toggleplace.enabled", "&aYou can now place blocks at mines"),
+
+    JOIN_FULL("join.full", "&c{0} is full"),
+    JOIN_FULL_ALERT("join.full-alert", "&c{0} tried to join your gang but the gang is full"),
+    JOIN_JOINED("join.joined", "&aYou have successfully joined {0}"),
+    JOIN_ANNOUNCEMENT("join.announcement", "&a{0} joined your gang"),
 
     CREATE_ALREADY_CREATING(
             "create.already-creating", "&ePlease wait, until the creation of your gang is done"),
@@ -66,7 +73,6 @@ public enum Message {
     INVITE_INVITED_TARGET("invite.invited-target", "&aYou have been invited to {0}"),
 
     DECLINE_DECLINED("decline.declined", "&aYou have declined the invitation to {0}"),
-    DECLINE_NOT_INVITED("decline.not-invited", "&cYou are not invited to {0}"),
 
     CORE_ADMINUPGRADE_MAX_LEVEL("core.admin-upgrade-max-level", "&c{0} reached the max level"),
     CORE_ADMINUPGRADE_UPGRADED("core.admin-upgrade", "&aYou have upgraded {0}'s core to level {1}"),

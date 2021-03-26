@@ -27,7 +27,7 @@ class Core(val gang: Gang, var level: Int, var booster: Double) {
 
     }
 
-    private fun addBooster(member: User, amount: Double) {
+    fun addBooster(member: User, amount: Double) {
         Log.debug("Incrementing booster by $amount")
         val multiplier: Multiplier? = Multipliers.getMultiplierByUuid(member.uniqueId.toString())
         if (multiplier != null) {
