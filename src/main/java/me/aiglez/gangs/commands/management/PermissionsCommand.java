@@ -1,9 +1,7 @@
 package me.aiglez.gangs.commands.management;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.Conditions;
-import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.*;
 import me.aiglez.gangs.GangsMenu;
 import me.aiglez.gangs.gangs.Gang;
 import me.aiglez.gangs.gangs.permissions.Rank;
@@ -23,6 +21,13 @@ public class PermissionsCommand extends BaseCommand {
             return;
         }
 
-        Services.load(GangsMenu.class).permission(user);
+        Services.load(GangsMenu.class).permission(user.getPlayer(), gang);
+    }
+
+    @Subcommand("forceeditperms")
+    @CommandPermission("gangs.admin.forceeditperms")
+    @CommandCompletion("@gangs")
+    public void forceEditPermissions(final User user, final Gang gang) {
+        Services.load(GangsMenu.class).permission(user.getPlayer(), gang);
     }
 }

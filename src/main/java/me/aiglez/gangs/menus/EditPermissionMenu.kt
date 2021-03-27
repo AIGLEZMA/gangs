@@ -1,6 +1,7 @@
 package me.aiglez.gangs.menus
 
 import me.aiglez.gangs.GangsMenu
+import me.aiglez.gangs.gangs.Gang
 import me.aiglez.gangs.gangs.permissions.Permissible
 import me.aiglez.gangs.gangs.permissions.Rank
 import me.aiglez.gangs.helpers.Configuration
@@ -15,7 +16,7 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 
-class EditPermissionMenu(val user: User, val rank: Rank, title: String) : Gui(user.player, 3, title) {
+class EditPermissionMenu(val to: Player, val gang: Gang, val rank: Rank, title: String) : Gui(to, 3, title) {
 
     override fun redraw() {
         if (isFirstDraw) {
@@ -43,7 +44,7 @@ class EditPermissionMenu(val user: User, val rank: Rank, title: String) : Gui(us
                                 return@run
                             }
 
-                            GangsMenu.permission(user)
+                            GangsMenu.permission(user, user.gang)
                         }
                         e.isCancelled = true
                     }
@@ -51,7 +52,7 @@ class EditPermissionMenu(val user: User, val rank: Rank, title: String) : Gui(us
             )
         }
 
-        val permissible = user.gang.permissible
+        val permissible = gang.permissible
         for ((index, permission) in Permissible.Permission.values().withIndex()) {
             val granted = permissible.hasPermission(rank, permission)
 

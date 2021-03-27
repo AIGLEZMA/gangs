@@ -1,6 +1,7 @@
 package me.aiglez.gangs.menus
 
 import me.aiglez.gangs.GangsMenu
+import me.aiglez.gangs.gangs.Gang
 import me.aiglez.gangs.gangs.permissions.Rank
 import me.aiglez.gangs.helpers.Configuration
 import me.aiglez.gangs.users.User
@@ -12,14 +13,13 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 
-class PermissionMenu(val user: User, title: String) : Gui(user.player, 3, title) {
+class PermissionMenu(val to: Player, val gang: Gang, title: String) : Gui(to, 3, title) {
 
     override fun redraw() {
         if (isFirstDraw) {
             val populator = MenuPopulator(this, SCHEME)
             for (i in populator.slots) populator.accept(GangsMenu.GRAY_STAINED_GLASS_PANE)
         }
-        if (!user.hasGang()) return // just in case
 
         for ((index, rank) in listOf("recruit", "member", "officer", "co-leader").withIndex()) {
             val material = Material.matchMaterial(
@@ -40,7 +40,7 @@ class PermissionMenu(val user: User, title: String) : Gui(user.player, 3, title)
                                     return@run
                                 }
                                 EditPermissionMenu(
-                                    user, Rank.byOrdinal(index),
+                                    to, gang, Rank.byOrdinal(index),
                                     Configuration.getString("menu-settings", "edit-permission", "title")
                                 ).open()
                             }
