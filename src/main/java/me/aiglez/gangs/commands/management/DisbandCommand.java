@@ -79,7 +79,8 @@ public class DisbandCommand extends BaseCommand {
         final String name = sender instanceof Player ? sender.getName() : "CONSOLE";
 
         sender.sendMessage(
-                Placeholders.replaceIn(Message.DISBAND_FORCEDISBANDED.getValue(), gang.getName()));
+                Text.colorize(Placeholders.replaceIn(Message.DISBAND_FORCEDISBANDED.getValue(), gang.getName()))
+                );
 
         gang.message(Message.DISBAND_ANNOUNCEMENT, name);
         gang.getMine().delete();
