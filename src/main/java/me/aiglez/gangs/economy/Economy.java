@@ -4,6 +4,8 @@ import com.google.common.base.Preconditions;
 import me.aiglez.gangs.users.User;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public interface Economy {
@@ -31,6 +33,11 @@ public interface Economy {
 
         return isNegative ? "-" + result : result;
     }
+
+    static String formatWithCommas(final long value) {
+        return NumberFormat.getNumberInstance(Locale.US).format(value);
+    }
+
 
     void add(final User user, final double amount);
 
