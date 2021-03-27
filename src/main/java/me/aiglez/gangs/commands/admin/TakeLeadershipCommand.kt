@@ -30,6 +30,8 @@ class TakeLeadershipCommand : BaseCommand() {
 
         user.message(Message.TAKELEADERSHIP_TAKEN, gang.name)
         oldLeader.message(Message.TAKELEADERSHIP_TAKEN_BY_ADMIN)
+
+        user.message(gang.leader.player.name)
     }
 
 }

@@ -51,6 +51,7 @@ public class GangManager {
 
         gang.getMembers().forEach(member -> member.setGang(null));
         this.gangs.remove(gang);
+        this.takenNames.remove(gang.getName());
 
         Log.debug("Unregistered gang with name : " + gang.getName());
     }
