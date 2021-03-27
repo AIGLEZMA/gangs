@@ -132,11 +132,6 @@ public class RoleCommand extends BaseCommand {
     @CommandPermission("gang.admin.forcedemote")
     public void forceDemote(@Conditions("has_gang") final User user, @Flags("other") final User target) {
         final Gang gang = user.getGang();
-        if (!user.test(Permissible.Permission.PROMOTE)) {
-            user.message(Message.NO_PERMISSION);
-            return;
-        }
-
         if (Objects.equals(user.getUniqueId(), target.getUniqueId())) {
             user.message(Message.NOT_SELF);
             return;
