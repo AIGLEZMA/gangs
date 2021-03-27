@@ -12,7 +12,6 @@ import me.lucko.helper.Services;
 import me.lucko.helper.serialize.GsonStorageHandler;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
@@ -43,14 +42,13 @@ public class GangManager {
     public void unregisterGang(final Gang gang) {
         Preconditions.checkNotNull(gang, "gang may not be null");
         final File file = new File(GANGS_DATA_FOLDER, gang.getName() + ".json");
-        if(!file.exists() || !file.delete()) {
+        if(file.exists() && !file.delete()) {
             Log.warn("An error occurred while deleting " + gang.getName() + " data file");
             return;
         }
 
         gang.getMembers().forEach(member -> member.setGang(null));
         this.gangs.remove(gang);
-        this.takenNames.remove(gang.getName());
 
         Log.debug("Unregistered gang with name : " + gang.getName());
     }
@@ -99,10 +97,11 @@ public class GangManager {
     public void loadTakenNames() {
         try {
             final String[] list = GANGS_DATA_FOLDER.list();
-            if (list != null) {
-                this.takenNames.addAll(Arrays.asList(list));
-                Log.info("Loaded " + this.takenNames.size() + " taken name(s)");
+            if (list == null || list.length == 0) return;
+            for (final String name : list) {
+                this.takenNames.add(name.replace(".json", ""));
             }
+            Log.info("Loaded " + this.takenNames.size() + " taken name(s)");
         } catch (SecurityException e) {
             Log.severe("Couldn't load taken name, because of security issues");
         }
