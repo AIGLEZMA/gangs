@@ -110,22 +110,22 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
                         return@run
                     }
 
-                    val cost = MineLevel.calculateCost(current, level)
-                    if (gang.balance <= cost) {
+                    val upgradeCost = MineLevel.calculateCost(current, level)
+                    if (upgradeCost > gang.balance) {
                         user.message(Message.INSUFFICIENT_FUNDS)
                         close()
                         return@run
                     }
 
-                    gang.withdrawBalance(cost)
+                    gang.withdrawBalance(upgradeCost)
                     Log.debug(
                         "Current level: ${current.ordinal}, upgrading to ${level.ordinal}, cost: ${
-                            Economy.format(cost)
+                            Economy.format(upgradeCost)
                         }"
                     )
                     gang.mine.upgrade(level)
 
-                    user.message(Message.MENU_CORE_UPGRADED, current.ordinal, level.ordinal, Economy.format(cost))
+                    user.message(Message.MENU_CORE_UPGRADED, current.ordinal, level.ordinal, Economy.format(upgradeCost))
                     gang.message(Message.MENU_CORE_ANNOUNCEMENT, setOf(user), user.player.name, level.ordinal)
                     e.isCancelled = true
                     redraw()
