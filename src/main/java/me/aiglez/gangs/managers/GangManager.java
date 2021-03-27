@@ -26,7 +26,7 @@ public class GangManager {
 
     private final Set<Gang> gangs = Sets.newHashSet();
     private final Set<String> takenNames = Sets.newHashSet();
-    private GsonStorageHandler<Set<String>> balanceTopSorageHandler =
+    private final GsonStorageHandler<Set<String>> balanceTopSorageHandler =
             new GsonStorageHandler<>(
                     "balancetop", ".json", DATA_FOLDER, new TypeToken<Set<String>>() {});
 
@@ -46,6 +46,8 @@ public class GangManager {
             Log.warn("An error occurred while deleting " + gang.getName() + " data file");
             return;
         }
+
+        Services.load(GangsRanking.class).handleDisband(gang);
 
         gang.getMembers().forEach(member -> member.setGang(null));
         this.gangs.remove(gang);

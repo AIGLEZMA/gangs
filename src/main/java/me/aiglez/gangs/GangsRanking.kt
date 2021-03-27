@@ -3,6 +3,7 @@ package me.aiglez.gangs
 import com.google.common.collect.ImmutableSortedSet
 import me.aiglez.gangs.gangs.Gang
 import me.aiglez.gangs.managers.GangManager
+import me.aiglez.gangs.utils.Log
 import me.lucko.helper.Services
 import me.lucko.helper.time.DurationFormatter
 import me.lucko.helper.time.Time
@@ -45,5 +46,9 @@ class GangsRanking {
         if (lastUpdated == null) return null
         val duration = Time.diffToNow(lastUpdated)
         return DurationFormatter.CONCISE_LOW_ACCURACY.format(duration)
+    }
+
+    fun handleDisband(gang: Gang) {
+        Log.debug("Removing ${gang.name} from balance top (result: ${this.cache.remove(gang)}")
     }
 }
