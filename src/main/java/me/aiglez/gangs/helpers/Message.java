@@ -68,6 +68,10 @@ public enum Message {
     MINE_ADMINUPGRADE_UPGRADED("mine.admin-upgrade", "&aYou have upgraded {0}'s mine to level {1}"),
     MINE_ADMINUPGRADE_ANNOUNCEMENT(
             "mine.admin-upgrade-announcement", "&eYour mine has been upgraded by an administrator"),
+    MINE_ADMINUPGRADE_NOT_UNLOCKED(
+            "mine.admin-upgrade-not-unlocked", "&cLevel {0} is not unlocked for gang {1}"
+    ),
+
 
     DEPOSIT_INSUFFICIENT_FUNDS("deposit.insufficient-funds", "&cYou don't have that amount"),
     DEPOSIT_DEPOSIT("deposit.success", "&eYou have deposed ${0} into your gang's bank"),
