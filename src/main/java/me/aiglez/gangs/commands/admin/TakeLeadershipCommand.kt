@@ -24,14 +24,18 @@ class TakeLeadershipCommand : BaseCommand() {
 
         val oldLeader = gang.leader
 
-        gang.setRank(gang.leader, Rank.CO_LEADER)
-        gang.addMember(user)
+        if (oldLeader.uniqueId == user.uniqueId) {
+            user.message(Message.NOT_SELF)
+            return
+        }
+
+        gang.setRank(oldLeader, Rank.CO_LEADER)
         gang.setRank(user, Rank.LEADER)
 
         user.message(Message.TAKELEADERSHIP_TAKEN, gang.name)
         oldLeader.message(Message.TAKELEADERSHIP_TAKEN_BY_ADMIN)
 
-        user.message(gang.leader.player.name)
+        user.message("New leader: " + gang.leader.player.name)
     }
 
 }
