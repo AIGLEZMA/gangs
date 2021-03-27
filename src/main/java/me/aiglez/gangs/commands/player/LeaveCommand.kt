@@ -28,7 +28,7 @@ class LeaveCommand : BaseCommand() {
             val region = gang.mine.region
             if (region.contains(BukkitUtil.toVector(user.player.location))) {
                 user.message(Message.LEAVE_SPAWN)
-                user.player.performCommand("/spawn")
+                user.player.performCommand("spawn")
             }
 
             user.gang = null

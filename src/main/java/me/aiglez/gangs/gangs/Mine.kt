@@ -60,7 +60,7 @@ class Mine(private val gang: Gang, var level: MineLevel, var mined: Long, privat
         this.gang.members.filter { user -> user.offlinePlayer.isOnline }
             .map { user -> user.player }
             .filter { player -> this.region.contains(BukkitUtil.toVector(player.location)) }
-            .forEach { player -> player.performCommand("/spawn") }
+            .forEach { player -> player.performCommand("spawn") }
     }
 
     private fun removeMiningPlayers() {

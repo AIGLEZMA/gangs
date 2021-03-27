@@ -37,9 +37,9 @@ public class KickCommand extends BaseCommand {
             gang.getCore().removeBooster(target);
             // teleport to spawn
             final Region region = gang.getMine().getRegion();
-            if (region.contains(BukkitUtil.toVector(user.getPlayer().getLocation()))) {
-                user.message(Message.LEAVE_SPAWN);
-                user.getPlayer().performCommand("/spawn");
+            if (region.contains(BukkitUtil.toVector(target.getPlayer().getLocation()))) {
+                target.message(Message.LEAVE_SPAWN);
+                target.getPlayer().performCommand("spawn");
             }
             gang.removeMember(target);
 
@@ -67,9 +67,9 @@ public class KickCommand extends BaseCommand {
             gang.getCore().removeBooster(target);
             // teleport to spawn
             final Region region = gang.getMine().getRegion();
-            if (region.contains(BukkitUtil.toVector(user.getPlayer().getLocation()))) {
-                user.message(Message.LEAVE_SPAWN);
-                user.getPlayer().performCommand("/spawn");
+            if (region.contains(BukkitUtil.toVector(target.getPlayer().getLocation()))) {
+                target.message(Message.LEAVE_SPAWN);
+                target.getPlayer().performCommand("spawn");
             }
             gang.removeMember(target);
 
