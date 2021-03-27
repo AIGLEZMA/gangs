@@ -30,6 +30,13 @@ class MineCommand : BaseCommand() {
         user.message("&eYour gang members mined ${gang.mine.mined}")
     }
 
+    // TODO: remove this later
+    @Subcommand("reset")
+    fun reset(@Conditions("has_gang") user: User) {
+        val gang = user.gang
+        user.message("&eReset result: ${gang.mine.reset()}")
+    }
+
     @Subcommand("upgrade")
     fun upgrade(@Conditions("has_gang") user: User) {
         GangsMenu.mine(user)

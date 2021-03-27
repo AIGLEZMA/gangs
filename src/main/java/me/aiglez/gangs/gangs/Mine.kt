@@ -29,6 +29,7 @@ class Mine(private val gang: Gang, var level: MineLevel, var mined: Long, privat
             return
         }
         this.level = level
+        this.reset()
     }
 
     fun handle(amount: Int = 1) {
