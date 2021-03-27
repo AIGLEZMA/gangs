@@ -44,7 +44,7 @@ class EditPermissionMenu(val to: Player, val gang: Gang, val rank: Rank, title: 
                                 return@run
                             }
 
-                            GangsMenu.permission(user, user.gang)
+                            GangsMenu.permission(clicker, user.gang)
                         }
                         e.isCancelled = true
                     }
