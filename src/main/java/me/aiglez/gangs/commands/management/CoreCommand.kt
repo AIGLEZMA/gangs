@@ -8,6 +8,7 @@ import me.aiglez.gangs.helpers.Configuration
 import me.aiglez.gangs.helpers.Message
 import me.aiglez.gangs.users.User
 import me.aiglez.gangs.utils.Placeholders
+import me.lucko.helper.text3.Text
 import org.bukkit.command.CommandSender
 
 @CommandAlias("gang")
@@ -29,7 +30,9 @@ class CoreCommand : BaseCommand() {
         }
 
         core.upgrade()
-        gang.message(Message.CORE_ADMINUPGRADE_UPGRADED)
-        sender.sendMessage(Placeholders.replaceIn(Message.CORE_ADMINUPGRADE_UPGRADED.value, gang.name, core.level))
+        gang.message(Message.CORE_ADMINUPGRADE_ANNOUNCEMENT)
+        sender.sendMessage(Text.colorize(
+            Placeholders.replaceIn(Message.CORE_ADMINUPGRADE_UPGRADED.value, gang.name, core.level)
+        ))
     }
 }
