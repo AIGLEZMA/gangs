@@ -58,7 +58,7 @@ public class InvitationCommand extends BaseCommand {
 
         if (gang.addInvite(target)) {
             user.message(Message.INVITE_INVITED_SENDER, target.getPlayer().getName());
-            target.message(Message.INVITE_INVITED_SENDER, gang.getName());
+            target.message(Message.INVITE_INVITED_TARGET, gang.getName());
         }
     }
 
