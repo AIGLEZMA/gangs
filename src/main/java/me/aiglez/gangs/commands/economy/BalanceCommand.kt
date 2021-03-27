@@ -14,7 +14,7 @@ class BalanceCommand : BaseCommand() {
     @Subcommand("balance")
     fun balance(@Conditions("has_gang") user: User) {
         val gang = user.gang
-        val balance = Economy.format(gang.balance)
+        val balance = Economy.formatWithCommas(gang.balance)
         user.message(Message.BALANCE, balance)
     }
 }
