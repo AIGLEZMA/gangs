@@ -112,12 +112,28 @@ menu-settings:
     items:
       bought:
         name: "&7Level: &a{0}"
+        lore:
+          - "&aYou already bought this level"
+          - "[blocks]"
+          - "&7Upgrade Cost: &anone"
       current:
         name: "&7Current Level: &a{0}"
+        lore:
+          - "&aYou already bought this level"
+          - "[blocks]"
+          - "&7Upgrade Cost: &anone"
       unlocked:
         name: "&7Unlocked Level: &e{0}"
+        lore:
+          - "&eRight click to buy this level"
+          - "[blocks]"
+          - "&7Upgrade Cost: &e{0}"
       locked:
         name: "&7Locked Level: &c{0}"
+        lore:
+          - "&cThis level is locked, upgrade your core"
+          - "[blocks]"
+          - "&7Upgrade Cost: &c{0}"
   core:
     name: "&7Core"
     items:

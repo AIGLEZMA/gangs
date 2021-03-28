@@ -52,10 +52,13 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
                 Configuration.getString("menu-settings", "mine", "items", "bought", "name"), level.ordinal
             )
         )
-        builder.lore("&7Blocks:")
-        builder.lore(level.lore)
-        builder.lore("&7")
-        builder.lore("&7Cost to upgrade: &80")
+        builder.lore(
+            Placeholders.insertCollection(
+                Placeholders.replaceIn(
+                    Configuration.getList("menu-settings", "mine", "items", "bought", "lore"), level.upgradeCost,
+                ), "[blocks]", level.lore
+            )
+        )
         return builder.buildConsumer { e -> e.isCancelled = true }
     }
 
@@ -66,10 +69,13 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
                 Configuration.getString("menu-settings", "mine", "items", "current", "name"), level.ordinal
             )
         )
-        builder.lore("&7Blocks:")
-        builder.lore(level.lore)
-        builder.lore("&7")
-        builder.lore("&7Cost to upgrade: &80")
+        builder.lore(
+            Placeholders.insertCollection(
+                Placeholders.replaceIn(
+                    Configuration.getList("menu-settings", "mine", "items", "current", "lore"), level.upgradeCost,
+                ), "[blocks]", level.lore
+            )
+        )
         return builder.buildConsumer { e -> e.isCancelled = true }
     }
 
@@ -81,10 +87,13 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
                 Configuration.getString("menu-settings", "mine", "items", "unlocked", "name"), level.ordinal
             )
         )
-        builder.lore("&7Blocks:")
-        builder.lore(level.lore)
-        builder.lore("&7")
-        builder.lore("&7Cost to upgrade: &e${Economy.format(level.upgradeCost)}")
+        builder.lore(
+            Placeholders.insertCollection(
+                Placeholders.replaceIn(
+                    Configuration.getList("menu-settings", "mine", "items", "unlocked", "lore"), Economy.format(level.upgradeCost),
+                ), "[blocks]", level.lore
+            )
+        )
         return builder.buildConsumer(ClickType.LEFT) { e ->
             run {
                 val clicker = e.whoClicked
@@ -142,10 +151,14 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
                 Configuration.getString("menu-settings", "mine", "items", "locked", "name"), level.ordinal
             )
         )
-        builder.lore("&7Blocks:")
-        builder.lore(level.lore)
-        builder.lore("&7")
-        builder.lore("&7Cost to upgrade: &e${Economy.format(MineLevel.calculateCost(current, level))}")
+        builder.lore(
+            Placeholders.insertCollection(
+                Placeholders.replaceIn(
+                    Configuration.getList("menu-settings", "mine", "items", "unlocked", "lore"),
+                    Economy.format(MineLevel.calculateCost(current, level)),
+                ), "[blocks]", level.lore
+            )
+        )
         return builder.buildConsumer { e -> e.isCancelled = true }
     }
 }
