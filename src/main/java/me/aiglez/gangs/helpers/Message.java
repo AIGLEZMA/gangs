@@ -18,7 +18,7 @@ public enum Message {
     NOT_MEMBER_OTHER("not-member-other", "&c{0} is not member of your gang"),
     NOT_SELF("not-self", "&cError: Argument must not be yourself"),
 
-    WITHDRAW("withdraw", "&eYou have withdrawed {0} from {1}'s balance"),
+    WITHDRAW("withdraw", "&eYou have withdrawn {0} from {1}'s balance"),
 
     BALANCE("balance", "&eYour gang has ${0}"),
 
