@@ -2,12 +2,12 @@ package me.aiglez.gangs.gangs
 
 import me.aiglez.gangs.managers.MineManager
 import me.lucko.helper.Services
-import org.bukkit.Material
+import org.bukkit.inventory.ItemStack
 
 data class MineLevel(
     val ordinal: Int,
     val upgradeCost: Long,
-    val blocks: Map<Material, Double>,
+    val blocks: Map<ItemStack, Double>,
     val lore: List<String>
 ) {
 

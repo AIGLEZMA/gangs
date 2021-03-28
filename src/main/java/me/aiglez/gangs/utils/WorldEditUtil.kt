@@ -10,12 +10,12 @@ import com.sk89q.worldedit.function.pattern.RandomPattern
 import com.sk89q.worldedit.regions.Region
 import me.aiglez.gangs.managers.MineManager
 import me.lucko.helper.Services
-import org.bukkit.Material
+import org.bukkit.inventory.ItemStack
 
 object WorldEditUtil {
 
     @JvmStatic
-    fun fill(region: Region, materials: Map<Material, Double>?): Boolean {
+    fun fill(region: Region, materials: Map<ItemStack, Double>?): Boolean {
         val localWorld = Services.load(MineManager::class.java).worldEditWorld
         val editSession = EditSessionBuilder(localWorld)
             .allowedRegionsEverywhere().limitUnlimited().fastmode(true).build()
@@ -23,8 +23,8 @@ object WorldEditUtil {
         val pattern: Pattern
         if (materials != null) {
             pattern = RandomPattern()
-            for ((material, chance) in materials) {
-                pattern.add(BlockPattern(BaseBlock(material.id)), chance)
+            for ((itemStack, chance) in materials) {
+                pattern.add(BlockPattern(BaseBlock(itemStack.type.id, itemStack.durability.toInt())), chance)
             }
         } else {
             pattern = BlockPattern(BaseBlock(0))

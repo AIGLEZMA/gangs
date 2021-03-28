@@ -5,6 +5,7 @@ import com.boydti.fawe.object.schematic.Schematic;
 import com.boydti.fawe.object.visitor.FastIterator;
 import com.boydti.fawe.util.EditSessionBuilder;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.Vector;
@@ -23,10 +24,12 @@ import me.aiglez.gangs.utils.Pair;
 import me.lucko.helper.Helper;
 import me.lucko.helper.config.ConfigurationNode;
 import me.lucko.helper.config.objectmapping.ObjectMappingException;
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
@@ -79,14 +82,40 @@ public class MineManager {
             final int ordinal = (Integer) entry.getKey();
             final List<String> lore = entry.getValue().getNode("lore").getList(String::valueOf);
             final long upgradeCost = entry.getValue().getNode("upgrade-cost").getLong();
-            Map<Material, Double> blocks = null;
+            final Map<ItemStack, Double> blocks = Maps.newHashMap();
             try {
-                blocks =
-                        entry.getValue().getNode("blocks").getValue(new TypeToken<Map<Material, Double>>() {});
+                final Map<String, Double> materialsAndDatas = entry.getValue().getNode("blocks")
+                        .getValue(new TypeToken<Map<String, Double>>() {});
+                if (materialsAndDatas == null) {
+                    continue;
+                }
+
+                for (final Map.Entry<String, Double> e : materialsAndDatas.entrySet()) {
+                    ItemStack item = null;
+
+                    try {
+                        final String[] parts = e.getKey().split(":");
+                        if (parts.length == 1) {
+                            item = new ItemStack(Material.valueOf(parts[0].toUpperCase()));
+                        } else {
+                            short data = NumberUtils.toShort(parts[1], (short) 0);
+                            item = new ItemStack(Material.valueOf(parts[0].toUpperCase()), 1, data);
+                        }
+
+                    } catch (final Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+
+                    if (item == null) {
+                        continue;
+                    }
+
+                    blocks.put(item, e.getValue());
+                }
             } catch (ObjectMappingException e) {
                 e.printStackTrace();
             }
-            if (blocks == null) continue;
+
             this.levels.put(ordinal, new MineLevel(ordinal, upgradeCost, blocks, lore));
             Log.debug("Registering a new mine level: " + entry.getKey());
         }
