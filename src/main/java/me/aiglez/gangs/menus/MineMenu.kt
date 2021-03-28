@@ -1,9 +1,9 @@
 package me.aiglez.gangs.menus
 
-import com.google.common.base.Preconditions
 import me.aiglez.gangs.economy.Economy
 import me.aiglez.gangs.gangs.Gang
 import me.aiglez.gangs.gangs.MineLevel
+import me.aiglez.gangs.gangs.permissions.Permissible
 import me.aiglez.gangs.helpers.Configuration
 import me.aiglez.gangs.helpers.Message
 import me.aiglez.gangs.managers.MineManager
@@ -14,9 +14,9 @@ import me.lucko.helper.Services
 import me.lucko.helper.item.ItemStackBuilder
 import me.lucko.helper.menu.Gui
 import me.lucko.helper.menu.Item
-import me.lucko.helper.text3.Text
 import org.bukkit.Material
-import kotlin.math.max
+import org.bukkit.entity.Player
+import org.bukkit.event.inventory.ClickType
 
 class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int) : Gui(user.player, lines, title) {
 
@@ -26,12 +26,12 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
 
         for ((slot, level) in Services.load(MineManager::class.java).levels.withIndex()) {
             // < level
-            if(level.ordinal < currentLevel.ordinal) {
+            if (level.ordinal < currentLevel.ordinal) {
                 setItem(slot, alreadyBought(level))
-            } else if(level.ordinal == currentLevel.ordinal) {
+            } else if (level.ordinal == currentLevel.ordinal) {
                 setItem(slot, currentLevel(currentLevel))
-            } else if(level.ordinal > currentLevel.ordinal) {
-                if(level.ordinal <= unlocked) {
+            } else if (level.ordinal > currentLevel.ordinal) {
+                if (level.ordinal <= unlocked) {
                     setItem(slot, unlocked(level))
                 } else {
                     setItem(slot, locked(level, currentLevel))
@@ -44,12 +44,14 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
      * A lot of boilerplate code, must fix this later
      */
 
-    private fun alreadyBought(level: MineLevel) : Item {
+    private fun alreadyBought(level: MineLevel): Item {
         val builder = ItemStackBuilder.of(Material.STAINED_GLASS_PANE)
         builder.data(5)
-        builder.name(Placeholders.replaceIn(
-            Configuration.getString("menu-settings", "mine", "items", "bought", "name"), level.ordinal
-        ))
+        builder.name(
+            Placeholders.replaceIn(
+                Configuration.getString("menu-settings", "mine", "items", "bought", "name"), level.ordinal
+            )
+        )
         builder.lore("&7Blocks:")
         builder.lore(level.lore)
         builder.lore("&7")
@@ -57,11 +59,13 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
         return builder.buildConsumer { e -> e.isCancelled = true }
     }
 
-    private fun currentLevel(level: MineLevel) : Item {
+    private fun currentLevel(level: MineLevel): Item {
         val builder = ItemStackBuilder.of(Material.NETHER_STAR)
-        builder.name(Placeholders.replaceIn(
-            Configuration.getString("menu-settings", "mine", "items", "current", "name"), level.ordinal
-        ))
+        builder.name(
+            Placeholders.replaceIn(
+                Configuration.getString("menu-settings", "mine", "items", "current", "name"), level.ordinal
+            )
+        )
         builder.lore("&7Blocks:")
         builder.lore(level.lore)
         builder.lore("&7")
@@ -69,62 +73,79 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
         return builder.buildConsumer { e -> e.isCancelled = true }
     }
 
-    private fun unlocked(level: MineLevel) : Item {
+    private fun unlocked(level: MineLevel): Item {
         val builder = ItemStackBuilder.of(Material.STAINED_GLASS_PANE)
         builder.data(1)
-        builder.name(Placeholders.replaceIn(
-            Configuration.getString("menu-settings", "mine", "items", "unlocked", "name"), level.ordinal
-        ))
+        builder.name(
+            Placeholders.replaceIn(
+                Configuration.getString("menu-settings", "mine", "items", "unlocked", "name"), level.ordinal
+            )
+        )
         builder.lore("&7Blocks:")
         builder.lore(level.lore)
         builder.lore("&7")
         builder.lore("&7Cost to upgrade: &e${Economy.format(level.upgradeCost)}")
-        return builder.buildConsumer { e ->
+        return builder.buildConsumer(ClickType.LEFT) { e ->
             run {
-                val current = gang.mine.level
-                val cost = MineLevel.calculateCost(current, level)
-                if (gang.balance <= cost) {
-                    user.message(Message.INSUFFICIENT_FUNDS)
-                    close()
-                    return@run
-                }
+                val clicker = e.whoClicked
+                if (clicker is Player) {
+                    val user = User.get(clicker)
+                    // was kicked while in the menu ?
+                    if (!user.hasGang()) {
+                        close()
+                        return@run
+                    }
+                    // was demoted while on the menu ?
+                    if (!user.test(Permissible.Permission.UPGRADE_MINE)) {
+                        close()
+                        return@run
+                    }
 
-                gang.withdrawBalance(cost)
-                Log.debug("Current level: ${current.ordinal}, upgrading to ${level.ordinal}, cost: ${Economy.format(cost)}")
-                for (i in current.ordinal + 1.. level.ordinal) {
-                    gang.core.upgrade()
-                }
+                    val gang = user.gang
+                    val current = gang.mine.level
 
-                user.message(Message.MENU_CORE_UPGRADED, current.ordinal, level.ordinal, Economy.format(cost))
-                gang.message(Message.MENU_CORE_ANNOUNCEMENT, setOf(user), user.player.name, level.ordinal)
-                e.isCancelled = true
-                redraw()
+                    // was upgraded but someone else ?
+                    if (current.ordinal == level.ordinal) {
+                        close()
+                        return@run
+                    }
+
+                    val upgradeCost = MineLevel.calculateCost(current, level)
+                    if (upgradeCost > gang.balance) {
+                        user.message(Message.INSUFFICIENT_FUNDS)
+                        close()
+                        return@run
+                    }
+
+                    gang.withdrawBalance(upgradeCost)
+                    Log.debug(
+                        "Current level: ${current.ordinal}, upgrading to ${level.ordinal}, cost: ${
+                            Economy.format(upgradeCost)
+                        }"
+                    )
+                    gang.mine.upgrade(level)
+
+                    user.message(Message.MENU_CORE_UPGRADED, current.ordinal, level.ordinal, Economy.format(upgradeCost))
+                    gang.message(Message.MENU_CORE_ANNOUNCEMENT, setOf(user), user.player.name, level.ordinal)
+                    e.isCancelled = true
+                    redraw()
+                }
             }
         }
     }
 
-    private fun locked(level: MineLevel, current: MineLevel) : Item {
+    private fun locked(level: MineLevel, current: MineLevel): Item {
         val builder = ItemStackBuilder.of(Material.STAINED_GLASS_PANE)
         builder.data(14)
-        builder.name(Placeholders.replaceIn(
-            Configuration.getString("menu-settings", "mine", "items", "locked", "name"), level.ordinal
-        ))
+        builder.name(
+            Placeholders.replaceIn(
+                Configuration.getString("menu-settings", "mine", "items", "locked", "name"), level.ordinal
+            )
+        )
         builder.lore("&7Blocks:")
         builder.lore(level.lore)
         builder.lore("&7")
         builder.lore("&7Cost to upgrade: &e${Economy.format(MineLevel.calculateCost(current, level))}")
         return builder.buildConsumer { e -> e.isCancelled = true }
-    }
-
-    companion object {
-
-        @JvmStatic
-        fun create(user: User) {
-            Preconditions.checkArgument(user.hasGang(), "user must have a gang")
-            val lines = max((Services.load(MineManager::class.java).levels.size / 8), 1)
-            Log.debug("Levels: ${Services.load(MineManager::class.java).levels.size} and lines $lines")
-            MineMenu(user.gang, user, Text.colorize(Configuration.getString("menu-settings", "mine", "name")), lines).open()
-        }
-
     }
 }

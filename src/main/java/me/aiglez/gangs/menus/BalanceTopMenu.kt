@@ -10,13 +10,12 @@ import me.lucko.helper.item.ItemStackBuilder
 import me.lucko.helper.menu.Gui
 import me.lucko.helper.menu.scheme.MenuScheme
 import org.bukkit.Material
-import java.util.*
 import java.util.function.Consumer
 
-class BalanceTopMenu(user: User, title: String) : Gui(user.player, 4, title) {
+class BalanceTopMenu(val user: User, title: String) : Gui(user.player, 4, title) {
 
     override fun redraw() {
-        if(isFirstDraw) {
+        if (isFirstDraw) {
             val populator = PANES.newPopulator(this)
             for (i in populator.slots) {
                 populator.accept(
@@ -32,25 +31,27 @@ class BalanceTopMenu(user: User, title: String) : Gui(user.player, 4, title) {
                 Configuration.getString("menu-settings", "balance-top", "items", "gang", "name"),
                 index + 1, gang.name
             )
-            val lore: MutableList<String> = ArrayList()
+            val lore: MutableList<String> = mutableListOf()
             for (line in Configuration.getList("menu-settings", "balance-top", "items", "gang", "lore")) {
-                lore.add(
-                    Placeholders.replaceIn(
-                        line,
-                        gang.leader.player.name,
-                        Economy.format(gang.balance),
-                        gang.core.level,
-                        gang.mine.level.ordinal,
-                        gang.members.size
-                    )
+                lore += Placeholders.replaceIn(
+                    line,
+                    gang.leader.player.name,
+                    Economy.format(gang.balance),
+                    gang.core.level,
+                    gang.mine.level.ordinal,
+                    gang.members.size
                 )
             }
-            gang.members.forEach(Consumer { member: User -> lore.add("&7 - " + member.player.name) })
-            setItem(
-                SLOTS[index], ItemStackBuilder.of(Material.DIAMOND_PICKAXE)
-                    .name(name)
-                    .lore(lore)
-                    .buildConsumer { e -> e.isCancelled = true })
+            gang.members.forEach(Consumer { member: User -> lore += "&7 - " + member.player.name })
+            try {
+                setItem(
+                    SLOTS[index], ItemStackBuilder.of(Material.DIAMOND_PICKAXE)
+                        .name(name)
+                        .lore(lore)
+                        .buildConsumer { e -> e.isCancelled = true })
+            } catch (e: ArrayIndexOutOfBoundsException) {
+                user.message("${e.message}")
+            }
         }
     }
 
@@ -66,9 +67,5 @@ class BalanceTopMenu(user: User, title: String) : Gui(user.player, 4, title) {
             .mask("100000001")
             .mask("100000001")
             .mask("111111111")
-
-        fun make(user: User) {
-            BalanceTopMenu(user, Configuration.getString("menu-settings", "balance-top", "name")).open()
-        }
     }
 }

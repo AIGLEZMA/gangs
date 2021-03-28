@@ -19,46 +19,6 @@ import java.util.UUID;
 
 public interface User extends GsonSerializable, Sender {
 
-    default UUID getUniqueId() { return this.getOfflinePlayer().getUniqueId(); }
-
-    OfflinePlayer getOfflinePlayer();
-
-    default Player getPlayer() {
-        if(getOfflinePlayer().isOnline()) {
-            return getOfflinePlayer().getPlayer();
-        }
-        throw new PlayerNotConnectedException(this);
-    }
-
-    Gang getGang();
-
-    boolean hasGang();
-
-    void setGang(final Gang gang);
-
-    default boolean test(final Permissible.Permission permission) {
-        Preconditions.checkNotNull(permission, "permission may not be null");
-        if(!hasGang()) return false;
-        final Gang gang = getGang();
-        return gang.getPermissible().hasPermission(gang.getRank(this), permission);
-    }
-
-    boolean chatEnabled();
-
-    void setChatEnabled(final boolean status);
-
-    boolean isCreating();
-
-    void setCreating(final boolean status);
-
-    boolean hasQueuedBooster();
-
-    double getQueuedBooster();
-
-    void addQueuedBooster(final double booster);
-
-    void resetQueuedBooster();
-
     static User get(final Player player) {
         Preconditions.checkNotNull(player, "player may not be null");
         return Services.load(UserManager.class).getUser(player.getUniqueId());
@@ -73,14 +33,51 @@ public interface User extends GsonSerializable, Sender {
         final JsonObject object = element.getAsJsonObject();
         try {
             final UUID uniqueId = UUID.fromString(object.get("unique-id").getAsString());
-            final OfflinePlayer offlinePlayer = Players.getOffline(uniqueId).orElseThrow(() -> new OfflinePlayerNotFoundException(uniqueId));
+            final OfflinePlayer offlinePlayer =
+                    Players.getOffline(uniqueId)
+                            .orElseThrow(() -> new OfflinePlayerNotFoundException(uniqueId));
             final String lastKnownGang = object.get("gang").getAsString();
 
             // see UserImpl serialize method
-            return new UserImpl(offlinePlayer, lastKnownGang.equalsIgnoreCase("none") ? null : UUID.fromString(lastKnownGang));
+            return new UserImpl(
+                    offlinePlayer, lastKnownGang.equalsIgnoreCase("none") ? null : lastKnownGang);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
+
+    default UUID getUniqueId() {
+        return this.getOfflinePlayer().getUniqueId();
+    }
+
+    OfflinePlayer getOfflinePlayer();
+
+    default Player getPlayer() {
+        if (getOfflinePlayer().isOnline()) {
+            return getOfflinePlayer().getPlayer();
+        }
+        throw new PlayerNotConnectedException(this);
+    }
+
+    Gang getGang();
+
+    void setGang(final Gang gang);
+
+    boolean hasGang();
+
+    default boolean test(final Permissible.Permission permission) {
+        Preconditions.checkNotNull(permission, "permission may not be null");
+        if (!hasGang()) return false;
+        final Gang gang = getGang();
+        return gang.getPermissible().hasPermission(gang.getRank(this), permission);
+    }
+
+    boolean chatEnabled();
+
+    void setChatEnabled(final boolean status);
+
+    boolean isCreating();
+
+    void setCreating(final boolean status);
 }

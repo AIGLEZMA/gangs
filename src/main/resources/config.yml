@@ -1,5 +1,6 @@
 backup: true
 economy: "vault"
+max-members: 6
 # {0} -> gang name
 # {1} -> player's name
 # {2} -> message
@@ -73,6 +74,39 @@ mine-settings:
     max-z: 100000
     min-z: 1
 menu-settings:
+  edit-permission:
+    title: "Edit Permisions"
+    items:
+      back:
+        name: "&cBack"
+        lore: [ ]
+      granted:
+        name: "&a{0}"
+        lore:
+          - "&7This permission is &aGRANTED"
+      revoked:
+        name: "&c{0}"
+        lore:
+          - "&7This permission is &cREVOKED"
+  permission:
+    title: "Permissions"
+    items:
+      recruit:
+        material: "IRON_BLOCK"
+        name: "&7Recruit"
+        lore: [ ]
+      member:
+        material: "GOLD_BLOCK"
+        name: "&8Member"
+        lore: [ ]
+      officer:
+        material: "DIAMOND_BLOCK"
+        name: "&eOfficer"
+        lore: [ ]
+      co-leader:
+        material: "EMERALD_BLOCK"
+        name: "&cCO-Leader"
+        lore: [ ]
   mine:
     name: "&7Mine"
     items:

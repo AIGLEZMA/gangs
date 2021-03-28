@@ -21,17 +21,51 @@ import java.util.UUID;
 
 public interface Gang extends GsonSerializable, Sender {
 
-    UUID getUniqueId();
+    static Gang newGang(final String name) {
+        Preconditions.checkNotNull(name, "name may not be null");
+        return new GangImpl(
+                name, Maps.newHashMap(), Permissible.newPermissible(), Sets.newHashSet(), 0L);
+    }
+
+    static Gang deserialize(final JsonElement element) {
+        final JsonObject object = element.getAsJsonObject();
+        try {
+            final String name = object.get("name").getAsString();
+            final long balance = object.get("balance").getAsLong();
+
+            final Map<User, Rank> members = Maps.newHashMap();
+            for (final JsonElement element1 : object.get("members").getAsJsonArray()) {
+                final JsonObject object1 = element1.getAsJsonObject();
+
+                final UUID memberUniqueId = UUID.fromString(object1.get("unique-id").getAsString());
+                final Rank memberRank = Rank.byOrdinal(object1.get("rank").getAsInt());
+
+                final User user = Services.load(UserManager.class).getUser(memberUniqueId);
+                members.put(user, memberRank);
+            }
+
+            final Permissible permissible = Permissible.deserialize(object.get("permissible"));
+
+            final Gang gang = new GangImpl(name, members, permissible, Sets.newHashSet(), balance);
+            gang.setMine(Mine.deserialize(object.get("mine").getAsJsonObject(), gang));
+            gang.setCore(Core.deserialize(object.get("core").getAsJsonObject(), gang));
+
+            return gang;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     String getName();
 
     Mine getMine();
 
+    void setMine(final Mine mine);
+
     Core getCore();
 
     void setCore(final Core core);
-
-    void setMine(final Mine mine);
 
     Permissible getPermissible();
 
@@ -58,7 +92,7 @@ public interface Gang extends GsonSerializable, Sender {
     default Set<Invite> getInvites() {
         final Set<Invite> invites = Sets.newHashSet();
         for (final Invite invite : getUnsafeInvites()) {
-            if(invite.expired()) removeInvite(invite.getHolder());
+            if (invite.expired()) removeInvite(invite.getHolder());
         }
         return invites;
     }
@@ -68,41 +102,4 @@ public interface Gang extends GsonSerializable, Sender {
     void removeInvite(final User user);
 
     boolean isInvited(final User user);
-
-
-    static Gang newGang(final String name) {
-        Preconditions.checkNotNull(name, "name may not be null");
-        return new GangImpl(UUID.randomUUID(), name, Maps.newHashMap(), Permissible.newPermissible(), Sets.newHashSet(), 0L);
-    }
-
-    static Gang deserialize(final JsonElement element) {
-        final JsonObject object = element.getAsJsonObject();
-        try {
-            final UUID uniqueId = UUID.fromString(object.get("unique-id").getAsString());
-            final String name = object.get("name").getAsString();
-            final long balance = object.get("balance").getAsLong();
-
-            final Map<User, Rank> members = Maps.newHashMap();
-            for (final JsonElement element1 : object.get("members").getAsJsonArray()) {
-                final JsonObject object1 = element1.getAsJsonObject();
-
-                final UUID memberUniqueId = UUID.fromString(object1.get("unique-id").getAsString());
-                final Rank memberRank = Rank.byOrdinal(object1.get("rank").getAsInt());
-
-                final User user = Services.load(UserManager.class).getUser(memberUniqueId);
-                members.put(user, memberRank);
-            }
-
-            final Permissible permissible = Permissible.deserialize(object.get("permissible"));
-
-            final Gang gang = new GangImpl(uniqueId, name, members, permissible, Sets.newHashSet(), balance);
-            gang.setMine(Mine.deserialize(object.get("mine").getAsJsonObject(), gang));
-            gang.setCore(Core.deserialize(object.get("core").getAsJsonObject(), gang));
-
-            return gang;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }

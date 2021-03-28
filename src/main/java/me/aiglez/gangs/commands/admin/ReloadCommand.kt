@@ -17,14 +17,14 @@ class ReloadCommand : BaseCommand() {
     fun reloadCommand(sender: CommandSender) {
         var loaded = true
         val took = measureTimeMillis {
-            if(!Services.load(ConfigurationManager::class.java).loadConfiguration()) {
+            if (!Services.load(ConfigurationManager::class.java).loadConfiguration()) {
                 loaded = false
             }
-            if(Services.load(ConfigurationManager::class.java).loadLanguage()) {
+            if (Services.load(ConfigurationManager::class.java).loadLanguage()) {
                 loaded = false
             }
         }
-        if(loaded) {
+        if (loaded) {
             sender.sendMessage("§aSuccessfully reloaded config files (took: $took ms)")
         } else {
             sender.sendMessage("§cAn error occurred while reload config files")

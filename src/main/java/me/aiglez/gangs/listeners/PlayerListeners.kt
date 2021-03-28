@@ -2,6 +2,9 @@ package me.aiglez.gangs.listeners
 
 import me.aiglez.gangs.helpers.Configuration
 import me.aiglez.gangs.users.User
+import me.aiglez.gangs.utils.Placeholders
+import me.lucko.helper.Helper
+import me.lucko.helper.text3.Text
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerChatEvent
@@ -12,7 +15,14 @@ class PlayerListeners : Listener {
     fun onChatEvent(e: AsyncPlayerChatEvent) {
         val user = User.get(e.player)
         if (user.chatEnabled() && user.hasGang()) {
-            user.gang.message(Configuration.getString("chat-format"), user.gang.name, user.player.name, e.message)
+            val message = Placeholders.replaceIn(
+                Configuration.getString("chat-format"),
+                user.gang.name,
+                user.player.name,
+                e.message
+            )
+            user.gang.message(message)
+            Helper.console().sendMessage("[Gangs - CHAT LOG] ${Text.colorize(message)}")
             e.isCancelled = true
         }
     }

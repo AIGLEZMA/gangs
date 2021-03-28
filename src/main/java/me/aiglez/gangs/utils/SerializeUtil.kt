@@ -12,7 +12,7 @@ import org.bukkit.World
 
 object SerializeUtil {
 
-    fun serialize(location: Location) : JsonObject {
+    fun serialize(location: Location): JsonObject {
         return JsonBuilder.`object`()
             .add("x", location.x)
             .add("y", location.y)
@@ -23,35 +23,43 @@ object SerializeUtil {
             .build()
     }
 
-    fun deserialize(json: JsonObject) : Location? {
+    fun deserialize(json: JsonObject): Location? {
         val world = Helper.world(json["world"].asString)
-        if(!world.isPresent) {
+        if (!world.isPresent) {
             return null
         }
         return Location(
-            world.get(), json["x"].asDouble, json["y"].asDouble, json["z"].asDouble, json["yaw"].asFloat, json["pitch"].asFloat
+            world.get(),
+            json["x"].asDouble,
+            json["y"].asDouble,
+            json["z"].asDouble,
+            json["yaw"].asFloat,
+            json["pitch"].asFloat
         )
     }
 
     fun serialize(region: Region): JsonObject {
         return JsonBuilder.`object`()
             .add("world", region.world?.name)
-            .add("min", JsonBuilder.`object`()
-                .add("x", region.minimumPoint.x)
-                .add("y", region.minimumPoint.y)
-                .add("z", region.minimumPoint.z)
-                .build()
+            .add(
+                "min", JsonBuilder.`object`()
+                    .add("x", region.minimumPoint.x)
+                    .add("y", region.minimumPoint.y)
+                    .add("z", region.minimumPoint.z)
+                    .build()
             )
-            .add("max", JsonBuilder.`object`()
-                .add("x", region.maximumPoint.x)
-                .add("y", region.maximumPoint.y)
-                .add("z", region.maximumPoint.z)
-                .build()
+            .add(
+                "max", JsonBuilder.`object`()
+                    .add("x", region.maximumPoint.x)
+                    .add("y", region.maximumPoint.y)
+                    .add("z", region.maximumPoint.z)
+                    .build()
             )
             .build()
     }
 
-    fun deserializeRegion(json: JsonObject) : Region {
+    @Suppress("DEPRECATION")
+    fun deserializeRegion(json: JsonObject): Region {
         val min = json.get("min").asJsonObject
         val minVector = Vector(min.get("x").asDouble, min.get("y").asDouble, min.get("z").asDouble)
 

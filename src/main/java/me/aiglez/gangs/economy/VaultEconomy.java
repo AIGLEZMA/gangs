@@ -13,8 +13,9 @@ public class VaultEconomy implements Economy {
     private final net.milkbowl.vault.economy.Economy vault;
 
     public VaultEconomy() {
-        if(Helper.server().getPluginManager().isPluginEnabled("Vault")) {
-            final Optional<net.milkbowl.vault.economy.Economy> optional = Services.get(net.milkbowl.vault.economy.Economy.class);
+        if (Helper.server().getPluginManager().isPluginEnabled("Vault")) {
+            final Optional<net.milkbowl.vault.economy.Economy> optional =
+                    Services.get(net.milkbowl.vault.economy.Economy.class);
             this.vault = optional.orElseThrow(() -> new DependencyNotFoundException("Vault"));
 
         } else {
@@ -26,7 +27,8 @@ public class VaultEconomy implements Economy {
     public void add(final User user, final double amount) {
         Preconditions.checkNotNull(user, "user may not be null");
         Preconditions.checkArgument(amount >= 0, "amount may not be negative");
-        Preconditions.checkArgument(this.vault.hasAccount(user.getOfflinePlayer()), "player does not have bank account");
+        Preconditions.checkArgument(
+                this.vault.hasAccount(user.getOfflinePlayer()), "player does not have bank account");
         this.vault.depositPlayer(user.getOfflinePlayer(), amount);
     }
 
@@ -34,7 +36,8 @@ public class VaultEconomy implements Economy {
     public void remove(final User user, final double amount) {
         Preconditions.checkNotNull(user, "user may not be null");
         Preconditions.checkArgument(amount >= 0, "amount may not be negative");
-        Preconditions.checkArgument(this.vault.hasAccount(user.getOfflinePlayer()), "player does not have bank account");
+        Preconditions.checkArgument(
+                this.vault.hasAccount(user.getOfflinePlayer()), "player does not have bank account");
 
         this.vault.withdrawPlayer(user.getOfflinePlayer(), amount);
     }
@@ -42,7 +45,8 @@ public class VaultEconomy implements Economy {
     @Override
     public double balance(final User user) {
         Preconditions.checkNotNull(user, "user may not be null");
-        Preconditions.checkArgument(this.vault.hasAccount(user.getOfflinePlayer()), "player does not have bank account");
+        Preconditions.checkArgument(
+                this.vault.hasAccount(user.getOfflinePlayer()), "player does not have bank account");
 
         return this.vault.getBalance(user.getOfflinePlayer());
     }

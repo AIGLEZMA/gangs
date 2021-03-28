@@ -15,17 +15,21 @@ import me.lucko.helper.plugin.ap.Plugin;
 import me.lucko.helper.plugin.ap.PluginDependency;
 
 @Plugin(
-        name = "Gangs", version = "1.0",
+        name = "Gangs",
+        version = "1.0",
         authors = {"AigleZ", "JohanLiebert"},
-        depends = {@PluginDependency(value = "Vault", soft = true), @PluginDependency(value = "AutoSell", soft = true),
-                @PluginDependency(value = "WorldEdit", soft = true), @PluginDependency(value = "TokenEnchant", soft = true),
+        depends = {
+                @PluginDependency(value = "Vault", soft = true),
+                @PluginDependency(value = "AutoSell", soft = true),
+                @PluginDependency(value = "WorldEdit", soft = true),
+                @PluginDependency(value = "TokenEnchant", soft = true),
                 @PluginDependency(value = "PlaceholderAPI", soft = true)
-        }
-)
+        })
 public final class Gangs extends ExtendedJavaPlugin {
 
     private boolean loaded;
 
+    @SuppressWarnings("InstantiationOfUtilityClass")
     @Override
     protected void enable() {
         Log.info("Loading configurations...");
@@ -35,7 +39,7 @@ public final class Gangs extends ExtendedJavaPlugin {
         manager.loadLanguage();
 
         Log.info("Setting-up economy");
-        if(!setupEconomy()) {
+        if (!setupEconomy()) {
             Helper.plugins().disablePlugin(this);
             return;
         }
@@ -52,6 +56,7 @@ public final class Gangs extends ExtendedJavaPlugin {
         getService(GangManager.class).loadBalanceTop();
 
         provideService(GangsRanking.class, new GangsRanking());
+        provideService(GangsMenu.class, new GangsMenu());
 
         Log.info("Registering listeners and commands...");
         registerListeners();
@@ -70,7 +75,7 @@ public final class Gangs extends ExtendedJavaPlugin {
 
     @Override
     protected void disable() {
-        if(!loaded) {
+        if (!loaded) {
             Log.severe("An error occurred, disabling the plugin.");
             return;
         }
@@ -80,7 +85,6 @@ public final class Gangs extends ExtendedJavaPlugin {
         Log.info("Saving gangs...");
         getService(GangManager.class).saveBalanceTop();
         getService(GangManager.class).saveGangs();
-        getService(GangManager.class).saveTakenNames();
     }
 
     private void registerListeners() {
@@ -88,27 +92,25 @@ public final class Gangs extends ExtendedJavaPlugin {
         registerListener(new PlayerListeners());
     }
 
-    private void launchTasks() {
-
-    }
+    private void launchTasks() {}
 
     private boolean setupEconomy() {
         final String choice = Configuration.getString("economy");
-        if(choice.isEmpty()) {
+        if (choice.isEmpty()) {
             return false;
         }
         Economy economy = null;
         try {
-            if(choice.equalsIgnoreCase("vault")) {
+            if (choice.equalsIgnoreCase("vault")) {
                 economy = new VaultEconomy();
-            } else if(choice.equalsIgnoreCase("tokenenchant")) {
+            } else if (choice.equalsIgnoreCase("tokenenchant")) {
                 economy = new TokenEnchantEconomy();
             }
         } catch (DependencyNotFoundException e) {
             e.printStackTrace();
             return false;
         }
-        if(economy != null) provideService(Economy.class, economy);
+        if (economy != null) provideService(Economy.class, economy);
         return economy != null;
     }
 }

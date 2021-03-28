@@ -15,12 +15,14 @@ import me.lucko.helper.gson.JsonBuilder;
 
 import javax.annotation.Nonnull;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.Set;
 
 public class GangImpl implements Gang {
 
-    private final UUID uniqueId;
     private final String name;
     private final Permissible permissible;
     private final Map<User, Rank> members;
@@ -29,8 +31,12 @@ public class GangImpl implements Gang {
     private long balance;
     private Mine mine; // lateinit
 
-    public GangImpl(final UUID uniqueId, final String name, final Map<User, Rank> members, final Permissible permissible, final Set<Invite> invites, final long balance) {
-        this.uniqueId = uniqueId;
+    public GangImpl(
+            final String name,
+            final Map<User, Rank> members,
+            final Permissible permissible,
+            final Set<Invite> invites,
+            final long balance) {
         this.name = name;
         this.permissible = permissible;
         this.members = members;
@@ -38,17 +44,15 @@ public class GangImpl implements Gang {
         this.balance = balance;
     }
 
-
     @Override
-    public UUID getUniqueId() {
-        return this.uniqueId;
+    public String getName() {
+        return this.name;
     }
 
     @Override
-    public String getName() { return this.name; }
-
-    @Override
-    public Core getCore() { return this.core; }
+    public Core getCore() {
+        return this.core;
+    }
 
     @Override
     public void setCore(final Core core) {
@@ -102,7 +106,7 @@ public class GangImpl implements Gang {
     @Override
     public boolean addInvite(final User user) {
         Preconditions.checkNotNull(user, "user may not be null");
-        if(!isInvited(user)) {
+        if (!isInvited(user)) {
             return this.invites.add(new Invite(user, Instant.now()));
         }
         return false;
@@ -112,7 +116,7 @@ public class GangImpl implements Gang {
     public void removeInvite(User user) {
         Preconditions.checkNotNull(user, "user may not be null");
         for (final Invite invite : this.invites) {
-            if(invite.getHolder().getUniqueId().equals(user.getUniqueId())) {
+            if (invite.getHolder().getUniqueId().equals(user.getUniqueId())) {
                 this.invites.remove(invite);
                 return;
             }
@@ -123,7 +127,11 @@ public class GangImpl implements Gang {
     public boolean isInvited(final User user) {
         // for loop in this case, we could do it with streams x)
         for (final Invite invite : this.invites) {
-            if(invite.getHolder().getUniqueId().equals(user.getUniqueId())) {
+            if (invite.getHolder().getUniqueId().equals(user.getUniqueId())) {
+                if(invite.expired()) {
+                    removeInvite(invite.getHolder());
+                    return false;
+                }
                 return true;
             }
         }
@@ -145,20 +153,25 @@ public class GangImpl implements Gang {
 
     @Override
     public User getLeader() {
-        final Optional<User> optional = this.members.keySet().stream()
-                .filter(member -> getRank(member) == Rank.LEADER).findAny();
+        final Optional<User> optional =
+                this.members.keySet().stream().filter(member -> getRank(member) == Rank.LEADER).findAny();
         return optional.orElseThrow(() -> new LeaderNotFoundException(this.name));
     }
 
     @Override
-    public void depositBalance(long amount) { this.balance += amount; }
+    public void depositBalance(long amount) {
+        this.balance += amount;
+    }
 
     @Override
-    public void withdrawBalance(long amount) { this.balance -= amount; }
+    public void withdrawBalance(long amount) {
+        this.balance -= amount;
+    }
 
     @Override
-    public long getBalance() { return this.balance; }
-
+    public long getBalance() {
+        return this.balance;
+    }
 
     @Override
     public void message(String message, Object... replacements) {
@@ -169,18 +182,15 @@ public class GangImpl implements Gang {
     @Override
     public void message(String message, Set<User> exemptions, Object... replacements) {
         Preconditions.checkNotNull(message, "message may not be null");
-        this.members.keySet().stream().filter(user -> !exemptions.contains(user)).forEach(m -> m.message(message, replacements));
+        this.members.keySet().stream()
+                .filter(user -> !exemptions.contains(user))
+                .forEach(m -> m.message(message, replacements));
     }
 
     @Override
     public void message(Message message, Set<User> exemptions, Object... replacements) {
         Preconditions.checkNotNull(message, "message may not be null");
         message(message.getValue(), exemptions, replacements);
-    }
-
-    @Override
-    public void messagec(String string, Object... replacement) {
-
     }
 
     @Override
@@ -194,15 +204,14 @@ public class GangImpl implements Gang {
     public JsonElement serialize() {
         final JsonArray members = new JsonArray();
         for (final Entry<User, Rank> entry : this.members.entrySet()) {
-            members.add(JsonBuilder.object()
-                    .add("unique-id", entry.getKey().getUniqueId().toString())
-                    .add("rank", entry.getValue().getOrdinal())
-                    .build()
-            );
+            members.add(
+                    JsonBuilder.object()
+                            .add("unique-id", entry.getKey().getUniqueId().toString())
+                            .add("rank", entry.getValue().getOrdinal())
+                            .build());
         }
 
         return JsonBuilder.object()
-                .add("unique-id", this.uniqueId.toString())
                 .add("name", this.name)
                 .add("balance", this.balance)
                 .add("members", members)

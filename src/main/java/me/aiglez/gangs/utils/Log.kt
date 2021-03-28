@@ -8,26 +8,28 @@ object Log {
 
     @JvmStatic
     fun info(message: String?) {
-        if(message != null) print(ChatColor.GREEN,"LOG", message)
+        if (message != null) print(ChatColor.GREEN, "LOG", message)
     }
 
     @JvmStatic
     fun warn(message: String?) {
-        if(message != null) print(ChatColor.YELLOW,"WARN", message)
+        if (message != null) print(ChatColor.YELLOW, "WARN", message)
     }
 
     @JvmStatic
     fun debug(message: String?) {
-        if(message != null) print(ChatColor.AQUA,"DEBUG", message)
+        if (message != null) print(ChatColor.AQUA, "DEBUG", message)
     }
 
     @JvmStatic
     fun severe(message: String?) {
-        if(message != null) print(ChatColor.RED,"SEVERE", message)
+        if (message != null) print(ChatColor.RED, "SEVERE", message)
     }
 
-    private fun print(color: ChatColor, prefix: String, message: String) { Helper.console().sendMessage(
-        Text.colorize("$color[Gangs - $prefix] ${ChatColor.RESET}$message"))
+    private fun print(color: ChatColor, prefix: String, message: String) {
+        Helper.console().sendMessage(
+            Text.colorize("$color[Gangs - $prefix] ${ChatColor.RESET}$message")
+        )
     }
 
 

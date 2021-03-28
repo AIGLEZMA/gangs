@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+@SuppressWarnings("UnstableApiUsage")
 public class MineManager {
 
     private static final int ZERO_TO_SPAWN = 65;
@@ -44,16 +45,21 @@ public class MineManager {
     private final Map<Integer, MineLevel> levels = new HashMap<>();
 
     public MineManager() {
-        if(!Helper.plugins().isPluginEnabled("WorldEdit")) {
+        if (!Helper.plugins().isPluginEnabled("WorldEdit")) {
             throw new DependencyNotFoundException("WorldEdit");
         }
 
         final String worldName = Configuration.getString("mine-settings", "world-name");
-        this.mineWorld = Helper.world(worldName).orElseThrow(() -> new IllegalArgumentException("Couldn't find the world where the mines will be pasted"));
+        this.mineWorld =
+                Helper.world(worldName)
+                        .orElseThrow(
+                                () ->
+                                        new IllegalArgumentException(
+                                                "Couldn't find the world where the mines will be pasted"));
         this.worldEditWorld = FaweAPI.getWorld(worldName);
 
         final File schematic = new File(Helper.hostPlugin().getDataFolder(), "mine.schematic");
-        if(!schematic.exists()) {
+        if (!schematic.exists()) {
             Log.severe("Couldn't find the file with name mine.schematic in the plugin's folder");
         }
         try {
@@ -64,11 +70,10 @@ public class MineManager {
         }
     }
 
-
     public void loadLevels() {
         final ConfigurationNode node = Configuration.getNode("mine-settings", "levels");
         for (Map.Entry<Object, ? extends ConfigurationNode> entry : node.getChildrenMap().entrySet()) {
-            if(!(entry.getKey() instanceof Integer)) {
+            if (!(entry.getKey() instanceof Integer)) {
                 continue;
             }
             final int ordinal = (Integer) entry.getKey();
@@ -76,11 +81,12 @@ public class MineManager {
             final long upgradeCost = entry.getValue().getNode("upgrade-cost").getLong();
             Map<Material, Double> blocks = null;
             try {
-                blocks = entry.getValue().getNode("blocks").getValue(new TypeToken<Map<Material, Double>>() {});
+                blocks =
+                        entry.getValue().getNode("blocks").getValue(new TypeToken<Map<Material, Double>>() {});
             } catch (ObjectMappingException e) {
                 e.printStackTrace();
             }
-            if(blocks == null) continue;
+            if (blocks == null) continue;
             this.levels.put(ordinal, new MineLevel(ordinal, upgradeCost, blocks, lore));
             Log.debug("Registering a new mine level: " + entry.getKey());
         }
@@ -92,7 +98,7 @@ public class MineManager {
 
         final Pair<Region, EditSession> at = pasteSchematicAt(location);
 
-        if(at == null) {
+        if (at == null) {
             user.message("&cRegion not found");
             return Optional.empty();
         }
@@ -101,8 +107,9 @@ public class MineManager {
 
         final FastIterator vectors = new FastIterator(at.getFirst(), at.getSecond());
         for (Vector vector : vectors) {
-            final Block blockAt = this.mineWorld.getBlockAt(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ());
-            if(blockAt.getType() == Material.SPONGE) {
+            final Block blockAt =
+                    this.mineWorld.getBlockAt(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ());
+            if (blockAt.getType() == Material.SPONGE) {
                 if (min == null) {
                     min = new Vector(vector.getX(), vector.getY(), vector.getZ());
                     continue;
@@ -115,18 +122,21 @@ public class MineManager {
             }
         }
 
-        if(min == null || max == null) {
+        if (min == null || max == null) {
             user.message("&cCouldn't find the two corners");
             return Optional.empty();
         }
 
-        final Mine mine = new Mine(user.getGang(), this.levels.get(1), 0, location.clone().add(0.5D, ZERO_TO_SPAWN, 0.5D));
+        final Mine mine =
+                new Mine(
+                        user.getGang(), this.levels.get(1), 0, location.clone().add(0.5D, ZERO_TO_SPAWN, 0.5D));
         final Region minable = new CuboidRegion(this.worldEditWorld, min, max);
 
         mine.setMinableRegion(minable);
         mine.setRegion(at.getFirst());
 
-        Log.info("Minable: " + mine.getMinableRegion().getArea() + "  All: " + mine.getRegion().getArea());
+        Log.info(
+                "Minable: " + mine.getMinableRegion().getArea() + "  All: " + mine.getRegion().getArea());
 
         return Optional.of(mine);
     }
@@ -134,7 +144,7 @@ public class MineManager {
     private Pair<Region, EditSession> pasteSchematicAt(final Location location) {
         Preconditions.checkNotNull(location, "location may not be null");
         final Clipboard clipboard = this.schematic.getClipboard();
-        if(clipboard == null) {
+        if (clipboard == null) {
             Log.severe("It seems like the schematic doesn't hold any clipboard");
             return null;
         }
@@ -142,8 +152,12 @@ public class MineManager {
         clone.setY(clipboard.getOrigin().getBlockY());
         final Vector vector = BukkitUtil.toVector(clone);
 
-        final EditSession editSession = new EditSessionBuilder(this.worldEditWorld)
-                .allowedRegionsEverywhere().limitUnlimited().fastmode(true).build();
+        final EditSession editSession =
+                new EditSessionBuilder(this.worldEditWorld)
+                        .allowedRegionsEverywhere()
+                        .limitUnlimited()
+                        .fastmode(true)
+                        .build();
         schematic.paste((com.sk89q.worldedit.world.World) editSession, vector, false, true, null);
         final Region region = clipboard.getRegion();
         region.setWorld(this.worldEditWorld);
@@ -156,7 +170,6 @@ public class MineManager {
 
         return Pair.of(region, editSession);
     }
-
 
     public MineLevel getLevel(final int ordinal) {
         return this.levels.getOrDefault(ordinal, null);
@@ -181,7 +194,11 @@ public class MineManager {
         return location;
     }
 
-    public World getMineWorld() { return this.mineWorld; }
+    public World getMineWorld() {
+        return this.mineWorld;
+    }
 
-    public com.sk89q.worldedit.world.World getWorldEditWorld() { return this.worldEditWorld; }
+    public com.sk89q.worldedit.world.World getWorldEditWorld() {
+        return this.worldEditWorld;
+    }
 }

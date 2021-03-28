@@ -1,4 +1,4 @@
-package me.aiglez.gangs.commands;
+package me.aiglez.gangs.commands.management;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
@@ -13,55 +13,63 @@ import java.util.Objects;
 @CommandAlias("gang")
 public class InvitationCommand extends BaseCommand {
 
-    @Subcommand("decline|reject") @Syntax("<gang>") @CommandCompletion("@gangs_invited")
+    @Subcommand("decline|reject")
+    @Syntax("<gang>")
+    @CommandCompletion("@gangs_invited")
     public void decline(final User user, final Gang gang) {
-        if(!gang.isInvited(user)) {
-            user.messagec("decline.not-invited", gang.getName());
+        if (!gang.isInvited(user)) {
+            user.message(Message.NOT_INVITED, gang.getName());
             return;
         }
 
         gang.removeInvite(user);
-        user.messagec("decline.declined", gang.getName());
+        user.message(Message.DECLINE_DECLINED, gang.getName());
     }
 
-    @Subcommand("invite") @Syntax("<player>") @CommandCompletion("@players")
+    @Subcommand("invite")
+    @Syntax("<player>")
+    @CommandCompletion("@players")
     public void invite(@Conditions("has_gang") final User user, @Flags("other") final User target) {
         final Gang gang = user.getGang();
-        if(!user.test(Permissible.Permission.INVITE)) {
+        if (!user.test(Permissible.Permission.INVITE)) {
             user.message(Message.NO_PERMISSION);
             return;
         }
-        if(Objects.equals(user.getUniqueId(), target.getUniqueId())) {
-            user.message(Message.INVITE_SELF);
+        if (Objects.equals(user.getUniqueId(), target.getUniqueId())) {
+            user.message(Message.NOT_SELF);
             return;
         }
-        if(gang.isInvited(target)) {
+        if (gang.isInvited(target)) {
             user.message(Message.INVITE_ALREADY, target.getPlayer().getName());
             return;
         }
 
-        if(target.hasGang()) {
-            if(Objects.equals(target.getGang().getUniqueId(), gang.getUniqueId())) {
+        if (target.hasGang()) {
+            if (Objects.equals(target.getGang().getName(), gang.getName())) {
                 user.message(Message.INVITE_ALREADY_MEMBER, target.getPlayer().getName());
             } else {
-                user.message(Message.INVITE_ALREADY_MEMBER_OTHER, target.getPlayer().getName(), target.getGang().getName());
+                user.message(
+                        Message.INVITE_ALREADY_MEMBER_OTHER,
+                        target.getPlayer().getName(),
+                        target.getGang().getName());
             }
             return;
         }
 
-        if(gang.addInvite(target)) {
+        if (gang.addInvite(target)) {
             user.message(Message.INVITE_INVITED_SENDER, target.getPlayer().getName());
-            target.message(Message.INVITE_INVITED_SENDER, gang.getName());
+            target.message(Message.INVITE_INVITED_TARGET, gang.getName());
         }
     }
 
+    // TODO: remove later
     @Subcommand("invites")
     public void invitesCommand(@Conditions("has_gang") final User user) {
         final Gang gang = user.getGang();
         for (final Invite invite : gang.getInvites()) {
-            user.message("&7 - {0} (passed: &e{1})", invite.getHolder().getOfflinePlayer().getName(), invite.format());
+            user.message(
+                    "&7 - {0} (passed: &e{1})",
+                    invite.getHolder().getOfflinePlayer().getName(), invite.format());
         }
     }
 }
-
-

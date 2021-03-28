@@ -30,6 +30,6 @@ class DepositCommand : BaseCommand() {
 
         economy.remove(user, amount.toDouble())
         gang.depositBalance(amount)
-        user.message(Message.DEPOSIT_DEPOSIT, Economy.format(amount), amount)
+        user.message(Message.DEPOSIT_DEPOSIT, Economy.formatWithCommas(amount))
     }
 }
