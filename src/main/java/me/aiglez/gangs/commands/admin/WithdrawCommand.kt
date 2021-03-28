@@ -1,15 +1,13 @@
 package me.aiglez.gangs.commands.admin
 
 import co.aikar.commands.BaseCommand
-import co.aikar.commands.annotation.CommandPermission
-import co.aikar.commands.annotation.Conditions
-import co.aikar.commands.annotation.Subcommand
-import co.aikar.commands.annotation.Syntax
+import co.aikar.commands.annotation.*
 import me.aiglez.gangs.economy.Economy
 import me.aiglez.gangs.helpers.Message
 import me.aiglez.gangs.users.User
 import me.lucko.helper.Services
 
+@CommandAlias("gang")
 class WithdrawCommand : BaseCommand() {
 
     @Subcommand("withdraw")
