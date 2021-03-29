@@ -7,6 +7,7 @@ max-members: 6
 chat-format: "&8[&a{0}&8] &7{1}: &r{2}"
 core-settings:
   max-level: 18
+  # booster increment
   increment: 1
   levels:
     1:

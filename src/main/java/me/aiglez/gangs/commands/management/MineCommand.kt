@@ -48,7 +48,7 @@ class MineCommand : BaseCommand() {
     @CommandPermission("gang.admin.forcemineupgrade")
     @CommandCompletion("@gangs")
     fun forceMineUpgrade(sender: CommandSender, gang: Gang) {
-        val unlocked = gang.core.level * Configuration.getInteger("core-settings", "increment")
+        val unlocked = gang.core.level * Configuration.getInteger("mine-settings", "level-unlocked-per-core")
         val nextLevel: MineLevel? = Services.load(MineManager::class.java).getLevel(gang.mine.level.ordinal + 1)
 
         if (nextLevel != null) {

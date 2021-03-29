@@ -22,7 +22,7 @@ class MineMenu(private val gang: Gang, val user: User, title: String, lines: Int
 
     override fun redraw() {
         val currentLevel = gang.mine.level
-        val unlocked = currentLevel.ordinal * Configuration.getInteger("mine-settings", "level-unlocked-per-core")
+        val unlocked = gang.core.level * Configuration.getInteger("mine-settings", "level-unlocked-per-core")
 
         for ((slot, level) in Services.load(MineManager::class.java).levels.withIndex()) {
             // < level

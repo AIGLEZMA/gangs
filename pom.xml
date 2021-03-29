@@ -19,6 +19,14 @@
         <kotlin.version>1.4.30</kotlin.version>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub AigleDev Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/AigleDev/gangs</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
         <!-- spigot api -->
         <dependency>
