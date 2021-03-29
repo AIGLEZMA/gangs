@@ -2,18 +2,15 @@ package me.aiglez.gangs
 
 import me.aiglez.gangs.gangs.Gang
 import me.aiglez.gangs.helpers.Configuration
-import me.aiglez.gangs.managers.MineManager
 import me.aiglez.gangs.menus.BalanceTopMenu
 import me.aiglez.gangs.menus.CoreMenu
 import me.aiglez.gangs.menus.MineMenu
 import me.aiglez.gangs.menus.PermissionMenu
 import me.aiglez.gangs.users.User
-import me.lucko.helper.Services
 import me.lucko.helper.item.ItemStackBuilder
 import me.lucko.helper.menu.Item
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import kotlin.math.max
 
 class GangsMenu {
 
@@ -47,12 +44,11 @@ class GangsMenu {
         @JvmStatic
         fun mine(user: User) {
             if(user.offlinePlayer.isOnline) {
-                val lines = max((Services.load(MineManager::class.java).levels.size / 8), 1)
                 MineMenu(
                     user.gang,
                     user,
                     Configuration.getString("menu-settings", "mine", "name"),
-                    lines
+                    Configuration.getInteger("menu-settings", "mine", "lines")
                 ).open()
             }
         }
