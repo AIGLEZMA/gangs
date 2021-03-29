@@ -17,6 +17,8 @@ jobs:
         run: mvn -B validate 
       - name: Delete Package Versions
         uses: actions/delete-package-versions@v1.0.3
+        with:
+          package-name: 'gangs'
       - name: Deploy to GitHub packages
          # Have to skip doc and sources because GH Packages doesn't support classifiers
         run: mvn -B deploy -Dmaven.javadoc.skip=true -Dmaven.source.skip=true
