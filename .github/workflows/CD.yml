@@ -12,9 +12,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-          
-      - name: Codacy Analysis CLI
-        uses: codacy/codacy-analysis-cli-action@2.0.1
         
       - name: Restore Maven cache
         uses: skjolber/maven-cache-github-action@v1
