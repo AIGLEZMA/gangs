@@ -23,7 +23,7 @@ class WithdrawCommand : BaseCommand() {
         gang.withdrawBalance(amount)
         Services.load(Economy::class.java).add(user, amount.toDouble())
 
-        user.message(Message.WITHDRAW, Economy.format(amount))
+        user.message(Message.WITHDRAW, Economy.format(amount), gang.name)
     }
 
 }

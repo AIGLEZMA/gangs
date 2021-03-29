@@ -110,6 +110,7 @@ menu-settings:
         lore: [ ]
   mine:
     name: "&7Mine"
+    lines: 3
     items:
       bought:
         name: "&7Level: &a{0}"
