@@ -11,25 +11,25 @@ class GangsPlaceholders : PlaceholderExpansion() {
 
     override fun onPlaceholderRequest(player: Player?, identifier: String): String {
         if (player == null) return ""
-        val gang: Gang = User.get(player).gang ?: return ""
+        val gang: Gang? = User.get(player).gang
 
         return when (identifier) {
             "name" -> {
-                gang.name
+                gang?.name ?: "Gang"
             }
             "balance" -> {
-                Economy.format(gang.balance)
+                if (gang != null) Economy.format(gang.balance) else "0"
             }
-            "core_level" -> {
-                gang.core.level.toString()
+            "core" -> {
+                gang?.core?.level?.toString() ?: "0"
             }
-            "mine_level" -> {
-                gang.mine.level.toString()
+            "mine" -> {
+                gang?.mine?.level?.ordinal?.toString() ?: "0"
             }
             "booster" -> {
-                gang.core.booster.toString()
+                gang?.core?.booster?.toString() ?: "0.0x"
             }
-            else -> "null"
+            else -> ""
         }
     }
 

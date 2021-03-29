@@ -20,7 +20,7 @@ class ReloadCommand : BaseCommand() {
             if (!Services.load(ConfigurationManager::class.java).loadConfiguration()) {
                 loaded = false
             }
-            if (Services.load(ConfigurationManager::class.java).loadLanguage()) {
+            if (!Services.load(ConfigurationManager::class.java).loadLanguage()) {
                 loaded = false
             }
         }

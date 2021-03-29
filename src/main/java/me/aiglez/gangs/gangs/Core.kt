@@ -46,7 +46,7 @@ class Core(val gang: Gang, var level: Int, var booster: Double) {
     }
 
     fun removeBooster(member: User) {
-        Log.debug("Removing booster from " + member.player.uniqueId)
+        Log.debug("Removing booster from " + member.uniqueId)
         val multiplier: Multiplier? = Multipliers.getMultiplierByUuid(member.uniqueId.toString())
         if (multiplier != null) {
             Log.debug("Found booster: ${multiplier.multiplier} and removing ${this.booster}")

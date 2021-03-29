@@ -2,7 +2,9 @@ package me.aiglez.gangs.managers;
 
 import co.aikar.commands.*;
 import me.aiglez.gangs.commands.admin.ReloadCommand;
+import me.aiglez.gangs.commands.admin.TakeLeadershipCommand;
 import me.aiglez.gangs.commands.admin.ToggleMinePlaceCommand;
+import me.aiglez.gangs.commands.admin.WithdrawCommand;
 import me.aiglez.gangs.commands.economy.BalanceCommand;
 import me.aiglez.gangs.commands.economy.DepositCommand;
 import me.aiglez.gangs.commands.economy.TopCommand;
@@ -47,7 +49,9 @@ public class CommandRegister {
 
   private void registerSubCommands() {
     this.manager.registerCommand(new ToggleMinePlaceCommand());
+    this.manager.registerCommand(new TakeLeadershipCommand());
     this.manager.registerCommand(new ReloadCommand());
+    this.manager.registerCommand(new WithdrawCommand());
 
     this.manager.registerCommand(new BalanceCommand());
     this.manager.registerCommand(new DepositCommand());

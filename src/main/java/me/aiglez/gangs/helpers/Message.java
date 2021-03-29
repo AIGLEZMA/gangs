@@ -18,11 +18,16 @@ public enum Message {
     NOT_MEMBER_OTHER("not-member-other", "&c{0} is not member of your gang"),
     NOT_SELF("not-self", "&cError: Argument must not be yourself"),
 
+    WITHDRAW("withdraw", "&eYou have withdrawn {0} from {1}'s balance"),
 
     BALANCE("balance", "&eYour gang has ${0}"),
 
     CHAT_ENABLED("chat.enabled", "&aYou have enabled gang chat"),
     CHAT_DISABLED("chat.disabled", "&cYou have disabled gang chat"),
+
+    TAKELEADERSHIP_TAKEN("take-leader-ship.taken", "&eYou have taken leadership of {0}"),
+    TAKELEADERSHIP_TAKEN_BY_ADMIN("take-leader-ship.taken-by-admin",
+            "&cLeadership of your gang has been taken by an administrator"),
 
     MINE_TOGGLEPLACE_DISABLED(
             "mine.toggleplace.disabled",
@@ -65,6 +70,10 @@ public enum Message {
     MINE_ADMINUPGRADE_UPGRADED("mine.admin-upgrade", "&aYou have upgraded {0}'s mine to level {1}"),
     MINE_ADMINUPGRADE_ANNOUNCEMENT(
             "mine.admin-upgrade-announcement", "&eYour mine has been upgraded by an administrator"),
+    MINE_ADMINUPGRADE_NOT_UNLOCKED(
+            "mine.admin-upgrade-not-unlocked", "&cLevel {0} is not unlocked for gang {1}"
+    ),
+
 
     DEPOSIT_INSUFFICIENT_FUNDS("deposit.insufficient-funds", "&cYou don't have that amount"),
     DEPOSIT_DEPOSIT("deposit.success", "&eYou have deposed ${0} into your gang's bank"),

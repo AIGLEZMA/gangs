@@ -20,7 +20,7 @@ class JoinCommand : BaseCommand() {
         }
 
         if(gang.isInvited(user)) {
-            if(gang.members.size == Configuration.getInteger("max-members")) {
+            if(gang.members.size >= Configuration.getInteger("max-members")) {
                 user.message(Message.JOIN_FULL, gang.name)
                 gang.message(Message.JOIN_FULL_ALERT, user.player.name)
                 return
@@ -51,7 +51,7 @@ class JoinCommand : BaseCommand() {
             return
         }
 
-        if(gang.members.size == Configuration.getInteger("max-members")) {
+        if(gang.members.size >= Configuration.getInteger("max-members")) {
             user.message(Message.JOIN_FULL, gang.name)
             return
         }

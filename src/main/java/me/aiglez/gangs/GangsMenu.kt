@@ -1,5 +1,6 @@
 package me.aiglez.gangs
 
+import me.aiglez.gangs.gangs.Gang
 import me.aiglez.gangs.helpers.Configuration
 import me.aiglez.gangs.managers.MineManager
 import me.aiglez.gangs.menus.BalanceTopMenu
@@ -11,6 +12,7 @@ import me.lucko.helper.Services
 import me.lucko.helper.item.ItemStackBuilder
 import me.lucko.helper.menu.Item
 import org.bukkit.Material
+import org.bukkit.entity.Player
 import kotlin.math.max
 
 class GangsMenu {
@@ -21,9 +23,9 @@ class GangsMenu {
             .data(7).name("&7").buildConsumer { e -> e.isCancelled = true }
 
         @JvmStatic
-        fun permission(user: User) {
-            if (user.offlinePlayer.isOnline) PermissionMenu(
-                user,
+        fun permission(to: Player, gang: Gang) {
+            if (to.isOnline) PermissionMenu(
+                to, gang,
                 Configuration.getString("menu-settings", "permission", "title")
             ).open()
         }
