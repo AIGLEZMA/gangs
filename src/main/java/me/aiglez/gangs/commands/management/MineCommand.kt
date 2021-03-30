@@ -52,7 +52,7 @@ class MineCommand : BaseCommand() {
         val nextLevel: MineLevel? = Services.load(MineManager::class.java).getLevel(gang.mine.level.ordinal + 1)
 
         if (nextLevel != null) {
-            if (nextLevel.ordinal >= unlocked) {
+            if (nextLevel.ordinal > unlocked) {
                 sender.sendMessage(Text.colorize(Placeholders.replaceIn(
                     Message.MINE_ADMINUPGRADE_NOT_UNLOCKED.value,
                     nextLevel.ordinal,

@@ -62,11 +62,9 @@ public final class Gangs extends ExtendedJavaPlugin {
         registerListeners();
         provideService(CommandRegister.class, new CommandRegister());
 
-        Log.info("Starting tasks...");
-        launchTasks();
-
         if (Helper.plugins().isPluginEnabled("PlaceholderAPI")) {
             new GangsPlaceholders().register();
+            Log.info("Registered placeholders, use %gangs_(name|core|mine|balance|booster)%");
         } else {
             Log.warn("Couldn't register PAPI placeholders, please install PlaceholderAPI");
         }
@@ -91,8 +89,6 @@ public final class Gangs extends ExtendedJavaPlugin {
         registerListener(new MineListeners());
         registerListener(new PlayerListeners());
     }
-
-    private void launchTasks() {}
 
     private boolean setupEconomy() {
         final String choice = Configuration.getString("economy");

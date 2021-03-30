@@ -16,6 +16,7 @@ class GangsRanking {
 
     private val EXPIRE_AFTER = 5
     private val LIMIT: Long = 14
+
     private val cache: SortedSet<Gang> = sortedSetOf(kotlin.Comparator { a, b -> compareValues(a.balance, b.balance) })
     private var lastUpdated: Instant? = null
 
@@ -49,6 +50,8 @@ class GangsRanking {
     }
 
     fun handleDisband(gang: Gang) {
-        Log.debug("Removing ${gang.name} from balance top (result: ${this.cache.remove(gang)}")
+        Log.debug("Removing ${gang.name} from balance top (result: " +
+                "${this.cache.remove(gang)}"
+        )
     }
 }

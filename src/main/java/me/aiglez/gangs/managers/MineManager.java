@@ -24,6 +24,8 @@ import me.aiglez.gangs.utils.Pair;
 import me.lucko.helper.Helper;
 import me.lucko.helper.config.ConfigurationNode;
 import me.lucko.helper.config.objectmapping.ObjectMappingException;
+import me.lucko.helper.function.chain.Chain;
+import me.lucko.helper.item.ItemStackBuilder;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,6 +35,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -40,6 +43,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MineManager {
 
     private static final int ZERO_TO_SPAWN = 65;
+    private static final TypeToken<Map<String, Double>> TYPE = new TypeToken<Map<String, Double>>() {};
 
     private final World mineWorld;
     private final com.sk89q.worldedit.world.World worldEditWorld;
@@ -74,50 +78,44 @@ public class MineManager {
     }
 
     public void loadLevels() {
-        final ConfigurationNode node = Configuration.getNode("mine-settings", "levels");
-        for (Map.Entry<Object, ? extends ConfigurationNode> entry : node.getChildrenMap().entrySet()) {
+        final ConfigurationNode config = Configuration.getNode("mine-settings", "levels");
+        for (Map.Entry<Object, ? extends ConfigurationNode> entry : config.getChildrenMap().entrySet()) {
             if (!(entry.getKey() instanceof Integer)) {
+                Log.warn("Level must be a number not " + entry.getKey());
                 continue;
             }
+            final ConfigurationNode node = entry.getValue();
+
             final int ordinal = (Integer) entry.getKey();
-            final List<String> lore = entry.getValue().getNode("lore").getList(String::valueOf);
-            final long upgradeCost = entry.getValue().getNode("upgrade-cost").getLong();
-            final Map<ItemStack, Double> blocks = Maps.newHashMap();
+            final List<String> lore = node.getNode("lore").getList(String::valueOf);
+            final long upgradeCost = node.getNode("upgrade-cost").getLong();
+
+            Log.warn(node.getNode("blocks").getValueType().name());
+
             try {
-                final Map<String, Double> materialsAndDatas = entry.getValue().getNode("blocks")
-                        .getValue(new TypeToken<Map<String, Double>>() {});
-                if (materialsAndDatas == null) {
-                    continue;
-                }
+                final Map<ItemStack, Double> blocks = Chain.start(node.getNode("blocks").getValue(TYPE))
+                        .mapNullSafe(map -> {
+                            final Map<ItemStack, Double> m = Maps.newHashMap();
+                            for (final Map.Entry<String, Double> e : map.entrySet()) {
+                                final String[] split = e.getKey().split(":");
 
-                for (final Map.Entry<String, Double> e : materialsAndDatas.entrySet()) {
-                    ItemStack item = null;
+                                final Material material = Material.valueOf(split[0]);
+                                if (split.length == 1) {
+                                    m.put(ItemStackBuilder.of(material).showAttributes().build(), e.getValue());
+                                } else {
+                                    final int data = NumberUtils.toInt(split[1], 1);
+                                    m.put(ItemStackBuilder.of(material).showAttributes().data(data).build(), e.getValue());
+                                }
+                            }
+                            return m;
+                        }, new HashMap<ItemStack, Double>())
+                        .end().orElse(Maps.newHashMap());
 
-                    try {
-                        final String[] parts = e.getKey().split(":");
-                        if (parts.length == 1) {
-                            item = new ItemStack(Material.valueOf(parts[0].toUpperCase()));
-                        } else {
-                            short data = NumberUtils.toShort(parts[1], (short) 0);
-                            item = new ItemStack(Material.valueOf(parts[0].toUpperCase()), 1, data);
-                        }
-
-                    } catch (final Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-
-                    if (item == null) {
-                        continue;
-                    }
-
-                    blocks.put(item, e.getValue());
-                }
+                this.levels.put(ordinal, new MineLevel(ordinal, upgradeCost, blocks, lore));
+                Log.debug("Registering a new mine level: " + ordinal + " (" + blocks.size() + ")");
             } catch (ObjectMappingException e) {
                 e.printStackTrace();
             }
-
-            this.levels.put(ordinal, new MineLevel(ordinal, upgradeCost, blocks, lore));
-            Log.debug("Registering a new mine level: " + entry.getKey());
         }
     }
 

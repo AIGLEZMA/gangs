@@ -2,6 +2,7 @@ package me.aiglez.gangs.gangs
 
 import me.aiglez.gangs.managers.MineManager
 import me.lucko.helper.Services
+import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
 data class MineLevel(
@@ -10,6 +11,10 @@ data class MineLevel(
     val blocks: Map<ItemStack, Double>,
     val lore: List<String>
 ) {
+
+    fun isMinable(material: Material): Boolean {
+        return blocks.map { entry -> entry.key.type }.contains(material)
+    }
 
     companion object {
 

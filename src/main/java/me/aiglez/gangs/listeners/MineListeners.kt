@@ -6,6 +6,7 @@ import com.vk2gpz.tokenenchant.event.TEBlockExplodeEvent
 import me.aiglez.gangs.commands.admin.ToggleMinePlaceCommand
 import me.aiglez.gangs.managers.MineManager
 import me.aiglez.gangs.managers.UserManager
+import me.aiglez.gangs.users.User
 import me.lucko.helper.Services
 import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
@@ -29,31 +30,30 @@ class MineListeners : Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     fun onBlockBreak(e: BlockBreakEvent) {
-        val user = Services.load(UserManager::class.java).getUser(e.player.uniqueId)
+        val user = User.get(e.player)
         val block = e.block
         if (!user.hasGang() || !isMineWorld(block)) return
         val mine = user.gang.mine
 
-        if (mine.level.blocks.contains(block.type) && mine.minableRegion.contains(BukkitUtil.toVector(block))) {
+        if (mine.level.isMinable(block.type) && mine.minableRegion.contains(BukkitUtil.toVector(block))) {
             mine.handle()
         } else {
-            user.message("&c(Debug) You can't break that block")
-            e.isCancelled = true
+            user.message("&c(Debug) You have broken a block that is not minable")
         }
     }
 
     @EventHandler
     fun onTEBlockBreak(e: TEBlockExplodeEvent) {
-        val user = Services.load(UserManager::class.java).getUser(e.player.uniqueId)
+        val user = User.get(e.player)
         val block = e.block
         if (!user.hasGang() || !isMineWorld(block)) return
         val mine = user.gang.mine
 
         for (exploded in e.blockList()) {
-            if (mine.level.blocks.contains(block.type) && mine.minableRegion.contains(BukkitUtil.toVector(block))) {
+            if (mine.level.isMinable(block.type) && mine.minableRegion.contains(BukkitUtil.toVector(block))) {
                 mine.handle()
             } else {
-                user.message("&cYou can't break that block")
+                user.message("&c(Debug TE) You have broken a block that is not minable")
             }
         }
     }
