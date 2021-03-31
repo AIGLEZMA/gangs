@@ -90,8 +90,6 @@ public class MineManager {
             final List<String> lore = node.getNode("lore").getList(String::valueOf);
             final long upgradeCost = node.getNode("upgrade-cost").getLong();
 
-            Log.warn(node.getNode("blocks").getValueType().name());
-
             try {
                 final Map<ItemStack, Double> blocks = Chain.start(node.getNode("blocks").getValue(TYPE))
                         .mapNullSafe(map -> {

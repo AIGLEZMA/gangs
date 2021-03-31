@@ -22,8 +22,7 @@ class MineListeners : Listener {
         val player = e.player
         val block = e.block
 
-        if (!isMineWorld(block)) return
-        if (!ToggleMinePlaceCommand.canPlace(player)) {
+        if (isMineWorld(block) && !ToggleMinePlaceCommand.canPlace(player)) {
             e.isCancelled = true
         }
     }
@@ -38,7 +37,7 @@ class MineListeners : Listener {
         if (mine.level.isMinable(block.type) && mine.minableRegion.contains(BukkitUtil.toVector(block))) {
             mine.handle()
         } else {
-            user.message("&c(Debug) You have broken a block that is not minable")
+            e.isCancelled = true
         }
     }
 
@@ -53,7 +52,7 @@ class MineListeners : Listener {
             if (mine.level.isMinable(block.type) && mine.minableRegion.contains(BukkitUtil.toVector(block))) {
                 mine.handle()
             } else {
-                user.message("&c(Debug TE) You have broken a block that is not minable")
+                e.isCancelled = true
             }
         }
     }

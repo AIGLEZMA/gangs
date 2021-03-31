@@ -1,5 +1,6 @@
 package me.aiglez.gangs;
 
+import me.aiglez.gangs.commands.PlayerCommands;
 import me.aiglez.gangs.economy.Economy;
 import me.aiglez.gangs.economy.TokenEnchantEconomy;
 import me.aiglez.gangs.economy.VaultEconomy;
@@ -68,6 +69,8 @@ public final class Gangs extends ExtendedJavaPlugin {
         } else {
             Log.warn("Couldn't register PAPI placeholders, please install PlaceholderAPI");
         }
+        new PlayerCommands().registerCommands();
+
         loaded = true;
     }
 
