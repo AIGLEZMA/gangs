@@ -36,11 +36,9 @@ public interface User extends GsonSerializable, Sender {
             final OfflinePlayer offlinePlayer =
                     Players.getOffline(uniqueId)
                             .orElseThrow(() -> new OfflinePlayerNotFoundException(uniqueId));
-            final String lastKnownGang = object.get("gang").getAsString();
 
             // see UserImpl serialize method
-            return new UserImpl(
-                    offlinePlayer, lastKnownGang.equalsIgnoreCase("none") ? null : lastKnownGang);
+            return new UserImpl(offlinePlayer);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
