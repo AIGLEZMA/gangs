@@ -13,12 +13,5 @@ import org.bukkit.entity.Player
 class TopCommand : BaseCommand() {
 
     @Subcommand("top")
-    fun top(player: Player) {
-        player.sendMessage("§aRun")
-        /*
-        user.message("&eLast updated: &6${Services.load(GangsRanking::class.java).lastUpdated() ?: "&cnot yet"}")
-        GangsMenu.balancetop(user)
-
-         */
-    }
+    fun top(user: User) = GangsMenu.balancetop(user)
 }

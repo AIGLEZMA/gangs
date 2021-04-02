@@ -110,7 +110,6 @@ public class MineManager {
                         .end().orElse(Maps.newHashMap());
 
                 this.levels.put(ordinal, new MineLevel(ordinal, upgradeCost, blocks, lore));
-                Log.debug("Registering a new mine level: " + ordinal + " (" + blocks.size() + ")");
             } catch (ObjectMappingException e) {
                 e.printStackTrace();
             }
