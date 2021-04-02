@@ -7,13 +7,11 @@ import me.aiglez.gangs.GangsMenu
 import me.aiglez.gangs.GangsRanking
 import me.aiglez.gangs.users.User
 import me.lucko.helper.Services
+import org.bukkit.entity.Player
 
 @CommandAlias("gang")
 class TopCommand : BaseCommand() {
 
     @Subcommand("top")
-    fun top(user: User) {
-        user.message("&eLast updated: &6${Services.load(GangsRanking::class.java).lastUpdated() ?: "&cnot yet"}")
-        GangsMenu.balancetop(user)
-    }
+    fun top(user: User) = GangsMenu.balancetop(user)
 }

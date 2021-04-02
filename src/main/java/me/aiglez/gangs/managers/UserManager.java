@@ -47,7 +47,7 @@ public class UserManager {
             }
         }
 
-        final User user = new UserImpl(offlinePlayer, null);
+        final User user = new UserImpl(offlinePlayer);
         this.users.add(user);
         return user;
     }

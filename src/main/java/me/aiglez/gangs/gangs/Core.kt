@@ -18,13 +18,16 @@ class Core(val gang: Gang, var level: Int, var booster: Double) {
         )
         level++
 
-        val increment = Configuration.getDouble("core-settings", "increment")
-        this.booster += increment
-
+        // remove previous level booster
         for (member in gang.members) {
-            addBooster(member, increment)
+            removeBooster(member)
         }
 
+        this.booster = Configuration.getDouble("core-settings", "levels", level, "booster")
+        // add current level booster
+        for (member in gang.members) {
+            addBooster(member, this.booster)
+        }
     }
 
     fun addBooster(member: User, amount: Double) {
