@@ -21,13 +21,11 @@ import java.util.Set;
 public class UserImpl implements User {
 
     private final OfflinePlayer offlinePlayer;
-    private String lastKnownGang;
     private Gang gang;
     private boolean chat, creating;
 
-    public UserImpl(final OfflinePlayer offlinePlayer, final String lastKnownGang) {
+    public UserImpl(final OfflinePlayer offlinePlayer) {
         this.offlinePlayer = offlinePlayer;
-        this.lastKnownGang = lastKnownGang;
     }
 
     @Override
@@ -37,28 +35,6 @@ public class UserImpl implements User {
 
     @Override
     public Gang getGang() {
-        if (this.lastKnownGang != null && this.gang == null) {
-            // in case it's already loaded by the balance top
-            final Optional<Gang> inCache =
-                    Services.load(GangManager.class).getGangs().stream()
-                            .filter(filter -> filter.getName().equals(lastKnownGang))
-                            .findAny();
-            if (inCache.isPresent()) {
-                setGang(inCache.get());
-                Log.debug("Setting " + this.offlinePlayer.getName() + "'s gang to " + this.gang.getName());
-                lastKnownGang = null;
-            } else {
-                final Optional<Gang> gang = Services.load(GangManager.class).loadGang(lastKnownGang);
-                gang.ifPresent(
-                        found -> {
-                            setGang(found);
-                            Log.debug(
-                                    "Setting " + this.offlinePlayer.getName() + "'s gang to " + this.gang.getName());
-                            lastKnownGang = null; // the gang been loaded
-                        });
-            }
-        }
-
         return this.gang;
     }
 
@@ -123,7 +99,6 @@ public class UserImpl implements User {
     public JsonElement serialize() {
         return JsonBuilder.object()
                 .add("unique-id", this.offlinePlayer.getUniqueId().toString())
-                .add("gang", this.gang != null ? this.gang.getName() : "none")
                 .build();
     }
 }

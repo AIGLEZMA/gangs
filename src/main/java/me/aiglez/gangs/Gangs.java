@@ -1,6 +1,5 @@
 package me.aiglez.gangs;
 
-import me.aiglez.gangs.commands.PlayerCommands;
 import me.aiglez.gangs.economy.Economy;
 import me.aiglez.gangs.economy.TokenEnchantEconomy;
 import me.aiglez.gangs.economy.VaultEconomy;
@@ -49,12 +48,11 @@ public final class Gangs extends ExtendedJavaPlugin {
         provideService(UserManager.class, new UserManager());
         getService(UserManager.class).loadUsers();
 
-        Log.info("Loading balance top (& taken names)...");
+        Log.info("Loading mine levels & gangs....");
         provideService(MineManager.class, new MineManager());
         getService(MineManager.class).loadLevels();
         provideService(GangManager.class, new GangManager());
-        getService(GangManager.class).loadTakenNames();
-        getService(GangManager.class).loadBalanceTop();
+        getService(GangManager.class).loadGangs();
 
         provideService(GangsRanking.class, new GangsRanking());
         provideService(GangsMenu.class, new GangsMenu());
@@ -69,7 +67,6 @@ public final class Gangs extends ExtendedJavaPlugin {
         } else {
             Log.warn("Couldn't register PAPI placeholders, please install PlaceholderAPI");
         }
-        new PlayerCommands().registerCommands();
 
         loaded = true;
     }
@@ -84,7 +81,6 @@ public final class Gangs extends ExtendedJavaPlugin {
         getService(UserManager.class).saveUsers();
 
         Log.info("Saving gangs...");
-        getService(GangManager.class).saveBalanceTop();
         getService(GangManager.class).saveGangs();
     }
 

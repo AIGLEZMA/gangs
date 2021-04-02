@@ -7,15 +7,16 @@ max-members: 6
 chat-format: "&8[&a{0}&8] &7{1}: &r{2}"
 core-settings:
   max-level: 18
-  # booster increment
-  increment: 1
   levels:
     1:
       upgrade-cost: 0
+      booster: 1.0
     2:
       upgrade-cost: 1000
+      booster: 2.0
     3:
       upgrade-cost: 2000
+      booster: 3.0
 mine-settings:
   max-level: 54
   level-unlocked-per-core: 3
