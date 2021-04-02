@@ -1,5 +1,6 @@
 package me.aiglez.gangs.utils
 
+import me.aiglez.gangs.helpers.Configuration
 import me.lucko.helper.Helper
 import me.lucko.helper.text3.Text
 import org.bukkit.ChatColor
@@ -18,7 +19,9 @@ object Log {
 
     @JvmStatic
     fun debug(message: String?) {
-        if (message != null) print(ChatColor.AQUA, "DEBUG", message)
+        if (Configuration.getBoolean("debug") && message != null) {
+            print(ChatColor.AQUA, "DEBUG", message)
+        }
     }
 
     @JvmStatic

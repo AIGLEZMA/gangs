@@ -28,9 +28,4 @@ class PlayerListeners : Listener {
             e.isCancelled = true
         }
     }
-
-    @EventHandler
-    fun onPreProcess(e: PlayerCommandPreprocessEvent) {
-        Log.debug(e.player.displayName + " -> " + e.message + " cancelled: " + e.isCancelled)
-    }
 }

@@ -159,9 +159,6 @@ public class MineManager {
         mine.setMinableRegion(minable);
         mine.setRegion(at.getFirst());
 
-        Log.info(
-                "Minable: " + mine.getMinableRegion().getArea() + "  All: " + mine.getRegion().getArea());
-
         return Optional.of(mine);
     }
 

@@ -89,7 +89,7 @@ public class GangManager {
                                 file.getName().replace(".json", ""), ".json", GANGS_DATA_FOLDER, new TypeToken<Gang>() {});
 
                 storageHandler.load().ifPresent(gang -> {
-                    Log.info("Loaded gang: " + gang.getName());
+                    Log.debug("Loaded gang: " + gang.getName());
                     registerGang(gang);
 
                     gang.getMembers().forEach(user -> user.setGang(gang));

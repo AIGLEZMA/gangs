@@ -1,3 +1,4 @@
+debug: false
 backup: true
 economy: "vault"
 max-members: 6
