@@ -14,6 +14,7 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
+import kotlin.random.Random
 
 class MineListeners : Listener {
 
@@ -27,7 +28,7 @@ class MineListeners : Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
     fun onBlockBreak(e: BlockBreakEvent) {
         val user = User.get(e.player)
         val block = e.block
@@ -48,13 +49,12 @@ class MineListeners : Listener {
         if (!user.hasGang() || !isMineWorld(block)) return
         val mine = user.gang.mine
 
-        for (exploded in e.blockList()) {
-            if (mine.level.isMinable(block.type) && mine.minableRegion.contains(BukkitUtil.toVector(block))) {
-                mine.handle()
-            } else {
-                e.isCancelled = true
-            }
-        }
+        mine.handle(
+            e.blockList()
+                .filter { b -> mine.level.isMinable(b.type) }
+                .filter { b -> mine.minableRegion.contains(BukkitUtil.toVector(b)) }
+                .count()
+        )
     }
 
     private fun isMineWorld(block: Block): Boolean {

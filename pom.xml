@@ -7,7 +7,7 @@
 
     <groupId>me.aiglez</groupId>
     <artifactId>gangs</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.6-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Gangs</name>
@@ -31,9 +31,10 @@
         <!-- spigot api -->
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
+            <artifactId>spigot</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/spigot-1.8.8-R0.1-SNAPSHOT.jar</systemPath>
         </dependency>
         <!-- acf (commands) -->
         <dependency>
