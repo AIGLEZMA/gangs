@@ -24,6 +24,7 @@ class Core(val gang: Gang, var level: Int, var booster: Double) {
         }
 
         this.booster = Configuration.getDouble("core-settings", "levels", level, "booster")
+        Log.info("Booster: $booster")
         // add current level booster
         for (member in gang.members) {
             addBooster(member, this.booster)

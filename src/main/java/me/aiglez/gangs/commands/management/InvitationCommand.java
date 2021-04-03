@@ -61,15 +61,4 @@ public class InvitationCommand extends BaseCommand {
             target.message(Message.INVITE_INVITED_TARGET, gang.getName());
         }
     }
-
-    // TODO: remove later
-    @Subcommand("invites")
-    public void invitesCommand(@Conditions("has_gang") final User user) {
-        final Gang gang = user.getGang();
-        for (final Invite invite : gang.getInvites()) {
-            user.message(
-                    "&7 - {0} (passed: &e{1})",
-                    invite.getHolder().getOfflinePlayer().getName(), invite.format());
-        }
-    }
 }

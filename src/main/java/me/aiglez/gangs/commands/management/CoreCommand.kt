@@ -25,7 +25,9 @@ class CoreCommand : BaseCommand() {
     fun forceCoreUpgrade(sender: CommandSender, gang: Gang) {
         val core = gang.core ?: return
         if (core.level == Configuration.getInteger("core-settings", "max-level")) {
-            sender.sendMessage(Placeholders.replaceIn(Message.CORE_ADMINUPGRADE_MAX_LEVEL.value, gang.name))
+            sender.sendMessage(Text.colorize(
+                Placeholders.replaceIn(Message.CORE_ADMINUPGRADE_MAX_LEVEL.value, gang.name)
+            ))
             return
         }
 

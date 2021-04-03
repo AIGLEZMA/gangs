@@ -59,12 +59,12 @@ class CoreMenu(private val gang: Gang, val user: User, title: String) : Gui(user
                             }
 
                             val gang = user.gang
-                            val nextLevel = gang.core.level + 1
-
-                            if (nextLevel >= Configuration.getInteger("core-settings", "max-level")) {
+                            if (gang.core.level == Configuration.getInteger("core-settings", "max-level")) {
                                 user.message(Message.MENU_CORE_MAXLEVEL)
                                 return@run
                             }
+
+                            val nextLevel = gang.core.level + 1
 
                             val upgradeCost = retrieveUpgradeCost(nextLevel)
                             if (upgradeCost > gang.balance) {

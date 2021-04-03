@@ -25,6 +25,7 @@ class MineCommand : BaseCommand() {
         user.message(Message.MINE_TELEPORT)
     }
 
+    /*
     // TODO: remove this later
     @Subcommand("mined")
     fun mined(@Conditions("has_gang") user: User) {
@@ -38,6 +39,7 @@ class MineCommand : BaseCommand() {
         val gang = user.gang
         user.message("&eReset result: ${gang.mine.reset()}")
     }
+     */
 
     @Subcommand("upgrade")
     fun upgrade(@Conditions("has_gang") user: User) {

@@ -49,8 +49,8 @@ class BalanceTopMenu(val user: User, title: String) : Gui(user.player, 4, title)
                         .name(name)
                         .lore(lore)
                         .buildConsumer { e -> e.isCancelled = true })
-            } catch (e: ArrayIndexOutOfBoundsException) {
-                user.message("${e.message}")
+            } catch (ignored: ArrayIndexOutOfBoundsException) {
+
             }
         }
     }

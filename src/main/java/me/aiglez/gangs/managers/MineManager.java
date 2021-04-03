@@ -123,7 +123,6 @@ public class MineManager {
         final Pair<Region, EditSession> at = pasteSchematicAt(location);
 
         if (at == null) {
-            user.message("&cRegion not found");
             return Optional.empty();
         }
 
@@ -142,12 +141,10 @@ public class MineManager {
                     max = new Vector(vector.getX(), vector.getY(), vector.getZ());
                     continue;
                 }
-                user.message("Mine schematic contains >2 corner blocks!");
             }
         }
 
         if (min == null || max == null) {
-            user.message("&cCouldn't find the two corners");
             return Optional.empty();
         }
 
