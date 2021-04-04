@@ -42,7 +42,7 @@ class BalanceTopMenu(val user: User, title: String) : Gui(user.player, 4, title)
                     gang.members.size
                 )
             }
-            gang.members.forEach(Consumer { member: User -> lore += "&7 - " + member.player.name })
+            gang.members.forEach(Consumer { member: User -> lore += "&7 - " + member.offlinePlayer.name })
             try {
                 setItem(
                     SLOTS[index], ItemStackBuilder.of(Material.DIAMOND_PICKAXE)
